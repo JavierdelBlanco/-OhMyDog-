@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg" style="background-color: white;">
   <div class="container-fluid d-flex justify-content-around align-items-end border-bottom border-dark">
     <a class="navbar-brand" href="#">
       <%= image_tag("logotype.png", width: 150, height: 120) %>
@@ -6,16 +6,16 @@
     <div id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+          <%= link_to('Inicio', root_path, class:"nav-link") %>
         </li>
         <li class="nav-item">
           <a class="nav-link disabled" aria-disabled="true">Turnos</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Se busca</a>
+          <%= link_to('Se busca', se_busca_path, class:"nav-link") %>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Cuidadores y paseadores</a>
+          <%= link_to('Cuidadores y paseadores', cuidadores_y_paseadores_path, class:"nav-link") %>
         </li>
         <li class="nav-item">
           <a class="nav-link disabled" aria-disabled="true">Adopcion</a>
@@ -34,7 +34,7 @@
     <div id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" href="#">Ingresar</a>
+          <%= link_to('Ingresar', user_login_path, class:"nav-link") %>
         </li>
       </ul>
     </div>
