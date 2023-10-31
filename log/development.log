@@ -1,0 +1,179 @@
+Started GET "/" for 127.0.0.1 at 2023-10-31 00:47:45 -0300
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by HomeController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/_carousel.html.erb (Duration: 427.7ms | Allocations: 116076)
+  Rendered home/index.html.erb within layouts/application (Duration: 428.3ms | Allocations: 116442)
+  Rendered _header.html.erb (Duration: 0.7ms | Allocations: 895)
+  Rendered layout layouts/application.html.erb (Duration: 433.8ms | Allocations: 122968)
+Completed 200 OK in 443ms (Views: 436.7ms | ActiveRecord: 0.0ms | Allocations: 130599)
+
+
+Started GET "/cuidadores-y-paseadores" for 127.0.0.1 at 2023-10-31 00:47:48 -0300
+Processing by CuidadoresYPaseadoresController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering cuidadores_y_paseadores/index.html.erb within layouts/application
+  Rendered cuidadores_y_paseadores/index.html.erb within layouts/application (Duration: 0.2ms | Allocations: 90)
+  Rendered _header.html.erb (Duration: 0.4ms | Allocations: 562)
+  Rendered layout layouts/application.html.erb (Duration: 6.0ms | Allocations: 6219)
+Completed 200 OK in 7ms (Views: 6.4ms | ActiveRecord: 0.0ms | Allocations: 6656)
+
+
+Started GET "/se-busca" for 127.0.0.1 at 2023-10-31 00:47:49 -0300
+Processing by SeBuscaController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering se_busca/index.html.erb within layouts/application
+  Rendered se_busca/index.html.erb within layouts/application (Duration: 0.2ms | Allocations: 88)
+  Rendered _header.html.erb (Duration: 0.4ms | Allocations: 562)
+  Rendered layout layouts/application.html.erb (Duration: 2.6ms | Allocations: 3639)
+Completed 200 OK in 3ms (Views: 3.0ms | ActiveRecord: 0.0ms | Allocations: 4074)
+
+
+Started GET "/" for 127.0.0.1 at 2023-10-31 00:47:50 -0300
+Processing by HomeController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/_carousel.html.erb (Duration: 1.5ms | Allocations: 1465)
+  Rendered home/index.html.erb within layouts/application (Duration: 1.7ms | Allocations: 1532)
+  Rendered _header.html.erb (Duration: 0.4ms | Allocations: 555)
+  Rendered layout layouts/application.html.erb (Duration: 5.7ms | Allocations: 4960)
+Completed 200 OK in 7ms (Views: 6.3ms | ActiveRecord: 0.0ms | Allocations: 5185)
+
+
+Started GET "/se-busca" for 127.0.0.1 at 2023-10-31 00:47:51 -0300
+Processing by SeBuscaController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering se_busca/index.html.erb within layouts/application
+  Rendered se_busca/index.html.erb within layouts/application (Duration: 0.0ms | Allocations: 6)
+  Rendered _header.html.erb (Duration: 0.5ms | Allocations: 556)
+  Rendered layout layouts/application.html.erb (Duration: 3.6ms | Allocations: 3536)
+Completed 200 OK in 4ms (Views: 4.0ms | ActiveRecord: 0.0ms | Allocations: 3761)
+
+
+Started GET "/cuidadores-y-paseadores" for 127.0.0.1 at 2023-10-31 00:47:52 -0300
+Processing by CuidadoresYPaseadoresController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering cuidadores_y_paseadores/index.html.erb within layouts/application
+  Rendered cuidadores_y_paseadores/index.html.erb within layouts/application (Duration: 0.1ms | Allocations: 6)
+  Rendered _header.html.erb (Duration: 0.4ms | Allocations: 556)
+  Rendered layout layouts/application.html.erb (Duration: 3.3ms | Allocations: 3548)
+Completed 200 OK in 4ms (Views: 3.8ms | ActiveRecord: 0.0ms | Allocations: 3771)
+
+
+Started GET "/user/login" for 127.0.0.1 at 2023-10-31 00:47:53 -0300
+Processing by UserController#login as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering user/login.erb within layouts/application
+  Rendered user/login.erb within layouts/application (Duration: 0.8ms | Allocations: 83)
+  Rendered _header.html.erb (Duration: 0.8ms | Allocations: 562)
+  Rendered layout layouts/application.html.erb (Duration: 8.4ms | Allocations: 3628)
+Completed 200 OK in 11ms (Views: 9.7ms | ActiveRecord: 0.0ms | Allocations: 4058)
+
+
+Started GET "/cuidadores-y-paseadores" for 127.0.0.1 at 2023-10-31 00:47:54 -0300
+Processing by CuidadoresYPaseadoresController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering cuidadores_y_paseadores/index.html.erb within layouts/application
+  Rendered cuidadores_y_paseadores/index.html.erb within layouts/application (Duration: 0.0ms | Allocations: 6)
+  Rendered _header.html.erb (Duration: 0.4ms | Allocations: 556)
+  Rendered layout layouts/application.html.erb (Duration: 2.9ms | Allocations: 3557)
+Completed 200 OK in 4ms (Views: 3.4ms | ActiveRecord: 0.0ms | Allocations: 3780)
+
+
+Started GET "/se-busca" for 127.0.0.1 at 2023-10-31 00:47:54 -0300
+Processing by SeBuscaController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering se_busca/index.html.erb within layouts/application
+  Rendered se_busca/index.html.erb within layouts/application (Duration: 0.0ms | Allocations: 6)
+  Rendered _header.html.erb (Duration: 0.4ms | Allocations: 556)
+  Rendered layout layouts/application.html.erb (Duration: 2.6ms | Allocations: 3557)
+Completed 200 OK in 3ms (Views: 3.0ms | ActiveRecord: 0.0ms | Allocations: 3780)
+
+
+Started GET "/" for 127.0.0.1 at 2023-10-31 00:47:55 -0300
+Processing by HomeController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/_carousel.html.erb (Duration: 4.4ms | Allocations: 1462)
+  Rendered home/index.html.erb within layouts/application (Duration: 4.9ms | Allocations: 1529)
+  Rendered _header.html.erb (Duration: 0.4ms | Allocations: 555)
+  Rendered layout layouts/application.html.erb (Duration: 8.6ms | Allocations: 4942)
+Completed 200 OK in 10ms (Views: 9.6ms | ActiveRecord: 0.0ms | Allocations: 5165)
+
+
+Started GET "/se-busca" for 127.0.0.1 at 2023-10-31 00:51:03 -0300
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by SeBuscaController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering se_busca/index.html.erb within layouts/application
+  Rendered se_busca/index.html.erb within layouts/application (Duration: 0.2ms | Allocations: 181)
+  Rendered _header.html.erb (Duration: 0.8ms | Allocations: 933)
+  Rendered layout layouts/application.html.erb (Duration: 31.4ms | Allocations: 25480)
+Completed 200 OK in 35ms (Views: 32.8ms | ActiveRecord: 0.0ms | Allocations: 29510)
+
+
+Started GET "/" for 127.0.0.1 at 2023-10-31 00:51:04 -0300
+Processing by HomeController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/_carousel.html.erb (Duration: 1.4ms | Allocations: 1704)
+  Rendered home/index.html.erb within layouts/application (Duration: 2.2ms | Allocations: 1926)
+  Rendered _header.html.erb (Duration: 0.7ms | Allocations: 561)
+  Rendered layout layouts/application.html.erb (Duration: 5.3ms | Allocations: 5363)
+Completed 200 OK in 6ms (Views: 6.0ms | ActiveRecord: 0.0ms | Allocations: 5797)
+
+
+Started GET "/se-busca" for 127.0.0.1 at 2023-10-31 00:51:05 -0300
+Processing by SeBuscaController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering se_busca/index.html.erb within layouts/application
+  Rendered se_busca/index.html.erb within layouts/application (Duration: 0.1ms | Allocations: 6)
+  Rendered _header.html.erb (Duration: 0.4ms | Allocations: 556)
+  Rendered layout layouts/application.html.erb (Duration: 5.5ms | Allocations: 3567)
+Completed 200 OK in 7ms (Views: 6.1ms | ActiveRecord: 0.0ms | Allocations: 3794)
+
+
+Started GET "/cuidadores-y-paseadores" for 127.0.0.1 at 2023-10-31 00:51:06 -0300
+Processing by CuidadoresYPaseadoresController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering cuidadores_y_paseadores/index.html.erb within layouts/application
+  Rendered cuidadores_y_paseadores/index.html.erb within layouts/application (Duration: 0.3ms | Allocations: 90)
+  Rendered _header.html.erb (Duration: 0.4ms | Allocations: 562)
+  Rendered layout layouts/application.html.erb (Duration: 2.5ms | Allocations: 3650)
+Completed 200 OK in 3ms (Views: 2.9ms | ActiveRecord: 0.0ms | Allocations: 4087)
+
+
+Started GET "/user/login" for 127.0.0.1 at 2023-10-31 00:51:08 -0300
+Processing by UserController#login as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering user/login.erb within layouts/application
+  Rendered user/login.erb within layouts/application (Duration: 0.9ms | Allocations: 83)
+  Rendered _header.html.erb (Duration: 0.8ms | Allocations: 562)
+  Rendered layout layouts/application.html.erb (Duration: 7.5ms | Allocations: 3631)
+Completed 200 OK in 9ms (Views: 8.7ms | ActiveRecord: 0.0ms | Allocations: 4064)
+
+
+Started GET "/cuidadores-y-paseadores" for 127.0.0.1 at 2023-10-31 00:51:09 -0300
+Processing by CuidadoresYPaseadoresController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering cuidadores_y_paseadores/index.html.erb within layouts/application
+  Rendered cuidadores_y_paseadores/index.html.erb within layouts/application (Duration: 0.1ms | Allocations: 6)
+  Rendered _header.html.erb (Duration: 0.4ms | Allocations: 556)
+  Rendered layout layouts/application.html.erb (Duration: 2.8ms | Allocations: 3548)
+Completed 200 OK in 4ms (Views: 3.3ms | ActiveRecord: 0.0ms | Allocations: 3773)
+
+
+Started GET "/" for 127.0.0.1 at 2023-10-31 00:51:11 -0300
+Processing by HomeController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/_carousel.html.erb (Duration: 1.4ms | Allocations: 1462)
+  Rendered home/index.html.erb within layouts/application (Duration: 1.5ms | Allocations: 1529)
+  Rendered _header.html.erb (Duration: 0.4ms | Allocations: 555)
+  Rendered layout layouts/application.html.erb (Duration: 3.9ms | Allocations: 4930)
+Completed 200 OK in 4ms (Views: 4.2ms | ActiveRecord: 0.0ms | Allocations: 5155)
+
+
