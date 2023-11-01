@@ -1,0 +1,28 @@
+<div id="<%= dom_id cuidador_paseador %>">
+
+   
+   	
+   <p>
+    <strong> Foto: </strong>
+      <%= image_tag(cuidador_paseador.foto, class: 'img-thumbnail', style: 'height: 200px; width: 200px;') %>
+  </p>
+
+  
+  
+
+  <p>
+    <strong>Nombre y Apellido :</strong>
+     <%= cuidador_paseador.nombre %> <%= cuidador_paseador.apellido %>
+  </p>
+
+  <p>
+    <strong>Horarios:</strong>
+    <%= cuidador_paseador.horarios %>
+  </p>
+
+  <p>
+    <strong>Rol:</strong>
+    <%= cuidador_paseador.rol %>
+  </p>
+
+</div>

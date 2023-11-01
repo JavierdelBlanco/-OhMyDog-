@@ -1,0 +1,9 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @cuidador_paseador %>
+
+<div>
+  <button> <%= link_to "Editar", edit_cuidador_paseador_path(@cuidador_paseador) %></button>
+  <button><%= link_to "Atras", cuidador_paseadors_path %></button>
+  <%= button_to "Eliminar", @cuidador_paseador, method: :delete %>
+</div>

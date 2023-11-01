@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  foto: 
+  apellido: MyString
+  nombre: MyString
+  horarios: MyText
+  rol: MyString
+
+two:
+  foto: 
+  apellido: MyString
+  nombre: MyString
+  horarios: MyText
+  rol: MyString
