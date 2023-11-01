@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nombre: MyString
+  foto: 
+  fecha_de_publicacion: 2023-10-31
+  status: MyString
+
+two:
+  nombre: MyString
+  foto: 
+  fecha_de_publicacion: 2023-10-31
+  status: MyString

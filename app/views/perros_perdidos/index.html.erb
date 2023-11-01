@@ -1,0 +1,18 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Perros perdidos</h1>
+
+<%= link_to "Publicar un perro perdido", new_perros_perdido_path %>
+
+<div id="perros_perdidos">
+  <% if @perros_perdidos.empty? %>
+    <p>No hay perros perdidos, te invitamos a que publiques si encontraste un perro para que se reencuentre con su dueño.</p>
+  <% else %>
+    <% @perros_perdidos.each do |perros_perdido| %>
+      <%= render perros_perdido %>
+      <p>
+        <%= link_to "Ver", perros_perdido %>
+      </p>
+    <% end %>
+  <% end %>
+</div>
