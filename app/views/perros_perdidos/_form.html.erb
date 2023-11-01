@@ -1,7 +1,7 @@
 <%= form_with(model: perros_perdido) do |form| %>
   <% if perros_perdido.errors.any? %>
     <div style="color: red">
-      <h2><%= pluralize(perros_perdido.errors.count, "error") %> prohibited this perros_perdido from being saved:</h2>
+      <h2><%= pluralize(perros_perdido.errors.count, "error/es") %> impidieron la publicacion de este perro.</h2>
 
       <ul>
         <% perros_perdido.errors.each do |error| %>

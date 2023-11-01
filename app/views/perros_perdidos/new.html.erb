@@ -1,3 +1,24 @@
+<p style="color: green"><%= notice %></p>
+
+<style>
+  /* Botón personalizado */
+  .custom-button {
+    display: inline-block;
+    padding: 10px 20px; /* Ajusta el relleno según sea necesario */
+    border: 2px solid #FFA500; /* Borde naranja */
+    background-color: #FFA500; /* Fondo naranja */
+    color: #000; /* Texto blanco */
+    border-radius: 10px; /* Esquinas redondas */
+    transition: background-color 0.3s; /* Transición de color al pasar el mouse */
+    text-decoration: none; /* Elimina el subrayado en el enlace */
+  }
+
+  /* Cambio de color al pasar el mouse por encima */
+  .custom-button:hover {
+    background-color: #FF8C00; /* Color ligeramente más oscuro */
+  }
+</style>
+
 <h1>Publicar un perro perdido.</h1>
 
 <%= render "form", perros_perdido: @perros_perdido %>
@@ -5,5 +26,6 @@
 <br>
 
 <div>
-  <%= link_to "Atras", perros_perdidos_path %>
+  <a href="<%= perros_perdidos_path %>" class="custom-button">Atras</a>
 </div>
+
