@@ -1,0 +1,23 @@
+<div id="<%= dom_id perros_perdido %>">
+  
+  <p>
+    <strong>Foto:</strong>
+    <%= image_tag(perros_perdido.foto, class: 'img-thumbnail', style: 'height: 200px; width: 200px;') %>
+  </p>
+
+  <p>
+    <strong>Nombre:</strong>
+    <%= perros_perdido.nombre %>
+  </p>
+
+  <p>
+    <strong>Estado:</strong>
+    <%= perros_perdido.status %>
+  </p>
+
+  <p>
+    <strong>Fecha de publicacion:</strong>
+    <%= perros_perdido.fecha_de_publicacion %>
+  </p>
+
+</div>

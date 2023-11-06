@@ -1,0 +1,42 @@
+<%= form_with(model: perros_perdido) do |form| %>
+  <% if perros_perdido.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(perros_perdido.errors.count, "error/es") %> impidieron la publicacion de este perro.</h2>
+
+      <ul>
+        <% perros_perdido.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :nombre, style: "display: block" %>
+    <%= form.text_field :nombre %>
+  </div>
+
+  <div>
+    <%= form.label :foto, style: "display: block" %>
+    <%= form.file_field :foto %>
+  </div>
+
+  <div style="display: none;">
+    <%= form.label :fecha_de_publicacion, style: "display: block" %>
+    <%= form.date_field :fecha_de_publicacion, readonly: true  %>
+  </div>
+
+  <div style="display: none;">
+    <%= form.label :Estado, style: "display: block" %>
+    <%= form.text_field :status, readonly: true  %>
+  </div>
+
+  <div style="margin-top: 20px;">
+  <% if request.path == '/se-busca/new' %>
+    <%= form.submit 'Publicar' %>
+  <% else %>
+    <%= form.submit 'Guardar cambios' %>
+  <% end%>
+  </div>
+
+<% end %>
