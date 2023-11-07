@@ -1,0 +1,44 @@
+<%= form_with(model: cuidador_paseador) do |form| %>
+  <% if cuidador_paseador.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(cuidador_paseador.errors.count, "error") %> prohibited this cuidador_paseador from being saved:</h2>
+
+      <ul>
+        <% cuidador_paseador.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :foto, class:'d-flex' %>
+    <%= form.file_field :foto, style:'padding-bottom: 5px;' %>
+  </div>
+
+  <div>
+    <%= form.label :apellido, style: "display: block" %>
+    <%= form.text_field :apellido, style:'padding-bottom: 5px;' %>
+  </div>
+
+  <div>
+    <%= form.label :nombre, style: "display: block" %>
+    <%= form.text_field :nombre, style:'padding-bottom: 5px;' %>
+  </div>
+
+  <div>
+    <%= form.label :horarios, style: "display: block" %>
+    <%= form.text_area :horarios, style:'padding-bottom: 5px;' %>
+  </div>
+
+  <div  style= 'padding-bottom: 20px;'>
+    <%= form.label :rol, style: "display: block" %>
+    <%= form.select :rol, options_for_select(['Cuidador','Paseador','Ambos'], cuidador_paseador.rol), class: 'form-control ' %>
+  </div>
+
+  <% if request.path == '/cuidadores-y-paseadores/new' %>
+    <%= form.submit 'Publicar', class:'btn btn-success' %>
+  <% else %>
+    <%= form.submit 'Guardar cambios', class:'btn btn-success' %>
+  <% end%>
+<% end %>

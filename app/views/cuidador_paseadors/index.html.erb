@@ -1,0 +1,43 @@
+<%= link_to "Cargar cuidador/paseador", new_cuidador_paseador_path , class: "btn btn-primary", style:'margin-block: 10px;'%>
+<div class='d-flex'>
+  <div class="form-check", style='margin: 5px;'>
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+  <label class="form-check-label" for="flexCheckChecked">
+    Cuidador
+  </label>
+</div>
+<div class="form-check", style='margin: 5px;'>
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+  <label class="form-check-label" for="flexCheckChecked">
+    Paseador 
+  </label>
+</div>
+</div>
+<div id="cuidadores_paseadores" class= 'd-flex justify-content-between' >
+  <% @cuidador_paseadors.each do |cuidador_paseador| %>
+    <div class="card" style="width: 290px; height: 500px;">
+      <%= image_tag(cuidador_paseador.foto, class:'card-img-top') %>
+      <div class="card-body">
+        <p class="card-text", style=''> <%= cuidador_paseador.nombre %> <%= cuidador_paseador.apellido %> </p>
+        <p class="card-text"> 
+          <%if cuidador_paseador.rol == 'Ambos' %>
+            <p>Cuidador y Paseador</p>
+          <% else %>
+            <%= cuidador_paseador.rol%>
+          <% end %> 
+        </p>
+        <p class="card-text"> Horarios de atencion: <%= cuidador_paseador.horarios %> </p>
+        
+      </div>
+      
+      <%= link_to "Contactar", cuidador_paseador , class: "btn btn-primary", style:'margin-bottom: 1px'%>
+      <div class='d-flex justify-content-center'>
+        <div>
+        <%= link_to "Editar", edit_cuidador_paseador_path(cuidador_paseador) , class: "btn btn-secondary", style:'margin-inline: 1px'%>
+        <%= link_to "Eliminar", cuidador_paseador, method: :delete ,  class: "btn btn-danger", style:'margin-inline: 1px' %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<p style="color: green"><%= notice %></p>
