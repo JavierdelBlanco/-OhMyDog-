@@ -1,6 +1,5 @@
+# app/controllers/users_controller.rb
 class UserController < ApplicationController
-  def login
-  end
-  def signup
-  end
+  before_action :authenticate_user! # Asegura que el usuario esté autenticado
+
 end
