@@ -28,6 +28,10 @@
     <%= f.number_field :nro, autofocus: true, inputmode: "numeric" %>
   </div>
   
+   <div class="field">
+    <%= f.label :'Tipo de usuario' %><br />
+    <%= f.select :tipo_usuario, options_for_select([['Normal','normal'],['Premium','premium'],['Administrador','administrador']]),{}, autofocus: true, autocomplete: "tipo_usuario" %>
+  </div>
 
   <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
     <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>

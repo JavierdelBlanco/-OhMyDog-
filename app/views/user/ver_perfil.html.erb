@@ -5,6 +5,7 @@
     <li class="list-group-item"><%= current_user.apellido %></li>
     <li class="list-group-item"><%= current_user.direccion %></li>
     <li class="list-group-item"><%= current_user.nro %></li>
+    <li class="list-group-item"><%= current_user.tipo_usuario %></li>
   </ul>
 
 <%= link_to "Editar Perfil", edit_user_path(current_user), class: "btn btn-primary" %>
