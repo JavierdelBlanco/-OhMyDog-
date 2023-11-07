@@ -1,0 +1,25 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nombre: MyString
+  dia: 1
+  mes: 1
+  año: 1
+  caracteristicas: MyText
+  condiciones: MyText
+  raza: MyString
+  color: MyString
+  tamaño: MyString
+  user: one
+
+two:
+  nombre: MyString
+  dia: 1
+  mes: 1
+  año: 1
+  caracteristicas: MyText
+  condiciones: MyText
+  raza: MyString
+  color: MyString
+  tamaño: MyString
+  user: two
