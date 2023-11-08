@@ -3,7 +3,14 @@ class PerrosPerdidosController < ApplicationController
 
   # GET /perros_perdidos or /perros_perdidos.json
   def index
-    @perros_perdidos = PerrosPerdido.all
+    @perros_perdidos = PerrosPerdido.where(status: 'Se busca').order(created_at: :desc)
+    @perros_encontrados = PerrosPerdido.where(status: 'Encontrado').order(created_at: :desc).limit(50)
+
+    #@perros_del_user = PerrosPerdido.where(mail: current_user.email).order(created_at: :desc)
+  end
+  
+  def index_mis_perros_perdido
+    @perros_perdidos = PerrosPerdido.where(mail: current_user.email).order(created_at: :desc)
   end
 
   # GET /perros_perdidos/1 or /perros_perdidos/1.json
@@ -15,6 +22,7 @@ class PerrosPerdidosController < ApplicationController
     @perros_perdido = PerrosPerdido.new
     @perros_perdido.status = "Se busca"
     @perros_perdido.fecha_de_publicacion = Date.current
+    @perros_perdido.mail = current_user.email
   end
 
   # GET /perros_perdidos/1/edit
@@ -27,7 +35,7 @@ class PerrosPerdidosController < ApplicationController
 
     respond_to do |format|
       if @perros_perdido.save
-        format.html { redirect_to perros_perdido_url(@perros_perdido), notice: "Perros perdido was successfully created." }
+        format.html { redirect_to perros_perdidos_path, notice: "El perro se ha publicado exitosamente!" }
         format.json { render :show, status: :created, location: @perros_perdido }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -40,7 +48,7 @@ class PerrosPerdidosController < ApplicationController
   def update
     respond_to do |format|
       if @perros_perdido.update(perros_perdido_params)
-        format.html { redirect_to perros_perdido_url(@perros_perdido), notice: "Perros perdido was successfully updated." }
+        format.html { redirect_to perros_perdidos_path, notice: "La publicacion ha sido editada correctamente!" }
         format.json { render :show, status: :ok, location: @perros_perdido }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -54,7 +62,7 @@ class PerrosPerdidosController < ApplicationController
     @perros_perdido.destroy!
 
     respond_to do |format|
-      format.html { redirect_to perros_perdidos_url, notice: "Perros perdido was successfully destroyed." }
+      format.html { redirect_to perros_perdidos_path, notice: "La publicacion ha sido eliminada correctamente!" }
       format.json { head :no_content }
     end
   end
@@ -67,6 +75,6 @@ class PerrosPerdidosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def perros_perdido_params
-      params.require(:perros_perdido).permit(:nombre, :foto, :fecha_de_publicacion, :status)
+      params.require(:perros_perdido).permit(:nombre, :foto, :fecha_de_publicacion, :status, :descripcion, :mail)
     end
 end

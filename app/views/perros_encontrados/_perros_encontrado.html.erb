@@ -1,0 +1,34 @@
+<div id="<%= dom_id perros_encontrado %>">
+  
+  <p>
+    <strong>Foto:</strong>
+    <%= image_tag(perros_encontrado.foto, class: 'img-thumbnail', style: 'height: 200px; width: 200px;') %>
+  </p>
+  <p>
+    <strong>Nombre:</strong>
+    <%= perros_encontrado.nombre %>
+  </p>
+
+  <p>
+    <strong>Descripcion:</strong>
+    <%= perros_encontrado.descripcion %>
+  </p>
+
+  <p>
+    <strong>Estado:</strong>
+    <%= perros_encontrado.status %>
+  </p>
+
+  <p>
+    <strong>Fecha de publicacion:</strong>
+    <%= perros_encontrado.fecha_de_publicacion.strftime("%d/%m/%y") %>
+  </p>
+
+ <!--
+  <p>
+    <strong>mail:</strong>
+    <%= perros_encontrado.mail %>
+  </p>
+-->
+
+</div>

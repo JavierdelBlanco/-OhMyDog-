@@ -1,0 +1,79 @@
+<!-- <p style="color: green"><%= notice %></p> -->
+
+<style>
+  /* Botón personalizado */
+  .custom-button {
+    display: inline-block;
+    padding: 10px 20px; /* Ajusta el relleno según sea necesario */
+    border: 2px solid #FFA500; /* Borde naranja */
+    background-color: #FFA500; /* Fondo naranja */
+    color: #000; /* Texto blanco */
+    border-radius: 10px; /* Esquinas redondas */
+    transition: background-color 0.3s; /* Transición de color al pasar el mouse */
+    text-decoration: none; /* Elimina el subrayado en el enlace */
+  }
+
+  /* Cambio de color al pasar el mouse por encima */
+  .custom-button:hover {
+    background-color: #FF8C00; /* Color ligeramente más oscuro */
+  }
+
+  .bordered-item {
+    border: 1px solid black;
+    padding: 10px;
+    margin: 10px 0;
+  }
+
+  .black-line {
+    border-top: 1px solid black;
+   }
+
+   /* Botón personalizado */
+  .custom-button-2 {
+    display: inline-block;
+    padding: 4px 10px; /* Ajusta el relleno según sea necesario */
+    border: 2px solid #FFA500; /* Borde naranja */
+    background-color: #FFA500; /* Fondo naranja */
+    color: #000; /* Texto blanco */
+    border-radius: 10px; /* Esquinas redondas */
+    transition: background-color 0.3s; /* Transición de color al pasar el mouse */
+    text-decoration: none; /* Elimina el subrayado en el enlace */
+  }
+
+  /* Cambio de color al pasar el mouse por encima */
+  .custom-button-2:hover {
+    background-color: #FF8C00; /* Color ligeramente más oscuro */
+  }
+
+</style>
+
+
+<h1>Mis perros encontrados</h1>
+<% if user_signed_in? %>
+  <a href="<%= new_perros_encontrado_path %>" class="custom-button">Publicar un perro encontrado</a>
+  <a href="<%= perros_encontrados_path %>" class="custom-button">Perros encontrados</a>
+<% end %>
+
+<div id="perros_encontrados">
+  <% if @perros_encontrados.empty? %>
+    <p>No hay perros encontrados, te invitamos a que publiques si perdiste un perro para que poder buscarlo.</p>
+  <% else %>
+    <% @perros_encontrados.each do |perros_encontrado| %>
+      <div class="bordered-item">
+        <%= render perros_encontrado %>
+
+        <% if user_signed_in? && current_user.email == perros_encontrado.mail %>
+          <div>
+            <div style="display: inline-block;">
+              <%= button_to "Editar", edit_perros_encontrado_path(perros_encontrado), method: :get, class: "custom-button-2" %>
+            </div>
+            <div style="display: inline-block;">
+              <%= button_to "Eliminar", perros_encontrado, method: :delete, class: "custom-button-2" %>
+            </div>
+          </div>
+        <% end %>
+
+      </div>
+    <% end %>
+  <% end %>
+</div>

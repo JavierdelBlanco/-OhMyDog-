@@ -1,10 +1,10 @@
-<%= form_with(model: perros_perdido) do |form| %>
-  <% if perros_perdido.errors.any? %>
+<%= form_with(model: perros_encontrado) do |form| %>
+  <% if perros_encontrado.errors.any? %>
     <div style="color: red">
-      <h2><%= pluralize(perros_perdido.errors.count, "error/es") %> impidieron la publicacion de este perro.</h2>
+      <h2><%= pluralize(perros_encontrado.errors.count, "error/es") %> impidieron la publicacion de este perro.</h2>
 
       <ul>
-        <% perros_perdido.errors.each do |error| %>
+        <% perros_encontrado.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
       </ul>
@@ -18,7 +18,7 @@
 
   <div>
     <%= form.label :descripcion, style: "display: block" %>
-    <%= form.text_area :descripcion, style: "height: 6em; width: 20em;"%>
+    <%= form.text_field :descripcion %>
   </div>
 
   <div>
@@ -28,26 +28,21 @@
 
   <div style="display: none;">
     <%= form.label :fecha_de_publicacion, style: "display: block" %>
-    <%= form.date_field :fecha_de_publicacion, readonly: true  %>
+    <%= form.date_field :fecha_de_publicacion %>
   </div>
-<!--
-<div>
-<%= form.label :Estado, style: "display: block" %>
-<%= form.text_field :status%>
-</div>
--->
+
   <div style="display: none;">
     <%= form.label :Estado, style: "display: block" %>
-    <%= form.text_field :status, readonly: true  %>
+    <%= form.text_field :status %>
   </div>
 
   <div style="display: none;">
     <%= form.label :mail, style: "display: block" %>
-    <%= form.text_field :mail, readonly: true  %>
+    <%= form.text_field :mail %>
   </div>
 
   <div style="margin-top: 20px;">
-  <% if request.path == '/se-busca/new' %>
+  <% if request.path == '/perros_encontrados/new' %>
     <%= form.submit 'Publicar' %>
   <% else %>
     <%= form.submit 'Guardar cambios' %>

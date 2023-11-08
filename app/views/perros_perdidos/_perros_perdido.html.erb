@@ -11,13 +11,25 @@
   </p>
 
   <p>
+    <strong>descripcion:</strong>
+    <%= perros_perdido.descripcion %>
+  </p>
+
+  <p>
     <strong>Estado:</strong>
     <%= perros_perdido.status %>
   </p>
 
   <p>
     <strong>Fecha de publicacion:</strong>
-    <%= perros_perdido.fecha_de_publicacion %>
+    <%= perros_perdido.fecha_de_publicacion.strftime("%d/%m/%y") %>
   </p>
+
+<!--
+  <p>
+    <strong>mail:</strong>
+    <%= perros_perdido.mail %>
+  </p>
+-->
 
 </div>

@@ -8,9 +8,6 @@
         <li class="nav-item">
           <%= link_to('Inicio', root_path, class:"nav-link") %>
         </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" aria-disabled="true">Turnos</a>
-        </li>
         <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Se busca
@@ -18,7 +15,7 @@
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="#"> <%= link_to('Perros perdidos', perros_perdidos_path, class:"dropdown-item") %></a></li>
                   <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Perros encontrados</a></li>
+                  <li><a class="dropdown-item" href="#"><%= link_to('Perros encontrados', perros_encontrados_path, class:"dropdown-item") %></a></li>
                 </ul>
               </li>
         <li class="nav-item">
