@@ -1,11 +1,67 @@
+<table class="table">
+  <tbody>
+    <tr>
+      <th>Email:</th>
+      <td><%= current_user.email %></td>
+    </tr>
+    <tr>
+      <th>Nombre:</th>
+      <td><%= current_user.nombre %></td>
+    </tr>
+    <tr>
+      <th>Apellido:</th>
+      <td><%= current_user.apellido %></td>
+    </tr>
+    <tr>
+      <th>Dirección:</th>
+      <td><%= current_user.direccion %></td>
+    </tr>
+    <tr>
+      <th>Número:</th>
+      <td><%= current_user.nro %></td>
+    </tr>
+    <tr>
+      <th>Tipo de Usuario:</th>
+      <td><%= current_user.tipo_usuario %></td>
+    </tr>
+  </tbody>
+</table>
 
-  <ul class="list-group">
-    <li class="list-group-item"><%= current_user.email %></li>
-    <li class="list-group-item"><%= current_user.nombre %></li>
-    <li class="list-group-item"><%= current_user.apellido %></li>
-    <li class="list-group-item"><%= current_user.direccion %></li>
-    <li class="list-group-item"><%= current_user.nro %></li>
-    <li class="list-group-item"><%= current_user.tipo_usuario %></li>
-  </ul>
+
+<h2> Tus perros </h2>
+
+<% if current_user.perritos.empty? %>
+  <p class="text-muted">No tienes perros asociados.</p>
+<% else %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nombre del perro</th>
+        <th>Raza</th>
+        <th>Fecha de Nacimiento</th>
+        <% if current_user.tipo_usuario == 'administrador' %>
+          <th>Acciones</th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% current_user.perritos.each do |perrito| %>
+        <tr>
+          <td><%= perrito.nombre %></td>
+          <td><%= perrito.raza %></td>
+          <td><%= "#{perrito.dia}/#{perrito.mes}/#{perrito.año}" %></td>
+          <td>
+            <!-- Botón "Editar" y "Eliminar" para el administrador -->
+            <% if current_user.tipo_usuario == 'administrador' %>
+              <%= link_to "Editar", edit_perrito_path(perrito), class: "btn btn-sm btn-primary" %>
+              <%= link_to "Eliminar", perrito, method: :delete, data: { confirm: "¿Estás seguro de que deseas eliminar a #{perrito.nombre}?" }, class: "btn btn-sm btn-danger" %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
 
 <%= link_to "Editar Perfil", edit_user_path(current_user), class: "btn btn-primary" %>
+<%= link_to "Agregar perro", add_dog_path(current_user), class: "btn btn-primary" %>

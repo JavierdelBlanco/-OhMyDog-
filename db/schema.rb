@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_07_023222) do
+ActiveRecord::Schema[7.1].define(version: 2023_11_07_185154) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -61,6 +61,49 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_07_023222) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "lista_perros", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "perro_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["perro_id"], name: "index_lista_perros_on_perro_id"
+    t.index ["user_id"], name: "index_lista_perros_on_user_id"
+  end
+
+  create_table "perritos", force: :cascade do |t|
+    t.string "nombre"
+    t.integer "dia"
+    t.integer "mes"
+    t.integer "año"
+    t.text "caracteristicas"
+    t.text "condiciones"
+    t.string "raza"
+    t.string "color"
+    t.string "tamaño"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_perritos_on_user_id"
+  end
+
+  create_table "perros", force: :cascade do |t|
+    t.string "nombre"
+    t.integer "dia"
+    t.integer "mes"
+    t.integer "anio"
+    t.string "caracteristicas"
+    t.string "condiciones"
+    t.string "raza"
+    t.string "color"
+    t.string "tamanio"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "libreta"
+    t.text "historia"
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_perros_on_user_id"
+  end
+
   create_table "perros_perdidos", force: :cascade do |t|
     t.string "nombre"
     t.binary "foto"
@@ -91,4 +134,8 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_07_023222) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "lista_perros", "perros"
+  add_foreign_key "lista_perros", "users"
+  add_foreign_key "perritos", "users"
+  add_foreign_key "perros", "users"
 end
