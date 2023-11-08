@@ -1,26 +1,33 @@
 <nav class="navbar navbar-expand-lg" style="background-color: white;">
-  <div class="container-fluid d-flex justify-content-around align-items-end border-bottom border-dark">
-    <a class="navbar-brand" href="#">
+  <div class="container-fluid d-flex align-items-end border-bottom border-dark">
+    <a class="navbar-brand" href="#" style='width: 5%'>
        <%= link_to(image_tag("logotype.png", width: 150, height: 120), root_path, class:"nav-link", style: "margin-right: 0px;") %>
     </a> 
-    <div id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <div id="navbarSupportedContent" style='width: 80%'>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-center">
         <li class="nav-item">
           <%= link_to('Inicio', root_path, class:"nav-link") %>
         </li>
         <li class="nav-item">
           <a class="nav-link disabled" aria-disabled="true">Turnos</a>
         </li>
-        <li class="nav-item">
-          <%= link_to('Se busca', perros_perdidos_path, class:"nav-link") %>
-        </li>
+        <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Se busca
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#"> <%= link_to('Perros perdidos', perros_perdidos_path, class:"dropdown-item") %></a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#">Perros encontrados</a></li>
+                </ul>
+              </li>
         <li class="nav-item">
           <%= link_to('Cuidadores y paseadores', cuidador_paseadors_path, class:"nav-link") %>
         </li>
       </ul>
     </div>
-    <div id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <div id="navbarSupportedContent" style='width: 15%'>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-center">
         <li class="nav-item">
           <% if user_signed_in? %>
               <li class="nav-item dropdown">

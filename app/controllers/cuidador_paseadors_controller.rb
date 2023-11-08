@@ -7,7 +7,6 @@ class CuidadorPaseadorsController < ApplicationController
   end
 
 
-
   # GET /cuidador_paseadors/new
   def new
     @cuidador_paseador = CuidadorPaseador.new
@@ -47,7 +46,7 @@ class CuidadorPaseadorsController < ApplicationController
 
   # DELETE /cuidador_paseadors/1 or /cuidador_paseadors/1.json
   def destroy
-    @cuidador_paseador.destroy!
+    @cuidador_paseador = CuidadorPaseador.find(params[:id]).destroy!
 
     respond_to do |format|
       format.html { redirect_to cuidador_paseadors_url, notice: "Cuidador/paseador was successfully destroyed." }
@@ -65,4 +64,5 @@ class CuidadorPaseadorsController < ApplicationController
     def cuidador_paseador_params
       params.require(:cuidador_paseador).permit(:foto, :apellido, :nombre, :email, :telefono, :horarios, :rol)
     end
+
 end

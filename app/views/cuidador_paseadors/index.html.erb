@@ -1,26 +1,34 @@
 <% if user_signed_in? and current_user.tipo_usuario == 'administrador'  %>
   <%= link_to "Cargar cuidador/paseador", new_cuidador_paseador_path , class: "btn btn-primary", style:'margin-block: 10px;'%>
 <% end %>
-<div class='d-flex'>
-  <div class="form-check", style='margin: 5px;'>
-  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-  <label class="form-check-label" for="flexCheckChecked">
-    Cuidador
-  </label>
-</div>
-<div class="form-check", style='margin: 5px;'>
-  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-  <label class="form-check-label" for="flexCheckChecked">
-    Paseador 
-  </label>
-</div>
-</div>
-<div id="cuidadores_paseadores" class= 'd-flex justify-content-between' >
-  <% @cuidador_paseadors.each do |cuidador_paseador| %>
 
-    <div style='height: 500px;'>
-      <div class="card" style="width: 290px; height: 400px;">
-        <%= image_tag(cuidador_paseador.foto, class:'card-img-top') %>
+
+
+
+<div class='d-flex'>
+  <label class="form-check-label" style='margin: 5px; margin-right: 7px;'> Mostrar </label>
+  <div class="form-check", style='margin: 5px;'>
+    <input class="form-check-input" type="checkbox" value="" id="cuidadores-check">
+    <label class="form-check-label" for="flexCheckChecked">
+      Cuidadores
+    </label>
+  </div>
+  <div class="form-check", style='margin: 5px;'>
+    <input class="form-check-input" type="checkbox" value="" id="paseadores-check">
+    <label class="form-check-label" for="flexCheckChecked">
+      Paseadores 
+    </label>
+  </div>
+</div>
+
+
+
+
+
+  <div id="cuidadores_paseadores" class= 'd-flex'>
+    <% @cuidador_paseadors.each do |cuidador_paseador| %> 
+      <div class="card" style="width: 300px; height: 550px; margin: 10px" data-rol="<%= cuidador_paseador.rol.downcase %>" >
+        <%= image_tag(cuidador_paseador.foto, class:'card-img-top', style:'max-height: 200px; min-height: 200px; max-width: 100%; object-fit: cover;  object-position: top; ') %>
         <div class="card-body">
           <p class="card-text", style=''> <%= cuidador_paseador.nombre %> <%= cuidador_paseador.apellido %> </p>
           <p class="card-text"> 
@@ -30,18 +38,54 @@
             <%= cuidador_paseador.rol%>
           <% end %> 
           </p>
-          <p class="card-text"> Horarios de atencion: <%= cuidador_paseador.horarios %> </p>
+          <p id=ci class="card-text" style="max-height: 150px; overflow: hidden;"> Horarios de atencion: <%= cuidador_paseador.horarios %> </p>
         </div>
-      <div class='d-flex justify-content-center'>  
-        <% if user_signed_in? and current_user.tipo_usuario == 'administrador'  %>
-          <%= link_to "Eliminar", cuidador_paseador, method: :delete ,  class: "btn btn-danger", style:'margin-inline: 1px' %>
-          <%= link_to "Editar", edit_cuidador_paseador_path(cuidador_paseador) , class: "btn btn-secondary", style:'margin-inline: 1px'%>
-        <% else %>
-          <%= link_to "Contactar", cuidador_paseador , class: "btn btn-primary", style:'margin-bottom: 1px'%>
-      <% end %>
-      </div>
-    </div>
-  <% end %>
-</div>
+        <div class='d-flex justify-content-center'>  
+          <% if user_signed_in? and current_user.tipo_usuario == 'administrador'  %>
+            <%= link_to "Editar", edit_cuidador_paseador_path(cuidador_paseador) , class: "btn btn-secondary", style:'margin: 2px'%>
+            <%= link_to "Eliminar", cuidador_paseador, data: { turbo_method: :delete } ,  class: "btn btn-danger", style:'margin: 2px' %>
+          <% else %>
+            <%= link_to "Contactar", cuidador_paseador , class: "btn btn-primary", style:'margin-bottom: 1px'%>
+          <% end %>
+        </div>
+     </div>
+     <% end %>
+  </div> 
+  
 
 <p style="color: green"><%= notice %></p>
+
+
+<script>
+  document.addEventListener("turbo:load", function() {
+    // Obtiene referencias a los checkboxes y a los elementos de la lista
+    const cuidadoresCheckbox = document.getElementById("cuidadores-check");
+    const paseadoresCheckbox = document.getElementById("paseadores-check");
+    const listItems = document.querySelectorAll(".card");
+
+    // Agrega event listeners a los checkboxes
+    cuidadoresCheckbox.addEventListener("change", actualizarLista);
+    paseadoresCheckbox.addEventListener("change", actualizarLista);
+
+    // Función para actualizar la visibilidad de los elementos de la lista
+    function actualizarLista() {
+      const mostrarCuidadores = cuidadoresCheckbox.checked;
+      const mostrarPaseadores = paseadoresCheckbox.checked;
+
+      listItems.forEach(function(item) {
+        const rol = item.getAttribute("data-rol");
+
+          if (
+          (!mostrarCuidadores && !mostrarPaseadores) ||  // Ningún checkbox marcado
+          (rol === "ambos") ||                          // Elemento con rol "ambos"
+          (mostrarCuidadores && rol === "cuidador") ||  // Checkbox de cuidadores marcado y elemento es cuidador
+          (mostrarPaseadores && rol === "paseador")     // Checkbox de paseadores marcado y elemento es paseador
+        ) {
+          item.style.cssText = "width: 300px; height: 550px; margin: 10px;";// Mostrar el elemento
+        } else {
+          item.style.display = "none"; // Ocultar el elemento
+        }
+      });
+    }
+  });
+</script>

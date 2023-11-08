@@ -11,34 +11,45 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :foto, class:'d-flex' %>
-    <%= form.file_field :foto, style:'padding-bottom: 5px;' %>
+  <div class='row g-3', style='width: 500px; margin: 5px; border: 1px solid #000; border-radius: 5px;'>
+  <div class="col">
+    <%= form.label :nombre, style: "display: block;" %>
+    <%= form.text_field :nombre, style:'margin-bottom: 5px;' %>
   </div>
-
-  <div>
+  
+  <div class="col">
     <%= form.label :apellido, style: "display: block" %>
-    <%= form.text_field :apellido, style:'padding-bottom: 5px;' %>
+    <%= form.text_field :apellido, style:'margin-bottom: 5px;' %>
   </div>
 
-  <div>
-    <%= form.label :nombre, style: "display: block" %>
-    <%= form.text_field :nombre, style:'padding-bottom: 5px;' %>
+  <div class="col">
+    <%= form.label :email, style: "display: block" %>
+    <%= form.text_field :email, style:'margin-bottom: 5px;' %>
   </div>
 
-  <div>
+  <div class="col">
     <%= form.label :horarios, style: "display: block" %>
-    <%= form.text_area :horarios, style:'padding-bottom: 5px;' %>
+    <%= form.text_area :horarios, style:'margin-bottom: 5px;'%>
   </div>
 
-  <div  style= 'padding-bottom: 20px;'>
-    <%= form.label :rol, style: "display: block" %>
-    <%= form.select :rol, options_for_select(['Cuidador','Paseador','Ambos'], cuidador_paseador.rol), class: 'form-control ' %>
+  <div class="col">
+    <%= form.label :rol, style: "display: block; margin-bottom: 5px;" %>
+    <%= form.select :rol, options_for_select(['Cuidador','Paseador','Ambos'], cuidador_paseador.rol), class: 'form-select' %>
   </div>
 
-  <% if request.path == '/cuidadores-y-paseadores/new' %>
-    <%= form.submit 'Publicar', class:'btn btn-success' %>
-  <% else %>
-    <%= form.submit 'Guardar cambios', class:'btn btn-success' %>
-  <% end%>
+  <div class="col">
+    <%= form.label :foto, class:'d-flex' %>
+    <%= form.file_field :foto, style:'margin-bottom: 5px; border-radius: 5px;' %>
+  </div>
+
+  <div>
+    <% if request.path == '/cuidadores-y-paseadores/new' %>
+      <%= form.submit 'Publicar', class:'btn btn-success', style:'margin-block: 10px;'%>
+    <% else %>
+      <%= form.submit 'Guardar cambios', class:'btn btn-success', style:'margin-block: 10px;' %>
+    <% end%>
+    <%= link_to "Atras", cuidador_paseadors_path , class: "btn btn-primary", style:'margin-block: 10px;'%>
 <% end %>
+
+  </div>  
+</div>
