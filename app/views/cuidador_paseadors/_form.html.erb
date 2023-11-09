@@ -1,55 +1,156 @@
 <%= form_with(model: cuidador_paseador) do |form| %>
-  <% if cuidador_paseador.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(cuidador_paseador.errors.count, "error") %> prohibited this cuidador_paseador from being saved:</h2>
 
-      <ul>
-        <% cuidador_paseador.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class='row g-3', style='width: 500px; margin: 5px; border: 1px solid #000; border-radius: 5px;'>
-  <div class="col">
+  <div class='row g-3 needs-validation', style='width: 500px; margin: 5px; border: 1px solid #000; border-radius: 5px;'>
+  <div class="col-md-6">
     <%= form.label :nombre, style: "display: block;" %>
-    <%= form.text_field :nombre, style:'margin-bottom: 5px;' %>
+    <div class="input-group has-validation">
+      <%= form.text_field :nombre, class: 'form-control', required: true, id: 'validationName' %>
+      <div id="validationNameFeedback" class="invalid-feedback">
+        <%= cuidador_paseador.errors.full_messages_for(:nombre).join(', ') %>
+      </div>
+    </div>
   </div>
   
-  <div class="col">
-    <%= form.label :apellido, style: "display: block" %>
-    <%= form.text_field :apellido, style:'margin-bottom: 5px;' %>
+  <div class="col-md-6">
+    <%= form.label :apellido, style: "display: block;" %>
+    <div class="input-group has-validation">
+      <%= form.text_field :apellido, class: 'form-control', required: true, id: 'validationLastname' %>
+      <div id="validationLastnameFeedback" class="invalid-feedback">
+        <%= cuidador_paseador.errors.full_messages_for(:apellido).join(', ') %>
+      </div>
+    </div>
   </div>
 
-  <div class="col">
-    <%= form.label :email, style: "display: block" %>
-    <%= form.text_field :email, style:'margin-bottom: 5px;' %>
+<div class="col-md-6">
+  <%= form.label :email, style: "display: block;" %>
+  <div class="input-group has-validation">
+    <%= form.text_field :email, class: 'form-control' + (cuidador_paseador.errors[:email].any? ? ' is-invalid' : ''), required: true, id: 'validationEmail' %>
+    <div id="validationEmailFeedback" class="invalid-feedback" style="<%= cuidador_paseador.errors[:email].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
+      <%= cuidador_paseador.errors.messages_for(:email).join(', ') %>
+    </div>
+  </div>
+</div>
+
+  <div class="col-md-6">
+  <%= form.label :rol, style: "display: block;" %>
+  <div class="input-group has-validation">
+    <%= form.select :rol, options_for_select(['Cuidador', 'Paseador', 'Ambos'], cuidador_paseador.rol), { prompt: 'Choose...' }, class: 'form-select', id: 'validationServer04', required: true, 'aria-describedby': 'validationServer04Feedback' %>
+    <% if cuidador_paseador.errors[:rol].any? %>
+      <div id="validationRolFeedback" class="invalid-feedback">
+        <%= cuidador_paseador.errors.full_messages_for(:rol).join(', ') %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="col-md-6">
+    <%= form.label :zona, style: "display: block;" %>
+    <div class="input-group has-validation">
+      <%= form.text_area :zona, class: 'form-control', required: true, id: 'validationZona' %>
+      <div id="validationZonaFeedback" class="invalid-feedback">
+        <%= cuidador_paseador.errors.full_messages_for(:zona).join(', ') %>
+      </div>
+    </div>
   </div>
 
-  <div class="col">
-    <%= form.label :horarios, style: "display: block" %>
-    <%= form.text_area :horarios, style:'margin-bottom: 5px;'%>
+  
+<div class="col-md-6">
+    <%= form.label 'Dias y horarios', style: "display: block;" %>
+    <div class="input-group has-validation">
+      <%= form.text_area :dias_horarios, class: 'form-control', required: true, id: 'validationDiasHorarios' %>
+      <div id="validationDiasHorariosFeedback" class="invalid-feedback">
+        <%= cuidador_paseador.errors.full_messages_for(:dias_horarios).join(', ') %>
+      </div>
+    </div>
+</div>
+  
+  <div class="col-md-12">
+  <%= form.label :foto, style: "display: block;" %>
+  <div class="input-group has-validation">
+    
+    <%= form.file_field :foto, class: 'form-control' + (cuidador_paseador.errors[:foto].any? ? ' is-invalid' : ''),  required: (request.path == '/cuidadores-y-paseadores/new'), id: 'validationFoto', accept: 'image/*' %>
+    <div id="validationFotoFeedback" class="invalid-feedback" style="<%= cuidador_paseador.errors[:foto].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
+      <%= cuidador_paseador.errors.messages_for(:foto).join(', ') %>
+    </div>
   </div>
-
-  <div class="col">
-    <%= form.label :rol, style: "display: block; margin-bottom: 5px;" %>
-    <%= form.select :rol, options_for_select(['Cuidador','Paseador','Ambos'], cuidador_paseador.rol), class: 'form-select' %>
-  </div>
-
-  <div class="col">
-    <%= form.label :foto, class:'d-flex' %>
-    <%= form.file_field :foto, style:'margin-bottom: 5px; border-radius: 5px;' %>
-  </div>
+  <img id="preview" src="#" style="display: none; margin:2px; max-width: 200px; max-height: 200px;" />
+</div>
 
   <div>
     <% if request.path == '/cuidadores-y-paseadores/new' %>
-      <%= form.submit 'Publicar', class:'btn btn-success', style:'margin-block: 10px;'%>
+      <button type="button" class="btn btn-success" style='margin-block: 10px;' data-bs-toggle="modal" data-bs-target="#ModalPublicar-<%= cuidador_paseador.id %>">
+              Publicar
+      </button>
+
+      <!-- Modal Publicar-->
+        <div class="modal fade" id="ModalPublicar-<%= cuidador_paseador.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar publicacion</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+                <div class="modal-body">
+                  Confirma la publicacion de este paseador/cuidador ?
+                </div>
+              <div class="modal-footer">
+                <%= form.submit 'Confirmar',  class: "btn btn-primary", style:'margin: 2px' %>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
     <% else %>
-      <%= form.submit 'Guardar cambios', class:'btn btn-success', style:'margin-block: 10px;' %>
+      <button type="button" class="btn btn-success" style='margin-block: 10px;' data-bs-toggle="modal" data-bs-target="#ModalEditar-<%= cuidador_paseador.id %>">
+              Guardar cambios
+      </button>
+
+      <!-- Modal Editar-->
+        <div class="modal fade" id="ModalEditar-<%= cuidador_paseador.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar edicion</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+                <div class="modal-body">
+                  Desea guardar los cambios efectuados a este paseador/cuidador ?
+                </div>
+              <div class="modal-footer">
+                <%= form.submit 'Confirmar',  class: "btn btn-primary", style:'margin: 2px' %>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
     <% end%>
     <%= link_to "Atras", cuidador_paseadors_path , class: "btn btn-primary", style:'margin-block: 10px;'%>
+
+
 <% end %>
 
   </div>  
 </div>
+
+<script>
+  document.addEventListener('turbo:load', function() {
+    const fileInput = document.getElementById('validationFoto');
+    const previewImage = document.getElementById('preview');
+
+    fileInput.addEventListener('change', function() {
+      if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+          previewImage.src = e.target.result;
+          previewImage.style.display = 'block';
+        };
+
+        reader.readAsDataURL(fileInput.files[0]);
+      }
+    });
+  });
+</script>
+

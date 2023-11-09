@@ -62,7 +62,7 @@ class CuidadorPaseadorsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def cuidador_paseador_params
-      params.require(:cuidador_paseador).permit(:foto, :apellido, :nombre, :email, :telefono, :horarios, :rol)
+      params.require(:cuidador_paseador).permit(:foto, :apellido, :nombre, :email, :telefono, :zona, :dias_horarios, :rol)
     end
 
 end

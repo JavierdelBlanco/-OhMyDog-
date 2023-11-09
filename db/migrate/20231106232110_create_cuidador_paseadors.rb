@@ -6,7 +6,8 @@ class CreateCuidadorPaseadors < ActiveRecord::Migration[7.1]
       t.string :nombre
       t.string :email
       t.integer :telefono
-      t.text :horarios
+      t.text :zona
+      t.text :dias_horarios
       t.string :rol
 
       t.timestamps

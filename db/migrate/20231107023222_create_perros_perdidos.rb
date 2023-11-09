@@ -5,7 +5,7 @@ class CreatePerrosPerdidos < ActiveRecord::Migration[7.1]
         t.binary "foto"
         t.date "fecha_de_publicacion"
         t.string "status"
-        t.string "email"
+        t.string "mail"
         t.text "descripcion"
         t.timestamps
     end
