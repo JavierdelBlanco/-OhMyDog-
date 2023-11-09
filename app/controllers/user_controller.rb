@@ -2,6 +2,7 @@
 class UserController < ApplicationController
   before_action :authenticate_user! # Asegura que el usuario esté autenticado
 
+
   def agregar_perrito
     @perrito = Perrito.new
   end
@@ -15,6 +16,17 @@ class UserController < ApplicationController
     end
   end
   
+  def index
+    if current_user.tipo_usuario == 'administrador'
+      @users = User.all
+    else
+      redirect_to root_path, alert: 'No tienes permisos para ver esta página.'
+    end
+  end
+
+  def atencion
+    @users = User.all
+  end
 
   def show_perrito
     @usuario = Usuario.find(params[:id])

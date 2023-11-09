@@ -1,4 +1,87 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    #signup-form {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    select,
+    textarea,
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0 20px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    select {
+      height: 40px;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .date-select {
+      display: flex;
+      gap: 5px;
+    }
+
+    .actions {
+      text-align: center;
+    }
+
+    input[type="submit"] {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="edit-form">
+
+
+<h2>Editar usuario </h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
@@ -57,10 +140,15 @@
   </div>
 
   <div class="actions">
-    <%= f.submit "Update" , class: "btn btn-primary"%>
-    <%= link_to "Back", :back, class: "btn btn-sm btn-danger"%>
+    <%= f.submit "Actualizar" , class: "btn btn-primary"%>
+    <%= link_to "Cancelar", :back, class: "btn btn-sm btn-danger"%>
   </div>
 <% end %>
+
+<h3>Cancel my account</h3>
+
+<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
+
 
 
 

@@ -1,11 +1,119 @@
-<h2>Sign up</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    #signup-form {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+  }
+
+    h2 {
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    select,
+    textarea,
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0 20px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    select {
+      height: 40px;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .date-select {
+      display: flex;
+      gap: 5px;
+    }
+
+    .actions {
+      text-align: center;
+    }
+
+    input[type="submit"] {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+  </style>
+
+</script>
+</head>
+<body>
+
+  <div id="signup-form">
+    <h2>Sign Up</h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="field">
     <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email", required: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :nombre %><br />
+    <%= f.text_field :nombre, autofocus: true, autocomplete: "nombre", required: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :apellido %><br />
+    <%= f.text_field :apellido, autofocus: true, autocomplete: "apellido", required: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :direccion %><br />
+    <%= f.text_field :direccion, autofocus: true, autocomplete: "direccion", required: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :nro %><br />
+    <%= f.number_field :nro, autofocus: true, inputmode: "numeric", required: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :tipo_usuario %><br />
+    <%= f.select :tipo_usuario, options_for_select([['Normal', 'normal'], ['Premium', 'premium'], ['Administrador', 'administrador']]), {}, autofocus: true, autocomplete: "tipo_usuario", required: true %>
   </div>
 
   <div class="field">
@@ -13,7 +121,7 @@
     <% if @minimum_password_length %>
     <em>(<%= @minimum_password_length %> characters minimum)</em>
     <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
+    <%= f.password_field :password, autocomplete: "new-password"%>
   </div>
 
   <div class="field">
@@ -21,9 +129,48 @@
     <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
   </div>
 
+  <h2>Perro</h2>
+
+  <%= f.fields_for :perrito do |p| %>
+    <div>
+      <%= p.label :nombre, style: "display: block", required: true %>
+      <%= p.text_field :nombre %>
+    </div>
+    <div>
+      <%= p.label :fecha_de_nacimiento, style: "display: block" %>
+      <div class="date-select">
+        <%= p.select :dia, (1..31) %>
+        <%= p.select :mes, Date::ABBR_MONTHNAMES.compact.each_with_index.map { |month, index| [month, index + 1] } %>
+        <%= p.select :año, (Date.current.year - 20)..(Date.current.year) %>
+      </div>
+    </div>
+    <div>
+      <%= p.label :caracteristicas, style: "display: block", required: true %>
+      <%= p.text_area :caracteristicas %>
+    </div>
+    <div>
+      <%= p.label :condiciones, style: "display: block", required: true %>
+      <%= p.text_area :condiciones %>
+    </div>
+    <div>
+      <%= p.label :raza, style: "display: block", required: true %>
+      <%= p.text_field :raza %>
+    </div>
+    <div>
+      <%= p.label :color, style: "display: block", required: true %>
+      <%= p.text_field :color %>
+    </div>
+    <div>
+      <%= p.label :tamaño, style: "display: block", required: true %>
+      <%= p.text_field :tamaño %>
+    </div>
+  <% end %>
+
   <div class="actions">
-    <%= f.submit "Sign up" %>
+    <%= f.submit "Crear" %>
   </div>
 <% end %>
 
 <%= render "devise/shared/links" %>
+
+
