@@ -3,11 +3,8 @@ class PerrosEncontradosController < ApplicationController
 
   # GET /perros_encontrados or /perros_encontrados.json
   def index
-    if user_signed_in?
-      @perros_encontrados = PerrosEncontrado.where.not(mail: current_user.email).order(created_at: :desc)
-    else
-      @perros_encontrados = PerrosEncontrado.all.order(created_at: :desc)
-    end
+      @perros_encontrados = PerrosEncontrado.where(status: 'Se busca al dueño').order(created_at: :desc)
+      @perros_reunidos = PerrosEncontrado.where(status: 'Reunido').order(created_at: :desc).limit(50)
   end
 
   def index_mis_perros_encontrado
@@ -36,7 +33,7 @@ class PerrosEncontradosController < ApplicationController
 
     respond_to do |format|
       if @perros_encontrado.save
-        format.html { redirect_to index_mis_perros_encontrado_path, notice: "La publicacion ha sido creada correctamente!" }
+        format.html { redirect_to perros_encontrados_path, notice: "La publicacion ha sido creada correctamente!" }
         format.json { render :show, status: :created, location: @perros_encontrado }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -49,7 +46,7 @@ class PerrosEncontradosController < ApplicationController
   def update
     respond_to do |format|
       if @perros_encontrado.update(perros_encontrado_params)
-        format.html { redirect_to index_mis_perros_encontrado_path, notice: "La publicacion ha sido editada correctamente!" }
+        format.html { redirect_to perros_encontrados_path, notice: "La publicacion ha sido editada correctamente!" }
         format.json { render :show, status: :ok, location: @perros_encontrado }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -63,7 +60,7 @@ class PerrosEncontradosController < ApplicationController
     @perros_encontrado.destroy!
 
     respond_to do |format|
-      format.html { redirect_to index_mis_perros_encontrado_path, notice: "La publicacion ha sido eliminada correctamente" }
+      format.html { redirect_to perros_encontrados_path, notice: "La publicacion ha sido eliminada correctamente" }
       format.json { head :no_content }
     end
   end

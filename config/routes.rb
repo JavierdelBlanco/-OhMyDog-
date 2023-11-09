@@ -24,8 +24,7 @@ Rails.application.routes.draw do
   resources :perros_encontrados
   resources :perritos
 
-  get 'index_mis_perros_perdido', to: 'perros_perdidos#index_mis_perros_perdido'
-  get 'index_mis_perros_encontrado', to: 'perros_encontrados#index_mis_perros_encontrado'
+  patch '/perros_perdidos/:id/marcar_como_encontrado', to: 'perros_perdidos#marcar_como_encontrado', as: :marcar_como_encontrado_perros_perdido
 
 
 end

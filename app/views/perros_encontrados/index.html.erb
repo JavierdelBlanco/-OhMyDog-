@@ -49,17 +49,60 @@
 
 <% if user_signed_in? %>
   <a href="<%= new_perros_encontrado_path %>" class="custom-button">Publicar un perro encontrado</a>
-  <a href="<%= index_mis_perros_encontrado_path %>" class="custom-button">Mis perros encontrados</a>
+  <button id="perros_encontrados_boton" class="custom-button">Perros encontrados</button>
+  <button id="mis_perros_encontrados_boton" class="custom-button">Mis perros encontrados</button>
 <% end %>
 
-<div id="perros_encontrados">
-  <% if @perros_encontrados.empty? %>
-    <p>No hay perros encontrados, te invitamos a que publiques si perdiste un perro para que se reencuentre buscarlo.</p>
-  <% else %>
-    <% @perros_encontrados.each do |perros_encontrado| %>
-      <div class="bordered-item">
-        <%= render perros_encontrado %>
-      </div>
-    <% end %>
+<% if @perros_encontrados.empty? %>
+  <p>No hay perros perdidos, te invitamos a que publiques si encontraste un perro para que se reencuentre con su dueño.</p>
+<% else %>
+  <% @perros_encontrados.each do |perros_encontrado| %>
+    <div class="<%= (user_signed_in? && current_user.email == perros_encontrado.mail) ? '' : 'no_mis_perros' %>" style="border: 1px solid black; padding: 10px; margin: 10px 0;">
+      <%= render perros_encontrado %>
+      
+      <% if user_signed_in? && current_user.email == perros_encontrado.mail %>
+        <div>
+          <div style="display: inline-block;">
+            <%= button_to "Editar", edit_perros_encontrado_path(perros_encontrado), method: :get, class: "custom-button-2" %>
+          </div>
+          <div style="display: inline-block;">
+            <%= button_to "Eliminar", perros_encontrado, method: :delete, class: "custom-button-2" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
   <% end %>
-</div>
+<% end %>
+<% @perros_reunidos.each do |perros_reunido| %>
+  <div class="<%= (user_signed_in? && current_user.email == perros_reunido.mail) ? '' : 'no_mis_perros' %>" style="border: 1px solid black; padding: 10px; margin: 10px 0;">
+    <%= render perros_reunido %>
+  </div>
+<% end %>
+
+<script>
+  document.addEventListener('turbo:load', function() {
+    // Ocultar los divs con clase "no_mis_perros" inicialmente
+    var noMisPerrosDivs = document.querySelectorAll('.no_mis_perros');
+    for (var i = 0; i < noMisPerrosDivs.length; i++) {
+      noMisPerrosDivs[i].style.display = 'block';
+    }
+
+    // Agregar función al botón "Perros perdidos"
+    var perrosPerdidosBoton = document.getElementById('perros_encontrados_boton');
+    perrosPerdidosBoton.addEventListener('click', function() {
+      // Mostrar todos los divs con clase "no_mis_perros"
+      for (var i = 0; i < noMisPerrosDivs.length; i++) {
+        noMisPerrosDivs[i].style.display = 'block';
+      }
+    });
+
+    // Agregar función al botón "Mis perros perdidos"
+    var misPerrosPerdidosBoton = document.getElementById('mis_perros_encontrados_boton');
+    misPerrosPerdidosBoton.addEventListener('click', function() {
+      // Ocultar todos los divs con clase "no_mis_perros"
+      for (var i = 0; i < noMisPerrosDivs.length; i++) {
+        noMisPerrosDivs[i].style.display = 'none';
+      }
+    });
+  });
+</script>

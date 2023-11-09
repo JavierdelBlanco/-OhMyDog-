@@ -65,6 +65,9 @@
       <% if user_signed_in? && current_user.email == perros_perdido.mail %>
         <div>
           <div style="display: inline-block;">
+            <%= button_to "Marcar como encontrado", marcar_como_encontrado_perros_perdido_path(perros_perdido), method: :patch, class: "custom-button-2" %>
+          </div>
+          <div style="display: inline-block;">
             <%= button_to "Editar", edit_perros_perdido_path(perros_perdido), method: :get, class: "custom-button-2" %>
           </div>
           <div style="display: inline-block;">
