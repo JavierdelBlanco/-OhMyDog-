@@ -8,10 +8,6 @@ class PerrosPerdidosController < ApplicationController
 
     #@perros_del_user = PerrosPerdido.where(mail: current_user.email).order(created_at: :desc)
   end
-  
-  def index_mis_perros_perdido
-    @perros_perdidos = PerrosPerdido.where(mail: current_user.email).order(created_at: :desc)
-  end
 
   # GET /perros_perdidos/1 or /perros_perdidos/1.json
   def show
@@ -32,7 +28,7 @@ class PerrosPerdidosController < ApplicationController
   # POST /perros_perdidos or /perros_perdidos.json
   def create
     @perros_perdido = PerrosPerdido.new(perros_perdido_params)
-
+    @perros_perdido.action_type = 'create'
     respond_to do |format|
       if @perros_perdido.save
         format.html { redirect_to perros_perdidos_path, notice: "El perro se ha publicado exitosamente!" }
@@ -46,9 +42,10 @@ class PerrosPerdidosController < ApplicationController
 
   # PATCH/PUT /perros_perdidos/1 or /perros_perdidos/1.json
   def update
+    @perros_perdido.action_type = 'update'
     respond_to do |format|
       if @perros_perdido.update(perros_perdido_params)
-        format.html { redirect_to perros_perdidos_path, notice: "La publicacion ha sido editada correctamente!" }
+        format.html { redirect_to perros_perdidos_path, notice: "La publicación ha sido editada correctamente!" }
         format.json { render :show, status: :ok, location: @perros_perdido }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -67,6 +64,18 @@ class PerrosPerdidosController < ApplicationController
     end
   end
 
+  def marcar_como_encontrado
+
+    @perros_perdido = PerrosPerdido.find(params[:id])
+    if @perros_perdido.update(status: 'Encontrado')
+      redirect_to perros_perdidos_path, notice: 'El perro ha sido marcado como encontrado.'
+    else
+      redirect_to perros_perdidos_path, alert: 'No se pudo marcar el perro como encontrado.'
+    end
+
+  end
+  
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_perros_perdido
@@ -77,4 +86,7 @@ class PerrosPerdidosController < ApplicationController
     def perros_perdido_params
       params.require(:perros_perdido).permit(:nombre, :foto, :fecha_de_publicacion, :status, :descripcion, :mail)
     end
+    
+    
+
 end
