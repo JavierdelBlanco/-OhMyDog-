@@ -1,20 +1,20 @@
 <%= form_with(model: cuidador_paseador) do |form| %>
 
   <div class='row g-3 needs-validation', style='width: 500px; margin: 5px; border: 1px solid #000; border-radius: 5px;'>
-  <div class="col-md-6">
-    <%= form.label :nombre, style: "display: block;" %>
-    <div class="input-group has-validation">
-      <%= form.text_field :nombre, class: 'form-control', required: true, id: 'validationName' %>
-      <div id="validationNameFeedback" class="invalid-feedback">
-        <%= cuidador_paseador.errors.full_messages_for(:nombre).join(', ') %>
+    <div class="col-md-6">
+      <%= form.label :nombre, style: "display: block;" %>
+      <div class="input-group has-validation">
+        <%= form.text_field :nombre, class: 'form-control', required: true, id: 'validationName' %>
+        <div id="validationNameFeedback" class="invalid-feedback">
+          <%= cuidador_paseador.errors.full_messages_for(:nombre).join(', ') %>
+        </div>
       </div>
     </div>
-  </div>
   
-  <div class="col-md-6">
-    <%= form.label :apellido, style: "display: block;" %>
-    <div class="input-group has-validation">
-      <%= form.text_field :apellido, class: 'form-control', required: true, id: 'validationLastname' %>
+    <div class="col-md-6">
+      <%= form.label :apellido, style: "display: block;" %>
+      <div class="input-group has-validation">
+        <%= form.text_field :apellido, class: 'form-control', required: true, id: 'validationLastname' %>
       <div id="validationLastnameFeedback" class="invalid-feedback">
         <%= cuidador_paseador.errors.full_messages_for(:apellido).join(', ') %>
       </div>
@@ -34,7 +34,7 @@
   <div class="col-md-6">
   <%= form.label :rol, style: "display: block;" %>
   <div class="input-group has-validation">
-    <%= form.select :rol, options_for_select(['Cuidador', 'Paseador', 'Ambos'], cuidador_paseador.rol), { prompt: 'Choose...' }, class: 'form-select', id: 'validationServer04', required: true, 'aria-describedby': 'validationServer04Feedback' %>
+    <%= form.select :rol, options_for_select(['Cuidador', 'Paseador', 'Ambos'], cuidador_paseador.rol), { prompt: 'Seleccione...' }, class: 'form-select', id: 'validationServer04', required: true, 'aria-describedby': 'validationServer04Feedback' %>
     <% if cuidador_paseador.errors[:rol].any? %>
       <div id="validationRolFeedback" class="invalid-feedback">
         <%= cuidador_paseador.errors.full_messages_for(:rol).join(', ') %>
@@ -127,12 +127,10 @@
 
     <% end%>
     <%= link_to "Atras", cuidador_paseadors_path , class: "btn btn-primary", style:'margin-block: 10px;'%>
-
-
-<% end %>
-
   </div>  
 </div>
+
+<% end %>
 
 <script>
   document.addEventListener('turbo:load', function() {
