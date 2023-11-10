@@ -49,7 +49,7 @@ class CuidadorPaseadorsController < ApplicationController
     @cuidador_paseador = CuidadorPaseador.find(params[:id]).destroy!
 
     respond_to do |format|
-      format.html { redirect_to cuidador_paseadors_url, notice: "Cuidador/paseador was successfully destroyed." }
+      format.html { redirect_to cuidador_paseadors_url, flash: { notice: "Cuidador/paseador was successfully updated." } }
       format.json { head :no_content }
     end
   end
