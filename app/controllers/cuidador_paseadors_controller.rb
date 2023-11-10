@@ -22,7 +22,7 @@ class CuidadorPaseadorsController < ApplicationController
 
     respond_to do |format|
       if @cuidador_paseador.save
-        format.html { redirect_to cuidador_paseadors_url, notice: "Cuidador paseador was successfully created." }
+        format.html { redirect_to cuidador_paseadors_url, notice: "El cuidador/paseador fue cargado correctamente." }
         format.json { render :show, status: :created, location: @cuidador_paseador }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -35,7 +35,7 @@ class CuidadorPaseadorsController < ApplicationController
   def update
     respond_to do |format|
       if @cuidador_paseador.update(cuidador_paseador_params)
-        format.html { redirect_to cuidador_paseadors_url, notice: "Cuidador/paseador was successfully updated." }
+        format.html { redirect_to cuidador_paseadors_url, notice: "El cuidador/paseador fue editado correctamente." }
         format.json { render :show, status: :ok, location: @cuidador_paseador }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -49,7 +49,7 @@ class CuidadorPaseadorsController < ApplicationController
     @cuidador_paseador = CuidadorPaseador.find(params[:id]).destroy!
 
     respond_to do |format|
-      format.html { redirect_to cuidador_paseadors_url, flash: { notice: "Cuidador/paseador was successfully updated." } }
+      format.html { redirect_to cuidador_paseadors_url, flash: { notice: "El cuidador/paseador fue eliminardo correctamente." } }
       format.json { head :no_content }
     end
   end
