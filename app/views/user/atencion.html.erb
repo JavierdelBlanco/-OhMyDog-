@@ -1,0 +1,64 @@
+
+<% if current_user.tipo_usuario == 'administrador' %>
+<h1>Atencion al cliente</h1>
+<h2>Lista de usuarios</h2>
+
+<%= form_tag(atencion_users_path, method: :get, class: "search-form") do %>
+  <label for="search_nombre">Buscar por nombre:</label>
+  <%= text_field_tag :search_nombre, params[:search_nombre] %>
+
+  <label for="search_apellido">Buscar por apellido:</label>
+  <%= text_field_tag :search_apellido, params[:search_apellido] %>
+
+  <%= submit_tag "Buscar" %>
+<% end %>
+
+
+<style>
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+  }
+
+  .styled-table th, .styled-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+  }
+
+  .styled-table th {
+    background-color: #f2f2f2;
+  }
+
+  .styled-table tbody tr:hover {
+    background-color: #f5f5f5;
+  }
+</style>
+
+<% if @users.any? %>
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Email</th>
+        <!-- Agrega más columnas según tus necesidades -->
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.nombre %></td>
+          <td><%= user.apellido %></td>
+          <td><%= user.email %></td>
+          <!-- Agrega más celdas según tus necesidades -->
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No hay usuarios en la base de datos.</p>
+<% end %>
+<% end %>
