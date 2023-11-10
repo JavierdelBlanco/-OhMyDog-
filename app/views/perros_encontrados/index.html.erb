@@ -57,19 +57,27 @@
   <p>No hay perros perdidos, te invitamos a que publiques si encontraste un perro para que se reencuentre con su dueño.</p>
 <% else %>
   <% @perros_encontrados.each do |perros_encontrado| %>
+
     <div class="<%= (user_signed_in? && current_user.email == perros_encontrado.mail) ? '' : 'no_mis_perros' %>" style="border: 1px solid black; padding: 10px; margin: 10px 0;">
       <%= render perros_encontrado %>
-      
-      <% if user_signed_in? && current_user.email == perros_encontrado.mail %>
-        <div>
+      <div>
+        <% if !user_signed_in? || (user_signed_in? && current_user.email != perros_encontrado.mail) %>
+          <div style="display: inline-block;">
+            <%= button_to "Contactar (Editar)", edit_perros_encontrado_path(perros_encontrado), method: :get, class: "custom-button-2" %>
+          </div>
+        <% end %>
+        <% if user_signed_in? && current_user.email == perros_encontrado.mail %>
+          <div style="display: inline-block;">
+            <%= button_to "Marcar como dueño encontrado", marcar_como_dueno_encontrado_perros_encontrado_path(perros_encontrado), method: :patch, class: "custom-button-2" %>
+          </div>
           <div style="display: inline-block;">
             <%= button_to "Editar", edit_perros_encontrado_path(perros_encontrado), method: :get, class: "custom-button-2" %>
           </div>
           <div style="display: inline-block;">
             <%= button_to "Eliminar", perros_encontrado, method: :delete, class: "custom-button-2" %>
           </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
   <% end %>
 <% end %>

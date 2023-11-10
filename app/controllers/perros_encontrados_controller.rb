@@ -4,7 +4,7 @@ class PerrosEncontradosController < ApplicationController
   # GET /perros_encontrados or /perros_encontrados.json
   def index
       @perros_encontrados = PerrosEncontrado.where(status: 'Se busca al dueño').order(created_at: :desc)
-      @perros_reunidos = PerrosEncontrado.where(status: 'Reunido').order(created_at: :desc).limit(50)
+      @perros_reunidos = PerrosEncontrado.where(status: 'Dueño encontrado').order(created_at: :desc).limit(50)
   end
 
   def index_mis_perros_encontrado
@@ -63,6 +63,17 @@ class PerrosEncontradosController < ApplicationController
       format.html { redirect_to perros_encontrados_path, notice: "La publicacion ha sido eliminada correctamente" }
       format.json { head :no_content }
     end
+  end
+
+  def marcar_como_dueno_encontrado
+
+    @perros_encontrado = PerrosEncontrado.find(params[:id])
+    if @perros_encontrado.update(status: 'Dueño encontrado')
+      redirect_to perros_encontrados_path, notice: 'El perro ha sido marcado como dueño encontrado.'
+    else
+      redirect_to perros_encontrados_path, alert: 'No se pudo marcar el perro como dueño encontrado.'
+    end
+
   end
 
   private

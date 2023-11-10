@@ -59,11 +59,16 @@
   <p>No hay perros perdidos, te invitamos a que publiques si encontraste un perro para que se reencuentre con su dueño.</p>
 <% else %>
   <% @perros_perdidos.each do |perros_perdido| %>
+    
     <div class="<%= (user_signed_in? && current_user.email == perros_perdido.mail) ? '' : 'no_mis_perros' %>" style="border: 1px solid black; padding: 10px; margin: 10px 0;">
       <%= render perros_perdido %>
-      
-      <% if user_signed_in? && current_user.email == perros_perdido.mail %>
-        <div>
+      <div>
+        <% if !user_signed_in? || (user_signed_in? && current_user.email != perros_perdido.mail) %>
+          <div style="display: inline-block;">
+            <%= button_to "Contactar (Editar)", edit_perros_perdido_path(perros_perdido), method: :get, class: "custom-button-2" %>
+          </div>
+        <% end %>
+        <% if user_signed_in? && current_user.email == perros_perdido.mail %>
           <div style="display: inline-block;">
             <%= button_to "Marcar como encontrado", marcar_como_encontrado_perros_perdido_path(perros_perdido), method: :patch, class: "custom-button-2" %>
           </div>
@@ -73,14 +78,17 @@
           <div style="display: inline-block;">
             <%= button_to "Eliminar", perros_perdido, method: :delete, class: "custom-button-2" %>
           </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
   <% end %>
 <% end %>
 <% @perros_encontrados.each do |perros_encontrado| %>
   <div class="<%= (user_signed_in? && current_user.email == perros_encontrado.mail) ? '' : 'no_mis_perros' %>" style="border: 1px solid black; padding: 10px; margin: 10px 0;">
     <%= render perros_encontrado %>
+    <div style="display: inline-block;">
+     <%= button_to "Eliminar", perros_encontrado, method: :delete, class: "custom-button-2" %>
+    </div>
   </div>
 <% end %>
 
