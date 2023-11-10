@@ -25,6 +25,7 @@ class CuidadorPaseadorsController < ApplicationController
         format.html { redirect_to cuidador_paseadors_url, notice: "El cuidador/paseador fue cargado correctamente." }
         format.json { render :show, status: :created, location: @cuidador_paseador }
       else
+        flash[:notice] = "Falló la carga del cuidador/paseador."
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @cuidador_paseador.errors, status: :unprocessable_entity }
       end
@@ -38,6 +39,7 @@ class CuidadorPaseadorsController < ApplicationController
         format.html { redirect_to cuidador_paseadors_url, notice: "El cuidador/paseador fue editado correctamente." }
         format.json { render :show, status: :ok, location: @cuidador_paseador }
       else
+        flash[:notice] = "Falló la edicion del cuidador/paseador."
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @cuidador_paseador.errors, status: :unprocessable_entity }
       end
