@@ -1,3 +1,4 @@
+
 <style>
   /* Botón personalizado */
   .custom-button {
@@ -56,39 +57,67 @@
 <% if @perros_perdidos.empty? %>
   <p>No hay perros perdidos, te invitamos a que publiques si encontraste un perro para que se reencuentre con su dueño.</p>
 <% else %>
-  <% @perros_perdidos.each do |perros_perdido| %>
+  <div class= 'd-flex'>
+    <% @perros_perdidos.each do |perros_perdido| %>
     
-    <div class="<%= (user_signed_in? && current_user.email == perros_perdido.mail) ? '' : 'no_mis_perros' %>" style="border: 1px solid black; padding: 10px; margin: 10px 0;">
-      <%= render perros_perdido %>
-      <div>
-        <% if !user_signed_in? || (user_signed_in? && current_user.email != perros_perdido.mail) %>
-          <div style="display: inline-block;">
-            <%= button_to "Contactar (Editar)", edit_perros_perdido_path(perros_perdido), method: :get, class: "custom-button-2" %>
-          </div>
-        <% end %>
-        <% if user_signed_in? && current_user.email == perros_perdido.mail %>
-          <div style="display: inline-block;">
-            <%= button_to "Marcar como encontrado", marcar_como_encontrado_perros_perdido_path(perros_perdido), method: :patch, class: "custom-button-2" %>
-          </div>
-          <div style="display: inline-block;">
-            <%= button_to "Editar", edit_perros_perdido_path(perros_perdido), method: :get, class: "custom-button-2" %>
-          </div>
-          <div style="display: inline-block;">
-            <%= button_to "Eliminar", perros_perdido, method: :delete, class: "custom-button-2" %>
-          </div>
-        <% end %>
+      <div class="<%= (user_signed_in? && current_user.email == perros_perdido.mail) ? '' : 'no_mis_perros' %> card" style="max-width: 370px; max-height: 500px; min-width: 370px; min-height: 500px; margin: 10px">
+      
+        <%= image_tag(perros_perdido.foto, class:'card-img-top', style:'max-height: 200px; min-height: 200px; max-width: 100%; object-fit: cover;  object-position: top; ') %>
+        <div class="card-body">
+          <p class="card-text", style=''> <strong> Nombre: </strong> <%= perros_perdido.nombre %> </p>
+          <p id=ci class="card-text" style="max-height: 100px; overflow: hidden;"> <strong> Descripcion: </strong> <%= perros_perdido.descripcion %> </p>
+          <p class="card-text"> <strong> Estado: </strong><%= perros_perdido.status %> </p>
+          <p class="card-text"> <strong> Fecha de publicacion: </strong><%= perros_perdido.fecha_de_publicacion.strftime("%d/%m/%y") %> </p>
+        </div>
+
+        <div class='d-flex justify-content-center'>
+          <% if !user_signed_in? || (user_signed_in? && current_user.email != perros_perdido.mail) %>
+            <%= link_to "Contactar (Editar)", edit_perros_perdido_path(perros_perdido) , class: "btn btn-primary", style:'margin: 2px' %>
+          <% else %>
+            <% if user_signed_in? && current_user.email == perros_perdido.mail %>
+              <%= button_to "Marcar como encontrado", marcar_como_encontrado_perros_perdido_path(perros_perdido), method: :patch, class: "btn btn-primary", style: 'margin: 2px;' %>
+              <%= link_to "Editar", edit_perros_perdido_path(perros_perdido) , class: "btn btn-secondary", style:'margin: 2px' %>
+              <button type="button" class="btn btn-danger" style='margin: 2px' data-bs-toggle="modal" data-bs-target="#ModalEliminar-<%= perros_perdido.id %>">Eliminar</button>
+
+              <!-- Modal Eliminar-->
+                <div class="modal fade" id="ModalEliminar-<%= perros_perdido.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Publicacion</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        Desea eliminar la publicacion de este perro perdido de forma permanente ?
+                      </div>
+                      <div class="modal-footer">
+                        <%= link_to "Confirmar", perros_perdido, data: { turbo_method: :delete } ,  class: "btn btn-primary", style:'margin: 2px' %>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+            <% end %>
+          <% end %>
+        </div>
       </div>
-    </div>
-  <% end %>
+
+    <% end %>
+  </div>
 <% end %>
+
+<!--
 <% @perros_encontrados.each do |perros_encontrado| %>
-  <div class="<%= (user_signed_in? && current_user.email == perros_encontrado.mail) ? '' : 'no_mis_perros' %>" style="border: 1px solid black; padding: 10px; margin: 10px 0;">
+  <div class="<%= (user_signed_in? && current_user.email == perros_encontrado.mail) ? '' : 'no_mis_perros' %> card" style="width: 300px; height: 500px; margin: 10px">
+   
     <%= render perros_encontrado %>
     <div style="display: inline-block;">
      <%= button_to "Eliminar", perros_encontrado, method: :delete, class: "custom-button-2" %>
     </div>
   </div>
 <% end %>
+-->
 
 <script>
   document.addEventListener('turbo:load', function() {
