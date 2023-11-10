@@ -8,6 +8,11 @@
         <li class="nav-item">
           <%= link_to('Inicio', root_path, class:"nav-link") %>
         </li>
+        <% if user_signed_in? and current_user.tipo_usuario == 'administrador' %>
+          <li class="nav-item">
+            <%= link_to('Atención al cliente', atencion_cliente_path, class:"nav-link") %>
+          </li>
+        <% end %>
         <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Se busca
@@ -20,9 +25,6 @@
               </li>
         <li class="nav-item">
           <%= link_to('Cuidadores y paseadores', cuidador_paseadors_path, class:"nav-link") %>
-        </li>
-        <li class="nav-item">
-          <%= link_to('Atención al cliente', atencion_cliente_path, class:"nav-link") %>
         </li>
       </ul>
     </div>
