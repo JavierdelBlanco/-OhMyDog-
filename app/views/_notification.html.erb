@@ -1,0 +1,34 @@
+<div class='animacion-alerta'>
+  <% if notice.present? %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% end %>
+
+  <% if alert.present? %>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <%= alert %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% end %>
+</div>
+
+<style>
+  .animacion-alerta {
+    position: fixed;
+    top: 132px;
+    left: 0;
+    z-index: 1000;
+    animation: desplazamiento 0.5s ease-in-out forwards; /* Agregado "forwards" para conservar el estado final */
+  }
+
+  @keyframes desplazamiento {
+    from {
+      left: -100%; /* La posición inicial (fuera de la pantalla a la izquierda) */
+    }
+    to {
+      left: 40%; /* La posición final */
+    }
+  }
+</style>

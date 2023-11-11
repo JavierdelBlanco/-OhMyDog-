@@ -6,7 +6,6 @@ class CuidadorPaseadorsController < ApplicationController
     @cuidador_paseadors = CuidadorPaseador.all
   end
 
-
   # GET /cuidador_paseadors/new
   def new
     @cuidador_paseador = CuidadorPaseador.new
@@ -22,7 +21,8 @@ class CuidadorPaseadorsController < ApplicationController
 
     respond_to do |format|
       if @cuidador_paseador.save
-        format.html { redirect_to cuidador_paseadors_url, notice: "El cuidador/paseador fue cargado correctamente." }
+        format.html { redirect_to cuidador_paseadors_url}
+        flash[:notice] = "El cuidador/paseador fue cargado correctamente."
         format.json { render :show, status: :created, location: @cuidador_paseador }
       else
         flash[:alert] = "Falló la carga del cuidador/paseador."
@@ -55,6 +55,18 @@ class CuidadorPaseadorsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def enviar_correo
+    id = params[:id]
+    @cuidador_paseador = CuidadorPaseador.find(id)
+    @current_user = current_user
+    CuidadorPaseadorsMailer.enviar_correo(@cuidador_paseador,@current_user).deliver_later
+    respond_to do |format|
+      format.html { redirect_to root_path, flash: { notice: "El correo fue enviado con exito a #{@cuidador_paseador.nombre}." } }
+      format.json { head :no_content }
+    end
+  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

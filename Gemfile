@@ -71,4 +71,3 @@ group :test do
 end
 
 gem 'devise'
-
