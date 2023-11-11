@@ -65,14 +65,43 @@
 
 
           <% else %>
-            <button type="button"  class = "btn btn-primary" style = 'margin-bottom: 3px' data-bs-toggle="modal" data-bs-target="#ModalContactar-<%= cuidador_paseador.id %>">
-              Contactar
+            <button type="button"  class = "btn btn-primary" style = 'margin-bottom: 3px' data-bs-toggle="modal" data-bs-target="<%= (user_signed_in?) ? "#ModalPedirServiciosRegistrado-#{cuidador_paseador.id}" : "#ModalPedirServiciosNoRegistrado-#{cuidador_paseador.id}" %>" >
+              Pedir Servicios
             </button>
+
+            
           <% end %>
         </div>
 
-        <!-- Modal Eliminar-->
-              <div class="modal fade" id="ModalContactar-<%= cuidador_paseador.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- Modal Pedir servicos-->
+              <div class="modal fade" id="ModalPedirServiciosRegistrado-<%= cuidador_paseador.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Enviar datos de contacto</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p>Se le enviara un email a <%= cuidador_paseador.nombre %> para informarle sobre tu interés en contratar sus servicios.</p>
+                      <p>Este incluira la siguiente informacion de su cuenta:</p>
+                      <ul>
+                        <li>Nombre</li>
+                        <li>Apellido</li>
+                        <li>Direccion</li>
+                        <li>Direccion de correo electronico</li>
+                      </ul>
+                      <p>Presione Confirmar para continuar.</p>     
+                    </div>
+                    <div class="modal-footer">
+                      <%= link_to "Confirmar", enviar_correo_path(id: cuidador_paseador.id), data: { turbo_method: :post },  class: "btn btn-primary", style:'margin: 2px' %>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        
+         <!-- Modal Pedir servicos-->
+              <div class="modal fade" id="ModalPedirServiciosNoRegistrado-<%= cuidador_paseador.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -89,6 +118,7 @@
                   </div>
                 </div>
               </div>
+        
 
 
 
