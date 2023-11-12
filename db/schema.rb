@@ -73,6 +73,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_08_131607) do
     t.string "color"
     t.string "tamaño"
     t.integer "user_id", null: false
+    t.boolean "fallecido"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_perritos_on_user_id"

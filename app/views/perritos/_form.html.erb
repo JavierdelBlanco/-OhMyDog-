@@ -50,6 +50,16 @@
   </div>
 
   <div>
-    <%= form.submit %>
+    <%= form.label :fallecido, style: "display: block" %>
+    <%= form.check_box :fallecido %>
   </div>
+
+  
+    <div>
+    <% if request.path == "/perritos/#{params[:id]}/edit" %>
+        <%= form.submit 'Actualizar perro'%>
+      <% else %> 
+            <%= form.submit 'Agregar perro'%>
+      <% end %>
+    </div>
 <% end %>

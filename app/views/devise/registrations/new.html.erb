@@ -116,25 +116,13 @@
     <%= f.select :tipo_usuario, options_for_select([['Normal', 'normal'], ['Premium', 'premium'], ['Administrador', 'administrador']]), {}, autofocus: true, autocomplete: "tipo_usuario", required: true %>
   </div>
 
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password"%>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
 
   <h2>Perro</h2>
 
   <%= f.fields_for :perrito do |p| %>
     <div>
-      <%= p.label :nombre, style: "display: block", required: true %>
-      <%= p.text_field :nombre %>
+      <%= p.label :nombre, style: "display: block" %>
+      <%= p.text_field :nombre, required: true %>
     </div>
     <div>
       <%= p.label :fecha_de_nacimiento, style: "display: block" %>
@@ -145,26 +133,27 @@
       </div>
     </div>
     <div>
-      <%= p.label :caracteristicas, style: "display: block", required: true %>
-      <%= p.text_area :caracteristicas %>
+      <%= p.label :caracteristicas, style: "display: block" %>
+      <%= p.text_area :caracteristicas, required: true %>
     </div>
     <div>
-      <%= p.label :condiciones, style: "display: block", required: true %>
-      <%= p.text_area :condiciones %>
+      <%= p.label :condiciones, style: "display: block" %>
+      <%= p.text_area :condiciones, required: true %>
     </div>
     <div>
-      <%= p.label :raza, style: "display: block", required: true %>
-      <%= p.text_field :raza %>
+      <%= p.label :raza, style: "display: block" %>
+      <%= p.text_field :raza, required: true %>
     </div>
     <div>
-      <%= p.label :color, style: "display: block", required: true %>
-      <%= p.text_field :color %>
+      <%= p.label :color, style: "display: block" %>
+      <%= p.text_field :color, required: true %>
     </div>
     <div>
-      <%= p.label :tamaño, style: "display: block", required: true %>
-      <%= p.text_field :tamaño %>
+      <%= p.label :tamaño, style: "display: block" %>
+      <%= p.text_field :tamaño, required: true %>
     </div>
   <% end %>
+
 
   <div class="actions">
     <%= f.submit "Crear" %>
@@ -172,5 +161,6 @@
 <% end %>
 
 <%= render "devise/shared/links" %>
+
 
 

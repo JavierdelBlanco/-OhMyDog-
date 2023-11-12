@@ -32,8 +32,19 @@
 
 <h2> Tus perros </h2>
 
+<div class='d-flex'>
+  <label class="form-check-label" style='margin: 5px; margin-right: 7px;'>  </label>
+  <div class="form-check", style='margin: 5px;'>
+    <input class="form-check-input" type="checkbox" value="" id="fallecidos-check">
+    <label class="form-check-label" for="flexCheckChecked">
+      Mostrar perros fallecidos
+    </label>
+  </div>
+</div>
+
+
 <% if current_user.perritos.empty? %>
-  <p class="text-muted">No tienes perros.</p>
+  <p class="text-muted">No cuentas con perros actualmente, ¡Visita la sección de perros en adopción y encontra el compañero que estas buscando!.</p>
 <% else %>
   <table class="table table-striped">
     <thead>
@@ -46,9 +57,12 @@
         <% end %>
       </tr>
     </thead>
+
+    
+
     <tbody>
-      <% current_user.perritos.each do |perrito| %>
-        <tr>
+    <% current_user.perritos.each do |perrito| %>
+      <tr class="<%= (perrito.fallecido) ? 'filasfallecidos' : '' %>" data-rol="<%= perrito.fallecido %>">
           <td><%= perrito.nombre %></td>
           <td><%= perrito.raza %></td>
           <td><%= "#{perrito.dia}/#{perrito.mes}/#{perrito.año}" %></td>
@@ -60,8 +74,8 @@
             <% end %>
           </td>
         </tr>
-      <% end %>
-    </tbody>
+    <% end %>
+  </tbody>
   </table>
 <% end %>
 
@@ -69,3 +83,34 @@
 <%= link_to "Agregar perro", add_dog_path(current_user), class: "btn btn-primary" %>
 
 
+
+<script>
+  document.addEventListener("turbo:load", function() {
+    // Obtiene referencias a los checkboxes y a los elementos de la lista
+    const fallecidosCheckbox = document.getElementById("fallecidos-check");
+    const listItems = document.querySelectorAll(".filasfallecidos");
+    for (var i = 0; i < listItems.length; i++) {
+      listItems[i].style.display = 'none';
+    }
+
+    // Agrega event listeners a los checkboxes
+
+    fallecidosCheckbox.addEventListener("change", actualizarLista);
+
+    // Función para actualizar la visibilidad de los elementos de la lista
+    function actualizarLista() {
+      const mostrarFallecidos = fallecidosCheckbox.checked;
+
+      listItems.forEach(function(item) {
+        const muerto = item.getAttribute("data-rol");
+
+          if ((!mostrarFallecidos) &&  (muerto)// Checkbox de mostrar fallecidos marcado y el perro esta muerto
+        ) {
+            item.style.display = "none"; // Ocultar el elemento
+        } else {
+          item.style.display = ""; // Mostrar el elemento sin modificar su formato
+        }
+      });
+    }
+  });
+</script>

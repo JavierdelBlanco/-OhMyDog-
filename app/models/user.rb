@@ -4,12 +4,18 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  def password_required?
+    false
+  end
+
+  def password_confirmation_required?
+    false
+  end
+
   validates :apellido, presence: true
   validates :direccion, presence: true
   validates :nro, presence: true
   validates :tipo_usuario, presence: true
-  validates :password, presence: true
-  validates :password_confirmation, presence: true
 
   has_many :perritos, dependent: :destroy
 

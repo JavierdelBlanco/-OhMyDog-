@@ -21,11 +21,27 @@ class PerritosController < ApplicationController
 
   # POST /perritos or /perritos.json
   def create
-    @perrito = current_user.perritos.build(perrito_params)
+    @user = User.find(params[:id])
+    @perrito = @user.perritos.build(perrito_params)
 
     respond_to do |format|
       if @perrito.save
-        format.html { redirect_to perrito_url(@perrito), notice: "Se creó un perro exitosamente." }
+        format.html { redirect_to user_path(@user), notice: "Se creó un perro exitosamente." }
+        format.json { render :show, status: :created, location: @perrito }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @perrito.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def agregar_perrito_user
+    @user = User.find(params[:id])
+    @perrito = @user.perritos.build(perrito_params)
+
+    respond_to do |format|
+      if @perrito.save
+        format.html { redirect_to user_path(@user), notice: "Se creó un perro exitosamente." }
         format.json { render :show, status: :created, location: @perrito }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +54,7 @@ class PerritosController < ApplicationController
   def update
     respond_to do |format|
       if @perrito.update(perrito_params)
-        format.html { redirect_to perrito_url(@perrito), notice: "Se actualizó el perro exitosamente." }
+        format.html { redirect_to perfil_path, notice: "Se actualizó el perro exitosamente." }
         format.json { render :show, status: :ok, location: @perrito }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -65,6 +81,6 @@ class PerritosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def perrito_params
-      params.require(:perrito).permit(:nombre, :dia, :mes, :año, :caracteristicas, :condiciones, :raza, :color, :tamaño, :user_id)
+      params.require(:perrito).permit(:nombre, :dia, :mes, :año, :caracteristicas, :condiciones, :raza, :color, :tamaño, :user_id, :fallecido)
     end
 end

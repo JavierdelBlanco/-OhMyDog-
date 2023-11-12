@@ -1,0 +1,106 @@
+<% if current_user.tipo_usuario == 'administrador' %>
+<h1>Atencion al cliente</h1>
+<h2>Lista de usuarios</h2>
+
+
+
+<style>
+/* Estilos para la tabla */
+#datos {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+}
+
+#datos th, #datos td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#datos th {
+    background-color: #333;
+    color: #fff;
+}
+
+#datos tr:nth-child(even) {
+    background: #f2f2f2;
+}
+
+/* Estilos para la entrada de búsqueda */
+#searchTerm {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Estilos para las celdas resaltadas en la búsqueda */
+.matched {
+    background-color: #ffcc99;
+    font-weight: bold;
+    color: #333;
+}
+</style>
+</head>
+
+<form>
+  Buscar: <input id="searchTerm" type="text" onkeyup="doSearch()" />
+</form>
+<script>
+  function doSearch() {
+    var tableReg = document.getElementById('datos');
+    var searchInput = document.getElementById('searchTerm').value.toLowerCase();
+    var cellsOfRow = "";
+
+    for (var i = 1; i < tableReg.rows.length; i++) {
+      cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+      var found = false;
+
+      var nameAndLastName = (cellsOfRow[0].innerHTML + ' ' + cellsOfRow[1].innerHTML).toLowerCase();
+
+      if (nameAndLastName.indexOf(searchInput) > -1) {
+        found = true;
+      }
+
+      if (found) {
+        tableReg.rows[i].style.display = '';
+      } else {
+        tableReg.rows[i].style.display = 'none';
+      }
+    }
+  }
+</script>
+
+
+<% if @users.any? %>
+  <table id="datos", class type>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Email</th>
+        <th>Acciones</th>
+        <!-- Agrega más columnas según tus necesidades -->
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.nombre %></td>
+          <td><%= user.apellido %></td>
+          <td><%= user.email %></td>
+          <td>
+            <a href="<%= user_path(user) %>">Ver perfil de <%= user.nombre %></a>
+          </td>
+          <!-- Agrega más celdas según tus necesidades -->
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No hay usuarios en la base de datos.</p>
+<% end %>
+<% end %>
+

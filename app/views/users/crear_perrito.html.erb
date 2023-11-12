@@ -1,0 +1,60 @@
+<%= form_with(model: perrito) do |form| %>
+    <% if perrito.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(perrito.errors.count, "error") %> prohibited this perrito from being saved:</h2>
+        <ul>
+          <% perrito.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  
+    <div>
+      <%= form.label :nombre, style: "display: block" %>
+      <%= form.text_field :nombre %>
+    </div>
+  
+    <div>
+      <%= form.label :fecha_de_nacimiento, style: "display: block" %>
+      <div class="date-select">
+        <%= form.select :dia, (1..31) %>
+        <%= form.select :mes, Date::ABBR_MONTHNAMES.compact.each_with_index.map { |month, index| [month, index + 1] } %>
+        <%= form.select :año, (Date.current.year - 20)..(Date.current.year) %>
+      </div>
+    </div>
+  
+    <div>
+      <%= form.label :caracteristicas, style: "display: block" %>
+      <%= form.text_area :caracteristicas %>
+    </div>
+  
+    <div>
+      <%= form.label :condiciones, style: "display: block" %>
+      <%= form.text_area :condiciones %>
+    </div>
+  
+    <div>
+      <%= form.label :raza, style: "display: block" %>
+      <%= form.text_field :raza %>
+    </div>
+  
+    <div>
+      <%= form.label :color, style: "display: block" %>
+      <%= form.text_field :color %>
+    </div>
+  
+    <div>
+      <%= form.label :tamaño, style: "display: block" %>
+      <%= form.text_field :tamaño %>
+    </div>
+  
+    <div>
+      <%= form.label :fallecido, style: "display: block" %>
+      <%= form.check_box :fallecido %>
+    </div>
+  
+    <div>
+      <%= form.submit %>
+    </div>
+  <% end %>
