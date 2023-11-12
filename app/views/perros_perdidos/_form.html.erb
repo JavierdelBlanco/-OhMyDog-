@@ -1,58 +1,125 @@
 <%= form_with(model: perros_perdido) do |form| %>
-  
-  <% if perros_perdido.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(perros_perdido.errors.count, "error/es") %> impidieron la publicacion de este perro.</h2>
 
-      <ul>
-        <% perros_perdido.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+
+  <%= form.hidden_field :status, value: "Se busca" %>
+  <%= form.hidden_field :fecha_de_publicacion, value: Date.current %>
+  <%= form.hidden_field :mail, value: current_user.email %>
+ 
+  <div class='row g-3 needs-validation', style='width: 500px; margin: 5px; border: 1px solid #000; border-radius: 5px;'>
+    <div class="col-md-6">
+      <%= form.label :nombre, style: "display: block;" %>
+      <div class="input-group has-validation">
+      <%= form.text_field :nombre, class: 'form-control' + (perros_perdido.errors[:nombre].any? ? ' is-invalid' : ''), required: true, id: 'validationName' %>
+        <div id="validationFotoFeedback" class="invalid-feedback" style="<%= perros_perdido.errors[:nombre].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
+          <%= perros_perdido.errors.messages_for(:nombre).join(', ') %>
+        </div>
+      </div>
     </div>
-  <% end %>
+ 
+    <div class="col-md-6">
+      <%= form.label :descripcion, style: "display: block;" %>
+      <div class="input-group has-validation">
+        <%= form.text_field :descripcion, class: 'form-control', required: true, id: 'validationLastname' %>
+      <div id="validationLastnameFeedback" class="invalid-feedback">
+        <%= perros_perdido.errors.full_messages_for(:descripcion).join(', ') %>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="col-md-12">
+    <%= form.label :foto, style: "display: block;" %>
+    <div class="input-group has-validation">
+   
+      <%= form.file_field :foto, class: 'form-control' + (perros_perdido.errors[:foto].any? ? ' is-invalid' : ''),  required: (request.path == '/se-busca/new'), id: 'validationFoto', accept: 'image/*' %>
+      <div id="validationFotoFeedback" class="invalid-feedback" style="<%= perros_perdido.errors[:foto].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
+        <%= perros_perdido.errors.messages_for(:foto).join(', ') %>
+      </div>
+    </div>
+    <img id="preview" src="#" style="display: none; margin:2px; max-width: 200px; max-height: 200px;" />
+  </div>
+
 
   <div>
-    <%= form.label :nombre, style: "display: block" %>
-    <%= form.text_field :nombre %>
+    <% if request.path == '/se-busca/new' %>
+      <button type="button" class="btn btn-success" style='margin-block: 10px;' data-bs-toggle="modal" data-bs-target="#ModalPublicar-<%= perros_perdido.id %>">
+              Publicar
+      </button>
+
+
+      <!-- Modal Publicar-->
+        <div class="modal fade" id="ModalPublicar-<%= perros_perdido.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar publicacion</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+                <div class="modal-body">
+                  Confirma la publicacion de este paseador/cuidador ?
+                </div>
+              <div class="modal-footer">
+                <%= form.submit 'Confirmar',  class: "btn btn-primary", style:'margin: 2px' %>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+    <% else %>
+      <button type="button" class="btn btn-success" style='margin-block: 10px;' data-bs-toggle="modal" data-bs-target="#ModalEditar-<%= perros_perdido.id %>">
+              Guardar cambios
+      </button>
+
+
+      <!-- Modal Editar-->
+        <div class="modal fade" id="ModalEditar-<%= perros_perdido.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar edicion</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+                <div class="modal-body">
+                  Desea guardar los cambios efectuados a este paseador/cuidador ?
+                </div>
+              <div class="modal-footer">
+                <%= form.submit 'Confirmar',  class: "btn btn-primary", style:'margin: 2px' %>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+    <% end%>
+    <%= link_to "Atras", perros_perdidos_path , class: "btn btn-primary", style:'margin-block: 10px;'%>
+  </div>  
   </div>
 
-  <div>
-    <%= form.label :descripcion, style: "display: block" %>
-    <%= form.text_area :descripcion, style: "height: 6em; width: 20em;"%>
-  </div>
-
-  <div>
-    <%= form.label :foto, style: "display: block" %>
-    <%= form.file_field :foto %>
-  </div>
-
-  <div style="display: none;">
-    <%= form.label :fecha_de_publicacion, style: "display: block" %>
-    <%= form.date_field :fecha_de_publicacion, readonly: true  %>
-  </div>
-<!--
-<div>
-<%= form.label :Estado, style: "display: block" %>
-<%= form.text_field :status%>
-</div>
--->
-  <div style="display: none;">
-    <%= form.label :Estado, style: "display: block" %>
-    <%= form.text_field :status, readonly: true  %>
-  </div>
-
-  <div style="display: none;">
-    <%= form.label :mail, style: "display: block" %>
-    <%= form.text_field :mail, readonly: true  %>
-  </div>
-
-  <div style="margin-top: 20px;">
-  <% if request.path == '/se-busca/new' %>
-    <%= form.submit 'Publicar' %>
-  <% else %>
-    <%= form.submit 'Guardar cambios' %>
-  <% end%>
-  </div>
 
 <% end %>
+
+
+<script>
+  document.addEventListener('turbo:load', function() {
+    const fileInput = document.getElementById('validationFoto');
+    const previewImage = document.getElementById('preview');
+
+
+    fileInput.addEventListener('change', function() {
+      if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+
+
+        reader.onload = function(e) {
+          previewImage.src = e.target.result;
+          previewImage.style.display = 'block';
+        };
+
+
+        reader.readAsDataURL(fileInput.files[0]);
+      }
+    });
+  });
+</script>
