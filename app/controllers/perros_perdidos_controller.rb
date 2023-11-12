@@ -72,6 +72,21 @@ class PerrosPerdidosController < ApplicationController
 
   end
   
+  def enviar_correo_perros_perdidos
+
+    id = params[:id]
+    
+    @perro = PerrosPerdido.find(id)
+    
+    PerrosPerdidosMailer.enviar_correo_perros_perdidos(@perro.mail).deliver_later
+
+    respond_to do |format|
+      format.html { redirect_to root_path, flash: { notice: "El correo fue enviado con exito." } }
+      format.json { head :no_content }
+    end
+
+  end  
+  
 
   private
     # Use callbacks to share common setup or constraints between actions.

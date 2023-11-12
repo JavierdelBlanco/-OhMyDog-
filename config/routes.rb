@@ -48,4 +48,6 @@ Rails.application.routes.draw do
   post '/enviar_correo', to: 'cuidador_paseadors#enviar_correo'
   post '/enviar_correo_no_registrado', to: 'cuidador_paseadors#enviar_correo_no_registrado'
 
+  post '/enviar_correo_perros_perdidos', to: 'perros_perdidos#enviar_correo_perros_perdidos'
+
 end
