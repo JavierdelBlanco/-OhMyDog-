@@ -1,39 +1,4 @@
-<h1>Editar perro encontrado</h1>
+<h1>Editar perros perdido</h1>
 
-<%= render "form", perros_encontrado: @perros_encontrado %>
 
-<br>
-
-<div>
-  <a href="<%= perros_encontrados_path %>" class="custom-button">Atras</a>
-</div>
-
-<style>
-  /* Botón personalizado */
-  .custom-button {
-    display: inline-block;
-    padding: 4px 10px; /* Ajusta el relleno según sea necesario */
-    border: 2px solid #FFA500; /* Borde naranja */
-    background-color: #FFA500; /* Fondo naranja */
-    color: #000; /* Texto blanco */
-    border-radius: 10px; /* Esquinas redondas */
-    transition: background-color 0.3s; /* Transición de color al pasar el mouse */
-    text-decoration: none; /* Elimina el subrayado en el enlace */
-  }
-
-  /* Cambio de color al pasar el mouse por encima */
-  .custom-button:hover {
-    background-color: #FF8C00; /* Color ligeramente más oscuro */
-  }
-
-  .bordered-item {
-    border: 1px solid black;
-    padding: 10px;
-    margin: 10px 0;
-  }
-
-  .black-line {
-    border-top: 1px solid black;
-   }
-
-</style>
+<%= render "form", perros_perdido: @perros_perdido %>

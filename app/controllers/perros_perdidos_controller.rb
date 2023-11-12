@@ -16,9 +16,6 @@ class PerrosPerdidosController < ApplicationController
   # GET /perros_perdidos/new
   def new
     @perros_perdido = PerrosPerdido.new
-    @perros_perdido.status = "Se busca"
-    @perros_perdido.fecha_de_publicacion = Date.current
-    @perros_perdido.mail = current_user.email
   end
 
   # GET /perros_perdidos/1/edit
