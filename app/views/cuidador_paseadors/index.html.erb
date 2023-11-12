@@ -69,11 +69,8 @@
               Pedir Servicios
             </button>
 
-            
-          <% end %>
-        </div>
 
-        <!-- Modal Pedir servicos-->
+        <!-- Modal Pedir Servicios Registrado-->
               <div class="modal fade" id="ModalPedirServiciosRegistrado-<%= cuidador_paseador.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
@@ -89,18 +86,19 @@
                         <li>Apellido</li>
                         <li>Direccion</li>
                         <li>Direccion de correo electronico</li>
-                      </ul>
-                      <p>Presione Confirmar para continuar.</p>     
+                      </ul>    
                     </div>
                     <div class="modal-footer">
-                      <%= link_to "Confirmar", enviar_correo_path(id: cuidador_paseador.id), data: { turbo_method: :post },  class: "btn btn-primary", style:'margin: 2px' %>
+                      <%= link_to "Enviar", enviar_correo_path(id: cuidador_paseador.id), data: { turbo_method: :post },  class: "btn btn-primary", style:'margin: 2px' %>
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
                     </div>
                   </div>
                 </div>
               </div>
         
-         <!-- Modal Pedir servicos-->
+        <!----------------------------------------->
+        
+         <!-- Modal Pedir Servicios No Registrado-->
               <div class="modal fade" id="ModalPedirServiciosNoRegistrado-<%= cuidador_paseador.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
@@ -109,20 +107,48 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                      Se le enviara un email a <%= cuidador_paseador.nombre %> con su infomacion de contacto, informandole que desea contratar sus servicio. Presione Confirmar para continuar.
-                    </div>
-                    <div class="modal-footer">
-                      <%= link_to "Confirmar", enviar_correo_path(id: cuidador_paseador.id), data: { turbo_method: :post },  class: "btn btn-primary", style:'margin: 2px' %>
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+                      <p>Se le enviara un email a <%= cuidador_paseador.nombre %> para informarle sobre tu interés en contratar sus servicios.</p>
+                      <p>Completa este formulario con tu informacion para que pueda contactarte:</p>
+                      <%= form_with url: enviar_correo_no_registrado_path(id: cuidador_paseador.id), method: :post, id: 'formularioDatos' do |form| %>
+                        
+                        <div class="mb-3">
+                          <%= form.label :nombre, 'Nombre:' %>
+                          <%= form.text_field :nombre, class: 'form-control', required: true %>
+                        </div>
+
+                        <div class="mb-3">
+                          <%= form.label :apellido, 'Apellido:' %>
+                          <%= form.text_field :apellido, class: 'form-control', required: true %>
+                        </div>
+
+                        <div class="mb-3">
+                          <%= form.label :direccion, 'Dirección:' %>
+                          <%= form.text_field :direccion, class: 'form-control', required: true %>
+                        </div>
+
+                        <div class="mb-3">
+                          <%= form.label :numero, 'Número:' %>
+                          <%= form.text_field :numero, class: 'form-control', required: true %>
+                        </div>
+
+                        <div class="mb-3">
+                          <%= form.label :email, 'Correo electrónico:' %>
+                          <%= form.email_field :email, class: 'form-control', required: true %>
+                        </div>
+
+                        <%= form.submit 'Enviar', id: "confirmarBtn", class: 'btn btn-primary', style:"margin: 2px" %>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+                      <% end %>
+
                     </div>
                   </div>
                 </div>
               </div>
-        
 
+          <!----------------------------------------->
 
-
-
+          <% end %>
+        </div>
       </div>
     <% end %>
   </div> 
@@ -160,8 +186,6 @@
     }
   });
 </script>
-
-
 
 
 

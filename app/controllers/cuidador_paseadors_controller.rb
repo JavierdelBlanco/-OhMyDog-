@@ -68,6 +68,25 @@ class CuidadorPaseadorsController < ApplicationController
   end
 
 
+  def enviar_correo_no_registrado
+    id = params[:id]
+    @cuidador_paseador = CuidadorPaseador.find(id)
+    nombre = params[:nombre]
+    apellido = params[:apellido]
+    direccion = params[:direccion]
+    numero = params[:numero]
+    email = params[:email]
+    logger.info("Params: #{params.inspect}")
+    # Corrige el acceso a los parámetros
+    CuidadorPaseadorsMailer.enviar_correo_no_registrado(@cuidador_paseador, nombre, apellido, direccion, numero, email).deliver_later
+
+    respond_to do |format|
+      format.html { redirect_to root_path, flash: { notice: "El correo fue enviado con éxito a #{@cuidador_paseador.nombre}." } }
+      format.json { redirect_to root_path, flash: { notice: "El correo fue enviado con éxito a #{@cuidador_paseador.nombre}." } }
+    end
+  end
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_cuidador_paseador

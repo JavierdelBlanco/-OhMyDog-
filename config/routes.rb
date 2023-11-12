@@ -37,4 +37,5 @@ Rails.application.routes.draw do
   patch '/perros_encontrados/:id/marcar_como_dueno_encontrado', to: 'perros_encontrados#marcar_como_dueno_encontrado', as: :marcar_como_dueno_encontrado_perros_encontrado
 
   post '/enviar_correo', to: 'cuidador_paseadors#enviar_correo'
+  post '/enviar_correo_no_registrado', to: 'cuidador_paseadors#enviar_correo_no_registrado'
 end

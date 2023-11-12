@@ -6,4 +6,14 @@ class CuidadorPaseadorsMailer < ApplicationMailer
     @current_user = current_user
     mail(to: cuidador_paseador.email, subject: 'Tenes un nuevo cliente en ¡Oh my dog!')
   end
+
+  def enviar_correo_no_registrado(cuidador_paseador, nombre, apellido, direccion, numero, email)
+    @cuidador_paseador = cuidador_paseador
+    @nombre = nombre
+    @apellido = apellido
+    @direccion = direccion
+    @numero = numero
+    @email = email
+    mail(to: cuidador_paseador.email, subject: 'Tenes un nuevo cliente en ¡Oh my dog! no registrado')
+  end
 end
