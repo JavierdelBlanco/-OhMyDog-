@@ -1,5 +1,5 @@
 <% if user_signed_in? and current_user.tipo_usuario == 'administrador'  %>
-  <%= link_to "Cargar cuidador/paseador", new_cuidador_paseador_path , class: "btn", style:'background-color: #0D9BB5; color:white;  margin-block: 10px;'%>
+  <%= link_to "Cargar cuidador/paseador", new_cuidador_paseador_path , class: "btn btn-turqueza", style: 'margin-block: 10px;'%>
 <% end %>
 
 <div class='d-flex'>
@@ -72,7 +72,7 @@
 
 
           <% else %>
-            <button type="button"  class = "btn btn-primary" style = 'margin-bottom: 3px' data-bs-toggle="modal" data-bs-target="<%= (user_signed_in?) ? "#ModalPedirServiciosRegistrado-#{cuidador_paseador.id}" : "#ModalPedirServiciosNoRegistrado-#{cuidador_paseador.id}" %>" >
+            <button type="button"  class = "btn btn-turqueza" style = 'margin-bottom: 3px' data-bs-toggle="modal" data-bs-target="<%= (user_signed_in?) ? "#ModalPedirServiciosRegistrado-#{cuidador_paseador.id}" : "#ModalPedirServiciosNoRegistrado-#{cuidador_paseador.id}" %>" >
               Pedir Servicios
             </button>
 

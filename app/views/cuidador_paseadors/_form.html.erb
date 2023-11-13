@@ -24,7 +24,7 @@
 <div class="col-md-6">
   <%= form.label :email, style: "display: block;" %>
   <div class="input-group has-validation">
-    <%= form.text_field :email, class: 'form-control' + (cuidador_paseador.errors[:email].any? ? ' is-invalid' : ''), required: true, id: 'validationEmail' %>
+    <%= form.email_field :email, class: 'form-control' + (cuidador_paseador.errors[:email].any? ? ' is-invalid' : ''), required: true, id: 'validationEmail' %>
     <div id="validationEmailFeedback" class="invalid-feedback" style="<%= cuidador_paseador.errors[:email].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
       <%= cuidador_paseador.errors.messages_for(:email).join(', ') %>
     </div>
