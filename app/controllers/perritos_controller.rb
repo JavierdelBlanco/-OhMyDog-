@@ -1,5 +1,5 @@
 class PerritosController < ApplicationController
-  before_action :set_perrito, only: %i[ show edit update destroy ]
+  before_action :set_perrito, only: [:show, :edit, :update, :destroy]
 
   # GET /perritos or /perritos.json
   def index
@@ -13,6 +13,15 @@ class PerritosController < ApplicationController
   # GET /perritos/new
   def new
     @perrito = Perrito.new
+    @user = User.find(params[:id])
+    @tipo = 'mio'
+  end
+
+  def new_ajeno
+    @perrito = Perrito.new
+    @user = User.find(params[:id])
+    @tipo = 'ajeno'
+    puts 'se creo el perro ajeno'
   end
 
   # GET /perritos/1/edit
@@ -21,28 +30,22 @@ class PerritosController < ApplicationController
 
   # POST /perritos or /perritos.json
   def create
-    @user = User.find(params[:id])
-    @perrito = @user.perritos.build(perrito_params)
-
+    user_id = params[:perrito][:user_id]
+    tipo = params[:perrito][:tipo]
+    @tipo = tipo
+    @user = User.find(user_id)
+    parametros = perrito_params.except(:tipo)
+    @perrito = @user.perritos.build(parametros)
+    
     respond_to do |format|
       if @perrito.save
-        format.html { redirect_to user_path(@user), notice: "Se creó un perro exitosamente." }
-        format.json { render :show, status: :created, location: @perrito }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @perrito.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  def agregar_perrito_user
-    @user = User.find(params[:id])
-    @perrito = @user.perritos.build(perrito_params)
-
-    respond_to do |format|
-      if @perrito.save
-        format.html { redirect_to user_path(@user), notice: "Se creó un perro exitosamente." }
-        format.json { render :show, status: :created, location: @perrito }
+        if(@tipo=='mio')
+          format.html { redirect_to perfil_path, notice: "Se creó un perro exitosamente." }
+          format.json { render :show, status: :created, location: @perrito }
+        else
+          format.html { redirect_to user_path(@user), notice: "Se creó un perro exitosamente." }
+          format.json { render :show, status: :created, location: @perrito }
+        end
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @perrito.errors, status: :unprocessable_entity }
@@ -52,10 +55,19 @@ class PerritosController < ApplicationController
 
   # PATCH/PUT /perritos/1 or /perritos/1.json
   def update
+    user_id = params[:perrito][:user_id]
+    @user = User.find(user_id)
+    tipo = params[:perrito][:tipo]
     respond_to do |format|
-      if @perrito.update(perrito_params)
-        format.html { redirect_to perfil_path, notice: "Se actualizó el perro exitosamente." }
-        format.json { render :show, status: :ok, location: @perrito }
+      parametros = perrito_params.except(:tipo)
+      if @perrito.update(parametros)
+        if(@tipo=='mio')
+          format.html { redirect_to perfil_path, notice: "Se actualizó el perro exitosamente." }
+          format.json { render :show, status: :ok, location: @perrito }
+        else
+          format.html { redirect_to user_path(@user), notice: "Se actualizó el perro exitosamente." }
+          format.json { render :show, status: :ok, location: @perrito }
+        end
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @perrito.errors, status: :unprocessable_entity }
@@ -65,11 +77,24 @@ class PerritosController < ApplicationController
 
   # DELETE /perritos/1 or /perritos/1.json
   def destroy
-    @perrito.destroy!
-
+   # user_id = params[:user_id]
+    #@user = User.find(user_id)
+    #tipo = params[:tipo]
+    #puts '########################################'
+    #puts user_id
+    #puts tipo
+    #puts '########################################'
+    @perrito = Perrito.find(params[:id])
+    @user = @perrito.user
+    @perrito.destroy
     respond_to do |format|
-      format.html { redirect_to perritos_url, notice: "Se eliminó exitosamente el perro." }
-      format.json { head :no_content }
+      if(current_user.id == @user.id)
+        format.html { redirect_to perfil_path, notice: "Se eliminó exitosamente el perro." }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to user_path(@user), notice: "Se eliminó exitosamente el perro." }
+        format.json { head :no_content }
+      end
     end
   end
 
@@ -81,6 +106,6 @@ class PerritosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def perrito_params
-      params.require(:perrito).permit(:nombre, :dia, :mes, :año, :caracteristicas, :condiciones, :raza, :color, :tamaño, :user_id, :fallecido)
+      params.require(:perrito).permit(:nombre, :dia, :mes, :año, :caracteristicas, :condiciones, :raza, :color, :tamaño, :user_id, :fallecido, :tipo)
     end
 end

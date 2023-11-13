@@ -11,7 +11,6 @@ class CreatePerritos < ActiveRecord::Migration[7.1]
       t.string :color
       t.string :tamaño
       t.references :user, null: false, foreign_key: true
-      t.boolean :fallecido
 
       t.timestamps
     end

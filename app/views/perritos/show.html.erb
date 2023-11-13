@@ -1,8 +1,14 @@
 <%= render @perrito %>
 
+<%= form_for @perrito, url: perrito_path(@perrito), method: :delete do |f| %>
+  <%= hidden_field_tag :user_id, params[:user_id] %>
+  <%= hidden_field_tag :tipo, params[:tipo] %>
+  <%= f.submit "Eliminar perro" %>
+<% end %>
+
 <div>
   <%= link_to "Editar este perro", edit_perrito_path(@perrito) %> |
   <%= link_to "Volver al perfil", perfil_path %>
 
-  <%= button_to "Eliminar perro", @perrito, method: :delete %>
+ 
 </div>

@@ -115,6 +115,10 @@
     <%= f.select :tipo_usuario, options_for_select([['Normal','normal'],['Premium','premium'],['Administrador','administrador']]),{}, autofocus: true, autocomplete: "tipo_usuario" %>
   </div>
 
+  <div class="field">
+    <%= f.label :telefono %><br />
+    <%= f.number_field :telefono, autofocus: true, inputmode: "numeric" %>
+  </div>
 
 
   <div class="field">

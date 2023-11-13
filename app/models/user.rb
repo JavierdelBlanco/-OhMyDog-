@@ -16,6 +16,7 @@ class User < ApplicationRecord
   validates :direccion, presence: true
   validates :nro, presence: true
   validates :tipo_usuario, presence: true
+  validates :telefono, presence: true
 
   has_many :perritos, dependent: :destroy
 

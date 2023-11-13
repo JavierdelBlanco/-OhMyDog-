@@ -23,18 +23,23 @@ Rails.application.routes.draw do
       get 'agregar_perrito'
       post 'crear_perrito'
     end
-  end  
-  get 'new_usuario_perrito', to: 'perritos#new'
+  end
+  resources :users do
+    resources :perritos # Esto anida las rutas de perritos dentro de las rutas de usuarios
+  end
+
   get 'profile/edit', to: 'profile#edit', as: :edit_profile
   end
+  #Atencion al cliente
+  get 'perrito_ajeno/:id', to: 'perritos#new_ajeno', as: 'perrito_ajeno'
   get 'edit_other/:id', to: 'users#edit_otro', as: 'edit_other'
   get 'usuarios/:id', to: 'users#ver_perfil'
   get '/perfil/:id', to: 'users#ver_perfil', as: 'ver_perfil'
   get 'atencion_cliente', to: 'users#atencion'
-  get 'add_dog', to: 'perritos#new'
-  resources :users do
-    resources :perritos, only: [:new, :create]
-  end
+
+  get 'show_perrito/:id', to: 'perritos#show', as: 'show_perrito'
+
+  get 'add_dog.:id', to: 'perritos#new', as: 'add_dog'
   #mi mail envio
   post '/random_password_email', to: 'user_mailer#random_password_email'
   resources :cuidador_paseadors, path: 'cuidadores-y-paseadores'
@@ -50,5 +55,6 @@ Rails.application.routes.draw do
 
   post '/enviar_correo_perros_perdidos', to: 'perros_perdidos#enviar_correo_perros_perdidos'
   post '/enviar_correo_perros_encontrados', to: 'perros_encontrados#enviar_correo_perros_encontrados'
+
 
 end

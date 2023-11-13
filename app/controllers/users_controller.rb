@@ -40,6 +40,30 @@ class UsersController < ApplicationController
     end
   end
 
+  def agregar_perro_usuario
+    @perrito = Perrito.new
+  end
+
+
+  def agregar_perro_usuario_listo
+    @user = User.find(params[:id])
+    @perrito = @user.perritos.build(perrito_params)
+
+    respond_to do |format|
+      if @perrito.save
+        format.html { redirect_to user_path(@user), notice: "Se creó un perro exitosamente." }
+        format.json { render :show, status: :created, location: @perrito }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @perrito.errors, status: :unprocessable_entity }
+      end
+    end
+  end  
+
+  def welcome_email
+    UserMailer.welcome_email.deliver_now
+  end
+
   def show
     @user = User.find(params[:id])
   end
@@ -68,6 +92,16 @@ class UsersController < ApplicationController
   def show_perrito
     @usuario = Usuario.find(params[:id])
     @perrito = @usuario.perritos.find(1)
+  end
+
+  private
+
+  def perrito_params
+    params.require(@perrito).permit(:nombre, :dia, :mes, :año, :caracteristicas, :condiciones, :raza, :color, :tamaño, :fallecido)
+  end
+
+  def set_perrito
+    @perrito = Perrito.find(params[:id])
   end
 
 end

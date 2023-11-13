@@ -40,6 +40,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.1]
       t.string :direccion
       t.integer :nro
       t.string :tipo_usuario
+      t.integer :telefono
 
       t.timestamps null: false
     end

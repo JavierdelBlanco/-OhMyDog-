@@ -1,4 +1,8 @@
 <% if current_user.tipo_usuario == 'administrador' %>
+<h1>Atencion al cliente</h1>
+<h2>Lista de usuarios</h2>
+
+
 
 <style>
 /* Estilos para la tabla */
@@ -41,7 +45,7 @@
 </style>
 </head>
 
-<form style='margin-top: 10px;'>
+<form>
   Buscar: <input id="searchTerm" type="text" onkeyup="doSearch()" />
 </form>
 <script>
@@ -77,21 +81,25 @@
         <th>Nombre</th>
         <th>Apellido</th>
         <th>Email</th>
+        <th>Tipo</th>
         <th>Acciones</th>
         <!-- Agrega más columnas según tus necesidades -->
       </tr>
     </thead>
     <tbody>
       <% @users.each do |user| %>
+        <% unless (user.id==current_user.id) %>
         <tr>
           <td><%= user.nombre %></td>
           <td><%= user.apellido %></td>
           <td><%= user.email %></td>
+          <td><%= user.tipo_usuario %></td>
           <td>
-            <a href="<%= user_path(user) %>" style= 'text-decoration: none; color: black;''>Ver perfil</a>
+            <a href="<%= user_path(user) %>">Ver perfil de <%= user.nombre %></a>
           </td>
           <!-- Agrega más celdas según tus necesidades -->
         </tr>
+        <% end %>
       <% end %>
     </tbody>
   </table>

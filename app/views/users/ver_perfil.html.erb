@@ -26,6 +26,9 @@
       <th>Tipo de Usuario:</th>
       <td><%= current_user.tipo_usuario %></td>
     </tr>
+    <th>Telefono:</th>
+      <td><%= current_user.telefono %></td>
+    </tr>
   </tbody>
 </table>
 
@@ -70,7 +73,7 @@
             <!-- Botón "Editar" y "Eliminar" para el administrador -->
             <% if current_user.tipo_usuario == 'administrador' %>
               <%= link_to "Editar", edit_perrito_path(perrito), class: "btn btn-sm btn-primary" %>
-              <%= link_to "Eliminar", perrito, method: :delete, data: { confirm: "¿Estás seguro de que deseas eliminar a #{perrito.nombre}?" }, class: "btn btn-sm btn-danger" %>
+              <%= link_to "Eliminar", perrito, data: { turbo_method: :delete }, class: "btn btn-primary", style: 'margin: 2px' %>
             <% end %>
           </td>
         </tr>
@@ -80,7 +83,7 @@
 <% end %>
 
 <%= link_to "Editar Perfil", edit_user_path(current_user), class: "btn btn-primary" %>
-<%= link_to "Agregar perro", add_dog_path(current_user), class: "btn btn-primary" %>
+<%= link_to "Agregar perro", add_dog_path(current_user, tipo: 'mio'), class: "btn btn-primary" %>
 
 
 

@@ -70,7 +70,7 @@
             <!-- Botón "Editar" y "Eliminar" para el administrador -->
             <% if current_user.tipo_usuario == 'administrador' %>
               <%= link_to "Editar", edit_perrito_path(perrito), class: "btn btn-sm btn-primary" %>
-              <%= link_to "Eliminar", perrito, method: :delete, data: { confirm: "¿Estás seguro de que deseas eliminar a #{perrito.nombre}?" }, class: "btn btn-sm btn-danger" %>
+              <%= link_to "Eliminar", perrito, data: { turbo_method: :delete }, class: "btn btn-primary", style: 'margin: 2px' %>
             <% end %>
           </td>
         </tr>
@@ -80,6 +80,7 @@
 <% end %>
 
 <%= link_to "Editar Perfil del usuario", edit_other_path(@user), class: "btn btn-primary" %>
+<%= link_to "Agregar perro al usuario", perrito_ajeno_path(@user), class: "btn btn-primary" %>
 
 
 

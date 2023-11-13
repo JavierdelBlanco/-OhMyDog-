@@ -67,13 +67,15 @@ Rails.application.configure do
 
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
+
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-  :user_name => '0be9f7fb92aee5',
-  :password => '1cbd2a6770b7e8',
+  :user_name => '2e16f0746661f5',
+  :password => '7dfe11f013b89b',
   :address => 'sandbox.smtp.mailtrap.io',
   :host => 'sandbox.smtp.mailtrap.io',
   :port => '2525',
   :authentication => :cram_md5
 }
-  end
+
+end
