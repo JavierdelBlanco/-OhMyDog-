@@ -1,10 +1,25 @@
 <div id="carouselHomeIndicators" class="carousel slide bg-dark" data-bs-ride="carousel">
   <div class="carousel-inner">
-    <div class="carousel-item active" data-bs-interval="3000">
-      <%= link_to(image_tag("se_busca.jpg", height: 500, class: "d-block w-100"), perros_perdidos_path, class:"nav-link") %>
+    <div class="carousel-item active" data-bs-interval="2000">
+      <%= link_to(image_tag("perro_perdido.jpg", height: 500, class: "d-block w-100"), perros_perdidos_path, class:"nav-link") %>
+      <div class="carousel-caption d-none d-md-block" style="font-family: 'Arial Black', sans-serif; background-color: rgba(255, 255, 255, 0.4); margin:auto; width: fit-content; padding: 10px;">
+        <h5 style="color: black;">¿Se perdió tu perro?</h5>
+        <p style="color: black;"> Sube una foto en nuestra sección de perros perdidos para que te ayuden a encontrarlo.</p>
+      </div>
     </div>
-    <div class="carousel-item " data-bs-interval="3000">
-      <%= link_to(image_tag("paseadores_cuidadores.jpeg", height: 500, class: "d-block w-100"),cuidador_paseadors_path, class:"nav-link") %>
+    <div class="carousel-item" data-bs-interval="2000">
+      <%= link_to(image_tag("perro_encontrado.webp", height: 500, class: "d-block w-100"), perros_encontrados_path, class:"nav-link") %>
+      <div class="carousel-caption d-none d-md-block" style="font-family: 'Arial Black', sans-serif; background-color: rgba(255, 255, 255, 0.4); margin:auto; width: fit-content; padding: 10px;">
+        <h5 style="color: black;">¿Encontraste un perro y no sabes quien es su dueño?</h5>
+        <p style="color: black;"> Sube una foto en nuestra sección de perros encontrados para que este la vea.</p>
+      </div>
+    </div>
+    <div class="carousel-item " data-bs-interval="2000">
+      <%= link_to(image_tag("paseadores_cuidadores.jpg", height: 500, class: "d-block w-100"),cuidador_paseadors_path, class:"nav-link") %>
+      <div class="carousel-caption d-none d-md-block" style="font-family: 'Arial Black', sans-serif; background-color: rgba(255, 255, 255, 0.4); margin:auto; width: fit-content; padding: 10px;">
+        <h5 style="color: black;">¿Necesitas que alguien cuide o pasee a tu perro?</h5>
+        <p style="color: black;">Contrata un paseador o cuidador ahora.</p>
+      </div>
     </div>
   </div>
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselHomeIndicators" data-bs-slide="prev">
@@ -14,3 +29,5 @@
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
   </button>
 </div>
+
+
