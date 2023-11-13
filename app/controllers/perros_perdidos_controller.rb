@@ -6,7 +6,8 @@ class PerrosPerdidosController < ApplicationController
     @perros_perdidos = PerrosPerdido.where(status: 'Se busca').order(created_at: :desc)
     @perros_encontrados = PerrosPerdido.where(status: 'Encontrado').order(created_at: :desc).limit(50)
 
-    #@perros_del_user = PerrosPerdido.where(mail: current_user.email).order(created_at: :desc)
+    @users = User.all
+
   end
 
   # GET /perros_perdidos/1 or /perros_perdidos/1.json
@@ -75,10 +76,13 @@ class PerrosPerdidosController < ApplicationController
   def enviar_correo_perros_perdidos
 
     id = params[:id]
-    
     @perro = PerrosPerdido.find(id)
+
+    @owner = User.find_by(email: @perro.mail)
+
+    @current_user = current_user
     
-    PerrosPerdidosMailer.enviar_correo_perros_perdidos(@perro.mail).deliver_later
+    PerrosPerdidosMailer.enviar_correo_perros_perdidos(@perro, @owner, @current_user).deliver_later
 
     respond_to do |format|
       format.html { redirect_to root_path, flash: { notice: "El correo fue enviado con exito." } }

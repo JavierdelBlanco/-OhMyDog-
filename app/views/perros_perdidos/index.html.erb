@@ -56,9 +56,9 @@
 
 
 <% if user_signed_in? %>
-  <a href="<%= new_perros_perdido_path %>" class="btn btn-primary">Publicar un perro perdido</a>
-  <button id="perros_perdidos_boton" class="btn btn-primary">Perros perdidos</button>
-  <button id="mis_perros_perdidos_boton" class="btn btn-primary">Mis perros perdidos</button>
+  <a href="<%= new_perros_perdido_path %>" class="btn btn-turqueza">Publicar un perro perdido</a>
+  <button id="perros_perdidos_boton" class="btn btn-turqueza">Perros perdidos</button>
+  <button id="mis_perros_perdidos_boton" class="btn btn-turqueza">Mis perros perdidos</button>
 <% end %>
 
 <% if @perros_perdidos.empty? %>
@@ -88,7 +88,7 @@
       <div class='d-flex justify-content-center' style='flex-direction: column; align-items: center;'>
         <% if !user_signed_in? || (user_signed_in? && current_user.email != perros_perdido.mail) %>
           <div>
-            <button type="button"  class = "btn btn-primary" style = 'margin-bottom: 3px' data-bs-toggle="modal" data-bs-target="<%= (user_signed_in?) ? "#ModalPedirServiciosRegistrado-#{perros_perdido.id}" : "#ModalPedirServiciosNoRegistrado-#{perros_perdido.id}" %>" >Contactar</button>
+            <button type="button"  class = "btn btn-turqueza" style = 'margin-bottom: 3px' data-bs-toggle="modal" data-bs-target="<%= (user_signed_in?) ? "#ModalPedirServiciosRegistrado-#{perros_perdido.id}" : "#ModalPedirServiciosNoRegistrado-#{perros_perdido.id}" %>" >Contactar</button>
 
             <!-- Modal Pedir Servicios Registrado-->
             <div class="modal fade" id="ModalPedirServiciosRegistrado-<%= perros_perdido.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -99,14 +99,15 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <p>Se le enviara un email a <%= perros_perdido.nombre %> (poner nombre del dueño de la publicacion) para informarle que has encontrado a este perro.</p>
+                  <p>Se le enviara un email a <%= @users.find_by(email: perros_perdido.mail).nombre %> <%= @users.find_by(email: perros_perdido.mail).apellido %> para informarle que has encontrado a este perro.</p>
                   <p>Este incluira la siguiente informacion de su cuenta:</p>
                   <ul>
                     <li>Nombre</li>
                     <li>Apellido</li>
                     <li>Direccion</li>
                     <li>Direccion de correo electronico</li>
-                  </ul>    
+                  </ul>
+                  <p>Pronto <%= @users.find_by(email: perros_perdido.mail).nombre %> <%= @users.find_by(email: perros_perdido.mail).apellido %> se comunicara con usted.</p>
                 </div>
                 <div class="modal-footer">
                   <%= link_to "Enviar", enviar_correo_perros_perdidos_path(id: perros_perdido.id), data: { turbo_method: :post },  class: "btn btn-primary", style:'margin: 2px' %>
@@ -146,7 +147,7 @@
 
 
             <div>
-              <%= button_to "Marcar como encontrado", marcar_como_encontrado_perros_perdido_path(perros_perdido), method: :patch, class: "btn btn-primary", style: 'margin: 2px;' %>
+              <%= button_to "Marcar como encontrado", marcar_como_encontrado_perros_perdido_path(perros_perdido), method: :patch, class: "btn btn-turqueza", style: 'margin: 2px;' %>
             </div>
            
           <% end %>
