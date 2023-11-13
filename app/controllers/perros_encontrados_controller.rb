@@ -6,6 +6,8 @@ class PerrosEncontradosController < ApplicationController
   def index
       @perros_encontrados = PerrosEncontrado.where(status: 'Se busca al dueño').order(created_at: :desc)
       @perros_reunidos = PerrosEncontrado.where(status: 'Dueño encontrado').order(created_at: :desc).limit(50)
+
+      @users = User.all
   end
 
 
@@ -89,6 +91,23 @@ class PerrosEncontradosController < ApplicationController
 
   end
 
+  def enviar_correo_perros_encontrados
+
+    id = params[:id]
+    @perro = PerrosEncontrado.find(id)
+
+    @owner = User.find_by(email: @perro.mail)
+
+    @current_user = current_user
+    
+    PerrosEncontradosMailer.enviar_correo_perros_encontrados(@perro, @owner, @current_user).deliver_later
+
+    respond_to do |format|
+      format.html { redirect_to root_path, flash: { notice: "El correo fue enviado con exito." } }
+      format.json { head :no_content }
+    end
+
+  end  
 
   private
     # Use callbacks to share common setup or constraints between actions.

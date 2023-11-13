@@ -3023,22 +3023,27 @@ textarea.form-control-lg {
   --bs-btn-disabled-border-color: #0d6efd;
 }
 
-.btn-primary-lost-dog {
+.btn-turqueza {
   --bs-btn-color: #fff;
-  --bs-btn-bg: #ff9800; /* Fondo naranja principal */
-  --bs-btn-border-color: #ff9800; /* Borde naranja principal */
+  --bs-btn-bg: #0D9BB5; /* Turquesa */
+  --bs-btn-border-color: #0D9BB5; /* Turquesa */
+
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #e08e00; /* Fondo naranja al pasar el mouse */
-  --bs-btn-hover-border-color: #d17e00; /* Borde naranja al pasar el mouse */
-  --bs-btn-focus-shadow-rgb: 49, 132, 253;
+  --bs-btn-hover-bg: #0A829A; /* Turquesa más oscuro */
+  --bs-btn-hover-border-color: #096F7D; /* Turquesa más oscuro */
+
+  --bs-btn-focus-shadow-rgb: 13, 155, 181; /* Turquesa más claro */
+
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: #d17e00; /* Fondo naranja al hacer clic */
-  --bs-btn-active-border-color: #d17e00; /* Borde naranja al hacer clic */
+  --bs-btn-active-bg: #096F7D; /* Turquesa más oscuro */
+  --bs-btn-active-border-color: #075C66; /* Turquesa más oscuro */
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+
   --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: #ff9800; /* Fondo naranja principal para botón deshabilitado */
-  --bs-btn-disabled-border-color: #ff9800; /* Borde naranja principal para botón deshabilitado */
+  --bs-btn-disabled-bg: #0D9BB5; /* Turquesa */
+  --bs-btn-disabled-border-color: #0D9BB5; /* Turquesa */
 }
+
 
 .btn-secondary {
   --bs-btn-color: #fff;
