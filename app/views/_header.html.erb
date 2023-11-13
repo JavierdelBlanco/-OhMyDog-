@@ -52,7 +52,6 @@
 </nav>
 
 <style>
-
   .navbar-nav .nav-item .nav-link,
   .navbar-nav .nav-item.dropdown .nav-link,
   .navbar-nav .nav-item.dropdown .dropdown-item {
@@ -62,26 +61,25 @@
   .navbar-nav .nav-item .nav-link.active,
   .navbar-nav .nav-item.dropdown.active .nav-link,
   .navbar-nav .nav-item.dropdown .dropdown-item.active {
-    color: #FF914C; /* Cambia a tu color deseado */
+    color: #FF914C; /* Cambia a tu color deseado para elementos activos */
   }
 
-  .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
-    display: block;
-    color: #FF914C; /* Cambia a tu color deseado */
+  .navbar-nav .nav-item .nav-link:hover,
+  .navbar-nav .nav-item.dropdown:hover > .nav-link {
+    color: #FF914C; /* Cambia a tu color deseado al hacer hover en la barra desplegable */
+  }
+
+  .navbar-nav .nav-item.dropdown:hover .dropdown-menu .dropdown-item:hover {
+    background-color: #ffff;
+    color: #FF914C; /* Cambia a tu color deseado al hacer hover en elementos desplegables */
   }
 
   .navbar-nav .nav-item.dropdown .dropdown-item.active {
-    background-color: #f8f9fa; /* Cambia a tu color deseado */
+    background-color: #ffff; /* Cambia a tu color deseado para el fondo del elemento activo */
   }
-  
 
   .navbar-nav .nav-item.dropdown .dropdown-item:active {
-    background-color: #FF914C; /* Cambia a tu color deseado */
-    color: #ffffff; /* Cambia a tu color deseado */
+    background-color: #ffffff; /* Cambia a tu color deseado al hacer clic en elementos desplegables */
+    color: #FF914C; /* Cambia a tu color deseado para el texto al hacer clic */
   }
-
-  .navbar-nav .nav-item.dropdown .dropdown-item.active {
-    background-color: #ffff; /* Otra opción para resaltar el elemento activo */
-  }
-
 </style>
