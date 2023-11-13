@@ -78,3 +78,4 @@ yarn-debug.log*
 log/development.log
 /tmp/cache/assets/sprockets/*
 /tmp/cache/bootsnap/*
+/home/javier/Desktop/ids/javier/OhMyDog/config/environments/development.rb
