@@ -3,7 +3,11 @@ class CuidadorPaseadorsController < ApplicationController
 
   # GET /cuidador_paseadors or /cuidador_paseadors.json
   def index
-    @cuidador_paseadors = CuidadorPaseador.all
+      if params[:tag]
+        @cuidador_paseadors = CuidadorPaseador.tagged_with(params[:tag]).order(created_at: :desc).page(params[:page])
+      else
+        @cuidador_paseadors = CuidadorPaseador.all.order(created_at: :desc).page(params[:page])
+      end
   end
 
   # GET /cuidador_paseadors/new
@@ -85,6 +89,7 @@ class CuidadorPaseadorsController < ApplicationController
       format.json { redirect_to root_path, flash: { notice: "El correo fue enviado con éxito a #{@cuidador_paseador.nombre}." } }
     end
   end
+
 
 
   private

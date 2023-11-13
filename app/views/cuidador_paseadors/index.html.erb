@@ -1,5 +1,5 @@
 <% if user_signed_in? and current_user.tipo_usuario == 'administrador'  %>
-  <%= link_to "Cargar cuidador/paseador", new_cuidador_paseador_path , class: "btn btn-primary", style:'margin-block: 10px;'%>
+  <%= link_to "Cargar cuidador/paseador", new_cuidador_paseador_path , class: "btn", style:'background-color: #0D9BB5; color:white;  margin-block: 10px;'%>
 <% end %>
 
 <div class='d-flex'>
@@ -22,7 +22,14 @@
   <div id="cuidadores_paseadores" class= 'd-flex flex-wrap'>
     <% @cuidador_paseadors.each do |cuidador_paseador| %> 
       <div class="card" style="width: 300px; height: 500px; margin: 10px" data-rol="<%= cuidador_paseador.rol.downcase %>" >
-        <%= image_tag(cuidador_paseador.foto, class:'card-img-top', style:'max-height: 200px; min-height: 200px; max-width: 100%; object-fit: cover;  object-position: top; ') %>
+        
+        <% if cuidador_paseador.foto.present? %>
+          <%= image_tag(cuidador_paseador.foto, class: 'card-img-top', style: 'max-height: 200px; min-height: 200px; max-width: 100%; object-fit: cover; object-position: top; ') %>
+        <% else %>
+        <!-- Puedes mostrar una imagen por defecto o algún marcador de posición -->
+          <%= image_tag('imagen_por_defecto.jpg', class: 'card-img-top', style: 'max-height: 200px; min-height: 200px; max-width: 100%; object-fit: cover; object-position: top; ') %>
+        <% end %>
+
         <div class="card-body">
           <p class="card-text", style=''> <%= cuidador_paseador.nombre %> <%= cuidador_paseador.apellido %> </p>
           <p class="card-text">
@@ -153,6 +160,8 @@
     <% end %>
   </div> 
 
+ <%= render "cuidador_paseadors/pagination" %>
+
 <script>
   document.addEventListener("turbo:load", function() {
     // Obtiene referencias a los checkboxes y a los elementos de la lista
@@ -186,6 +195,3 @@
     }
   });
 </script>
-
-
-

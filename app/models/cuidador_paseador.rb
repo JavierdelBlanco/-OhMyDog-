@@ -3,7 +3,7 @@ class CuidadorPaseador < ApplicationRecord
     validate :foto_content_type
     validate :validar_email
 
-
+    paginates_per 4
 
     def foto_content_type
         if foto.attached? && !foto.content_type.in?(%w(image/jpeg image/jpg image/png image/gif image/webp))
