@@ -42,6 +42,7 @@
         <%= form.hidden_field :nombre_dueno, value: current_user.nombre %>
         <%= form.hidden_field :apellido_dueno, value: current_user.apellido %>
         <%= form.hidden_field :direccion_dueno, value: current_user.direccion %>
+        <%= form.hidden_field :numero_dueno, value: current_user.nro %>
       <% else %>
         <p>Como no te encuentras registrado deberas ingresar los siguientes datos:</p>
         <!-- -->
@@ -76,6 +77,16 @@
         </div>
 
         <div class="col-md-6">
+          <%= form.label :numero, style: "display: block;" %>
+          <div class="input-group has-validation">
+            <%= form.text_field :numero_dueno, class: 'form-control' + (perros_encontrado.errors[:numero_dueno].any? ? ' is-invalid' : ''), id: 'validationName' %>
+            <div id="validationFotoFeedback" class="invalid-feedback" style="<%= perros_encontrado.errors[:numero_dueno].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
+              <%= perros_encontrado.errors.messages_for(:numero_dueno).join(', ') %>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
           <%= form.label :mail, style: "display: block;" %>
           <div class="input-group has-validation">
             <%= form.text_field :mail, class: 'form-control' + (perros_encontrado.errors[:mail].any? ? ' is-invalid' : ''), id: 'validationName' %>
@@ -84,7 +95,7 @@
             </div>
           </div>
         </div>
-        <!-- -->
+        
       <% end %>
     </div>
 
@@ -105,7 +116,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
                 <div class="modal-body">
-                  Confirma la publicacion de este paseador/cuidador ?
+                  Confirma la publicacion de este perro que encontro ?
                 </div>
               <div class="modal-footer">
                 <%= form.submit 'Confirmar',  class: "btn btn-turqueza", style:'margin: 2px' %>

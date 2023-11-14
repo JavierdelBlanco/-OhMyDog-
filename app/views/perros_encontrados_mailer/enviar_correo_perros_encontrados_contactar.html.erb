@@ -8,14 +8,15 @@
     <p>Los detalles del dueño son los siguientes:</p>
 
     <ul>
-      <li><strong>Nombre: </strong><%= @current_user.nombre %></li>
-      <li><strong>Apellido: </strong><%= @current_user.apellido %></li>
-      <li><strong>Dirección: </strong><%= @current_user.direccion %></li>
-      <li><strong>Numero: </strong><%= @current_user.nro %></li>
-      <li><strong>Correo Electrónico: </strong><%= @current_user.email %></li>
+      <li><strong>Nombre: </strong><%= @nombre %></li>
+      <li><strong>Apellido: </strong><%= @apellido %></li>
+      <li><strong>Dirección: </strong><%= @direccion %></li>
+      <li><strong>Numero: </strong><%= @numero %></li>
+      <li><strong>Correo Electrónico: </strong><%= @email %></li>
     </ul>
 
     <p>Te recomendamos que te pongas en contacto con esta persona para coordinar la devolución de su querida mascota.</p>
+
     <% if @perro.nombre.blank? %>
       <p>
         Para mantener actualizada nuestra comunidad y brindar esperanza a otros dueños de mascotas, te invitamos a marcar a el perro con identificador, <%= @perro.token %>, como "Dueño encontrado" en nuestra página. Esto ayudará a cerrar la búsqueda y a compartir la alegría con todos los que han estado pendientes de la situación.
@@ -31,6 +32,7 @@
         </p>
       <% end %>
     <% end %>
+
     <p>Agradecemos tu cooperación y confianza en ¡OhMyDog!, y esperamos que pronto puedas reunir al dueño con su peludo amigo.</p>
 
     <p>Saludos,</p>

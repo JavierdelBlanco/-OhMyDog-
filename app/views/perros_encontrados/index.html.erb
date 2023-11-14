@@ -2,8 +2,8 @@
 
 <a href="<%= new_perros_encontrado_path %>" class="btn btn-turqueza">Publicar un perro encontrado</a>
 <% if user_signed_in? %>
-  <button id="perros_encontrados_boton" class="btn btn-turqueza">Perros encontrados</button>
-  <button id="mis_perros_encontrados_boton" class="btn btn-turqueza">Mis perros encontrados</button>
+  <%= link_to "Perros encontrados", perros_encontrados_path, class: "btn btn-turqueza perros-encontrados-boton" %>
+  <%= link_to "Mis perros encontrados", perros_encontrados_path(filter: current_user.email), class: "btn btn-turqueza mis-perros-encontrados-boton" %>
 <% end %>
 
 
@@ -14,7 +14,7 @@
 <% end %>
 
 
-<% if user_signed_in? && @perros.none? { |perro| user_signed_in? && perro.mail == current_user.email } && @perros.none? { |perro| perro.mail == current_user.email } %>
+<% if user_signed_in? && @perros.none? { |perro| user_signed_in? && perro.mail == current_user.email } %>
   <div class="mis_perros">
     <p>No tienes publicaciones de perros encontrados.</p>
   </div>
@@ -24,7 +24,7 @@
 <div class='d-flex flex-wrap'>
   <% @perros.each do |perros| %>
    
-    <div class="<%= (user_signed_in? && current_user.email == perros.mail) ? '' : 'no_mis_perros' %> card d-flex" style="max-width: 350px; max-height: 500px; min-width: 350px; min-height: 500px; margin: 10px">
+    <div class="card d-flex" style="max-width: 350px; max-height: 500px; min-width: 350px; min-height: 500px; margin: 10px">
       <%= image_tag(perros.foto, class:'card-img-top', style:'max-height: 200px; min-height: 200px; max-width: 100%; object-fit: cover;  object-position: top; ') %>
       <div class="card-body">
         <p class="card-text", style=''> <strong> Nombre: </strong> <%= perros.nombre %> </p>
@@ -54,6 +54,7 @@
                       <li>Nombre</li>
                       <li>Apellido</li>
                       <li>Direccion</li>
+                      <li>Numero</li>
                       <li>Direccion de correo electronico</li>
                     </ul>
                     <p>Pronto <%= perros.nombre_dueno %> <%= perros.apellido_dueno %> se comunicara con usted.</p>
@@ -65,11 +66,57 @@
                 </div>
               </div>
             </div>
+
+            <!-- Modal Pedir Servicios No Registrado-->
+              <div class="modal fade" id="ModalPedirServiciosNoRegistrado-<%= perros.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Enviar datos de contacto</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p>Se le enviara un email a <%= perros.nombre_dueno %> para informarle sobre tu interés en contratar sus servicios.</p>
+                      <p>Completa este formulario con tu informacion para que pueda contactarte:</p>
+                      <%= form_with url: enviar_correo_perros_encontrados_contactar_path(id: perros.id), method: :post, id: 'formularioDatos' do |form| %>
+                        
+                        <div class="mb-3">
+                          <%= form.label :nombre, 'Nombre:' %>
+                          <%= form.text_field :nombre, class: 'form-control', required: true %>
+                        </div>
+
+                        <div class="mb-3">
+                          <%= form.label :apellido, 'Apellido:' %>
+                          <%= form.text_field :apellido, class: 'form-control', required: true %>
+                        </div>
+
+                        <div class="mb-3">
+                          <%= form.label :direccion, 'Dirección:' %>
+                          <%= form.text_field :direccion, class: 'form-control', required: true %>
+                        </div>
+
+                        <div class="mb-3">
+                          <%= form.label :numero, 'Número:' %>
+                          <%= form.text_field :numero, class: 'form-control', required: true %>
+                        </div>
+
+                        <div class="mb-3">
+                          <%= form.label :email, 'Correo electrónico:' %>
+                          <%= form.email_field :email, class: 'form-control', required: true %>
+                        </div>
+
+                        <%= form.submit 'Enviar', id: "confirmarBtn", class: 'btn btn-success', style:"margin: 2px" %>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Atras</button>
+                      <% end %>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
           </div>
 
-          <!-- ------------------------------- -->
-
-          <!-- ------------------------------- -->
 
             
 
@@ -93,7 +140,7 @@
                     Desea eliminar la publicacion de este perro que busca dueño de forma permanente ?
                   </div>
                   <div class="modal-footer">
-                    <%= link_to "Confirmar", perros, data: { turbo_method: :delete } ,  class: "btn btn-primary", style:'margin: 2px' %>
+                    <%= link_to "Confirmar", perros, data: { turbo_method: :delete } ,  class: "btn btn-turqueza", style:'margin: 2px' %>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
                   </div>
                 </div>
@@ -116,48 +163,36 @@
 
 <%= render "perros_encontrados/pagination" %>
 
-
 <script>
   document.addEventListener('turbo:load', function() {
-    // Ocultar los divs con clase "no_mis_perros" inicialmente
-    var noMisPerrosDivs = document.querySelectorAll('.no_mis_perros');
-    for (var i = 0; i < noMisPerrosDivs.length; i++) {
-      noMisPerrosDivs[i].style.display = 'block';
+    // Función para ocultar y mostrar elementos según el botón presionado
+    function toggleElements(showMisPerros) {
+      var misPerrosDiv = document.querySelector('.mis_perros');
+      var noMisPerrosDiv = document.querySelector('.no_mis_perros');
+
+      if (showMisPerros) {
+        misPerrosDiv.style.display = 'block';
+        noMisPerrosDiv.style.display = 'none';
+      } else {
+        misPerrosDiv.style.display = 'none';
+        noMisPerrosDiv.style.display = 'block';
+      }
     }
 
-
-    // Mostrar el mensaje por si no hay perros perdidos
-    var misPerrosP = document.querySelectorAll('.mis_perros');
-    for (var i = 0; i < misPerrosP.length; i++) {
-      misPerrosP[i].style.display = 'none';
+    // Agregar función al botón "Perros encontrados"
+    var perrosEncontradosBoton = document.querySelector('.perros-encontrados-boton');
+    if (perrosEncontradosBoton) {
+      perrosEncontradosBoton.addEventListener('click', function() {
+        toggleElements(false);
+      });
     }
 
-
-    // Agregar función al botón "Perros perdidos"
-    var perrosPerdidosBoton = document.getElementById('perros_encontrados_boton');
-    perrosPerdidosBoton.addEventListener('click', function() {
-      // Mostrar todos los divs con clase "no_mis_perros"
-      for (var i = 0; i < noMisPerrosDivs.length; i++) {
-        noMisPerrosDivs[i].style.display = 'block';
-        noMisPerrosDivs[i].classList.add('d-flex');
-      }
-      for (var i = 0; i < misPerrosP.length; i++) {
-        misPerrosP[i].style.display = 'none';
-      }
-    });
-
-
-    // Agregar función al botón "Mis perros perdidos"
-    var misPerrosPerdidosBoton = document.getElementById('mis_perros_encontrados_boton');
-    misPerrosPerdidosBoton.addEventListener('click', function() {
-      // Ocultar todos los divs con clase "no_mis_perros"
-      for (var i = 0; i < noMisPerrosDivs.length; i++) {
-        noMisPerrosDivs[i].style.display = 'none';
-        noMisPerrosDivs[i].classList.remove('d-flex');
-      }
-      for (var i = 0; i < misPerrosP.length; i++) {
-        misPerrosP[i].style.display = 'block';
-      }
-    });
+    // Agregar función al botón "Mis perros encontrados"
+    var misPerrosEncontradosBoton = document.querySelector('.mis-perros-encontrados-boton');
+    if (misPerrosEncontradosBoton) {
+      misPerrosEncontradosBoton.addEventListener('click', function() {
+        toggleElements(true);
+      });
+    }
   });
 </script>

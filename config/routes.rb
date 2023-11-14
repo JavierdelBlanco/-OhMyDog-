@@ -63,5 +63,9 @@ Rails.application.routes.draw do
     end
   end
 
+  post '/enviar_correo_perros_perdidos_contactar', to: 'perros_perdidos#enviar_correo_perros_perdidos_contactar'
+  post '/enviar_correo_perros_encontrados_contactar', to: 'perros_encontrados#enviar_correo_perros_encontrados_contactar'
+  
+
 
 end

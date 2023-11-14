@@ -6,4 +6,15 @@ class PerrosEncontradosMailer < ApplicationMailer
         mail(to: perro.mail, subject: '¡El dueño de uno de los perros que encontraste ha aparecido!')
     end
 
+    def enviar_correo_perros_encontrados_contactar(perro, nombre, apellido, direccion, numero, email)
+        @perro = perro
+        @nombre = nombre
+        @apellido = apellido
+        @direccion = direccion
+        @numero = numero
+        @email = email
+        mail(to: perro.mail, subject: '¡Han encontrado a uno de tus perros!')
+    end
+
+    
 end

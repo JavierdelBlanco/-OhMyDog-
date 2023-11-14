@@ -4,17 +4,32 @@ class PerrosEncontradosController < ApplicationController
 
   # GET /perros_encontrados or /perros_encontrados.json
   def index
-    if params[:tag]
-      perros_encontrados = PerrosEncontrado.where(status: 'Se busca al dueño').tagged_with(params[:tag]).order(created_at: :desc)
-      perros_reunidos = PerrosEncontrado.where(status: 'Dueño encontrado').tagged_with(params[:tag]).order(created_at: :desc)
+    if params[:filter].present?
+      perros_encontrados = PerrosEncontrado.where(mail: params[:filter], status: 'Se busca al dueño').order(created_at: :desc)
+      perros_reunidos = PerrosEncontrado.where(mail: params[:filter], status: 'Dueño encontrado').limit(50).order(created_at: :desc)
+  
+      # Combinar perros perdidos y encontrados
+      @perros = perros_encontrados + perros_reunidos
+  
+      # Ordenar la lista combinada por status y fecha de forma descendente
+      @perros = @perros.sort_by { |perro| [perro.status.downcase, perro.created_at] }.reverse
+  
+      # Aplicar paginación a la lista
+      @perros = Kaminari.paginate_array(@perros).page(params[:page]).per(4)
     else
       perros_encontrados = PerrosEncontrado.where(status: 'Se busca al dueño').order(created_at: :desc)
-      perros_reunidos = PerrosEncontrado.where(status: 'Dueño encontrado').order(created_at: :desc)
+      perros_reunidos = PerrosEncontrado.where(status: 'Dueño encontrado').limit(50).order(created_at: :desc)
+  
+      # Combinar perros perdidos y encontrados
+      @perros = perros_encontrados + perros_reunidos
+  
+      # Ordenar la lista combinada por status y fecha de forma descendente
+      @perros = @perros.sort_by { |perro| [perro.status.downcase, perro.created_at] }.reverse
+  
+      # Aplicar paginación a la lista
+      @perros = Kaminari.paginate_array(@perros).page(params[:page]).per(4)
     end
-
-    @perros = (perros_encontrados + perros_reunidos).sort_by { |perro| [perro.status, perro.created_at] }.reverse
-    @perros = Kaminari.paginate_array(@perros).page(params[:page]).per(6)
-
+  
     @users = User.all
   end
 
@@ -117,6 +132,34 @@ class PerrosEncontradosController < ApplicationController
 
   end
 
+  def enviar_correo_perros_encontrados_contactar
+
+    id = params[:id]
+    @perro = PerrosEncontrado.find(id)
+
+    nombre = params[:nombre]
+    apellido = params[:apellido]
+    direccion = params[:direccion]
+    numero = params[:numero]
+    email = params[:email]
+
+    existing_user = User.find_by(email: params[:email])
+
+    if existing_user || (email == @perro.mail)
+      # El correo electrónico ya está registrado, realiza alguna acción (por ejemplo, mostrar un mensaje de error)
+      flash[:alert] = "El correo electrónico ya está registrado en la veterinaria o estas intentando contactarrte a ti mismo"
+      redirect_back(fallback_location: root_path) # Puedes redirigir a donde desees
+    else
+      PerrosEncontradosMailer.enviar_correo_perros_encontrados_contactar(@perro, nombre, apellido, direccion, numero, email).deliver_later
+
+      respond_to do |format|
+        format.html { redirect_to root_path, flash: { notice: "El correo fue enviado con exito." } }
+        format.json { head :no_content }
+      end
+    end
+
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_perros_encontrado
@@ -126,6 +169,6 @@ class PerrosEncontradosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def perros_encontrado_params
-      params.require(:perros_encontrado).permit(:nombre, :foto, :fecha_de_publicacion, :status, :mail, :descripcion, :nombre_dueno, :apellido_dueno, :direccion_dueno)
+      params.require(:perros_encontrado).permit(:nombre, :foto, :fecha_de_publicacion, :status, :mail, :descripcion, :nombre_dueno, :apellido_dueno, :direccion_dueno, :numero_dueno)
     end
 end
