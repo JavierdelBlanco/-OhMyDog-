@@ -66,8 +66,20 @@ class UsersController < ApplicationController
     UserMailer.welcome_email.deliver_now
   end
 
+  def ver_perfil
+    @user = User.find(params[:id])
+    @perritos_vivos = @user.perritos.where(fallecido: false)
+    puts '##################CREATE######################'
+    puts @user.id
+    puts @perritos_vivos.empty?
+  end
+
   def show
     @user = User.find(params[:id])
+    @perritos_vivos = @user.perritos.where(fallecido: false)
+    puts '#################SHOW#########################'
+    puts @user.id
+    puts @perritos_vivos.empty?
   end
 
   def create

@@ -79,7 +79,7 @@
           <td>
             <!-- Botón "Editar" y "Eliminar" para el administrador -->
             <% if current_user.tipo_usuario == 'administrador' %>
-              <%= link_to "Editar", edit_perrito_path(perrito), class: "btn btn-sm btn-secondary" %>
+              <%= link_to "Editar", edit_perrito_path(perrito, tipo: 'ajeno'), class: "btn btn-sm btn-secondary" %>
               <%# link_to "Eliminar", perrito, data: { turbo_method: :delete }, class: "btn btn-sm btn-danger" %>
             <% end %>
           </td>
@@ -88,6 +88,7 @@
   </tbody>
   </table>
 <% end %>
+
 
 
 

@@ -42,7 +42,7 @@ class PerritosController < ApplicationController
     respond_to do |format|
       if @perrito.save
         if(@tipo=='mio')
-          format.html { redirect_to perfil_path, notice: "Se creó un perro exitosamente." }
+          format.html { redirect_to ver_perfil_path(current_user.id), notice: "Se creó un perro exitosamente." }
           format.json { render :show, status: :created, location: @perrito }
         else
           format.html { redirect_to user_path(@user), notice: "Se creó un perro exitosamente." }
@@ -63,8 +63,10 @@ class PerritosController < ApplicationController
     respond_to do |format|
       parametros = perrito_params.except(:tipo)
       if @perrito.update(parametros)
-        if(@tipo=='mio')
-          format.html { redirect_to perfil_path, notice: "Se actualizó el perro exitosamente." }
+        puts '##############################################'
+        puts tipo
+        if(tipo=='mio')
+          format.html { redirect_to ver_perfil_path(current_user), notice: "Se creó un perro exitosamente." }
           format.json { render :show, status: :ok, location: @perrito }
         else
           format.html { redirect_to user_path(@user), notice: "Se actualizó el perro exitosamente." }
@@ -91,7 +93,7 @@ class PerritosController < ApplicationController
     @perrito.destroy
     respond_to do |format|
       if(current_user.id == @user.id)
-        format.html { redirect_to perfil_path, notice: "Se eliminó exitosamente el perro." }
+        format.html { redirect_to ver_perfil_path(@user.id), notice: "Se eliminó exitosamente el perro." }
         format.json { head :no_content }
       else
         format.html { redirect_to user_path(@user), notice: "Se eliminó exitosamente el perro." }
