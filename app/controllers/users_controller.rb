@@ -3,6 +3,8 @@ class UsersController < ApplicationController
   before_action :authenticate_user!, only: [:show] # Asegura que el usuario esté autenticado
 
 
+
+  
   def agregar_perrito
     @perrito = Perrito.new
   end

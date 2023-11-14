@@ -1,5 +1,7 @@
 <% if current_user.tipo_usuario == 'administrador' %>
 
+<%= link_to "Crear usuario", creacion_usuario_path, class: "btn btn-turqueza" %>
+
 <style>
 /* Estilos para la tabla */
 #datos {
@@ -49,6 +51,7 @@
     var tableReg = document.getElementById('datos');
     var searchInput = document.getElementById('searchTerm').value.toLowerCase();
     var cellsOfRow = "";
+    var encontro = 0;
 
     for (var i = 1; i < tableReg.rows.length; i++) {
       cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
@@ -62,9 +65,14 @@
 
       if (found) {
         tableReg.rows[i].style.display = '';
+        encontro++;
       } else {
         tableReg.rows[i].style.display = 'none';
       }
+    }
+    var mensajeElement = document.getElementById("mensaje-no-encontrado");
+    if (mensajeElement) {
+      mensajeElement.innerHTML = encontro === 0 ? 'No se encontró ninguna persona con ese nombre y/o apellido.' : '';
     }
   }
 </script>
@@ -99,8 +107,9 @@
       <% end %>
     </tbody>
   </table>
+  <p id="mensaje-no-encontrado"></p>
 <% else %>
-  <p>No hay usuarios en la base de datos.</p>
+  <p>No hay clientes registrados.</p>
 <% end %>
 <% end %>
 
