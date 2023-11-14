@@ -120,16 +120,6 @@
     <%= f.number_field :telefono, autofocus: true, inputmode: "numeric" %>
   </div>
 
-
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
-    <% end %>
-  </div>
-
   <div class="actions">
     <%= f.submit "Actualizar" , class: "btn btn-primary"%>
     <%= link_to "Cancelar", :back, class: "btn btn-sm btn-danger"%>

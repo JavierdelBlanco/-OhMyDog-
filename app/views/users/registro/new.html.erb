@@ -1,0 +1,87 @@
+
+  <div id="signup-form">
+    <h2>Crear cuenta</h2>
+
+    <%= form_with(model: @user, url: creacion_usuario_path, method: :post) do |f| %>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "email", required: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :nombre %><br />
+    <%= f.text_field :nombre, autofocus: true, autocomplete: "nombre", required: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :apellido %><br />
+    <%= f.text_field :apellido, autofocus: true, autocomplete: "apellido", required: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :direccion %><br />
+    <%= f.text_field :direccion, autofocus: true, autocomplete: "direccion", required: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :nro %><br />
+    <%= f.number_field :nro, autofocus: true, inputmode: "numeric", required: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :tipo_usuario %><br />
+    <%= f.select :tipo_usuario, options_for_select([['Normal', 'normal'], ['Premium', 'premium'], ['Administrador', 'administrador']]), {}, autofocus: true, autocomplete: "tipo_usuario", required: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :telefono %><br />
+    <%= f.number_field :telefono, autofocus: true, inputmode: "numeric", required: true %>
+  </div>
+
+  <h2>Perro</h2>
+
+  <%= f.fields_for :perrito do |p| %>
+    <div>
+      <%= p.label :nombre, style: "display: block" %>
+      <%= p.text_field :nombre, required: true %>
+    </div>
+    <div>
+      <%= p.label :fecha_de_nacimiento, style: "display: block" %>
+      <div class="date-select">
+        <%= p.select :dia, (1..31) %>
+        <%= p.select :mes, Date::ABBR_MONTHNAMES.compact.each_with_index.map { |month, index| [month, index + 1] } %>
+        <%= p.select :año, (Date.current.year - 20)..(Date.current.year) %>
+      </div>
+    </div>
+    <div>
+      <%= p.label :caracteristicas, style: "display: block" %>
+      <%= p.text_area :caracteristicas, required: true %>
+    </div>
+    <div>
+      <%= p.label :condiciones, style: "display: block" %>
+      <%= p.text_area :condiciones, required: true %>
+    </div>
+    <div>
+      <%= p.label :raza, style: "display: block" %>
+      <%= p.text_field :raza, required: true %>
+    </div>
+    <div>
+      <%= p.label :color, style: "display: block" %>
+      <%= p.text_field :color, required: true %>
+    </div>
+    <div>
+      <%= p.label :tamaño, style: "display: block" %>
+      <%= p.text_field :tamaño, required: true %>
+    </div>
+  <% end %>
+
+
+  <div class="actions">
+    <%= f.submit "Crear" %>
+  </div>
+<% end %>
+
+
+
+

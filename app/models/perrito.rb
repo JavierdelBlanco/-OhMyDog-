@@ -7,4 +7,13 @@ class Perrito < ApplicationRecord
   validates :tamaño, presence: true
 
   belongs_to :user
+
+
+  validates :nombre, uniqueness: { scope: [:user_id], message: 'ya está en uso para este usuario', if: :no_esta_fallecido? }
+
+  def no_esta_fallecido?
+    !fallecido
+  end
+
+
 end

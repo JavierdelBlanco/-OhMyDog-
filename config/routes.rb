@@ -28,8 +28,11 @@ Rails.application.routes.draw do
     resources :perritos # Esto anida las rutas de perritos dentro de las rutas de usuarios
   end
 
+  
   get 'profile/edit', to: 'profile#edit', as: :edit_profile
   end
+  get 'creacion_usuario', to: 'users/registro#new', as: 'creacion_usuario'
+  post 'creacion_usuario', to: 'users/registro#create'
   #Atencion al cliente
   get 'perrito_ajeno/:id', to: 'perritos#new_ajeno', as: 'perrito_ajeno'
   get 'edit_other/:id', to: 'users#edit_otro', as: 'edit_other'

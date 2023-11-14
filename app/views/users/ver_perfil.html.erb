@@ -92,9 +92,11 @@
 
 <script>
   document.addEventListener("turbo:load", function() {
+
     // Obtiene referencias a los checkboxes y a los elementos de la lista
     const fallecidosCheckbox = document.getElementById("fallecidos-check");
     const listItems = document.querySelectorAll(".filasfallecidos");
+    
     for (var i = 0; i < listItems.length; i++) {
       listItems[i].style.display = 'none';
     }
