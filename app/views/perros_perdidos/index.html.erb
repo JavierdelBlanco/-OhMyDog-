@@ -3,8 +3,8 @@
 
 <% if user_signed_in? %>
   <a href="<%= new_perros_perdido_path %>" class="btn btn-turqueza">Publicar un perro perdido</a>
-  <button id="perros_perdidos_boton" class="btn btn-turqueza">Perros perdidos</button>
-  <button id="mis_perros_perdidos_boton" class="btn btn-turqueza">Mis perros perdidos</button>
+  <%= link_to "Perros perdidos", perros_perdidos_path , class:"btn btn-turqueza" %>
+  <%= link_to "Mis perros perdidos", perros_perdidos_path(filter: current_user.email) , class:"btn btn-turqueza" %>
 <% end %>
 
 <% if @perros.empty? %>
