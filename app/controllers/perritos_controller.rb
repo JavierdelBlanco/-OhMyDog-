@@ -15,6 +15,7 @@ class PerritosController < ApplicationController
     @perrito = Perrito.new
     @user = User.find(params[:id])
     @tipo = 'mio'
+
   end
 
   def new_ajeno
@@ -26,6 +27,7 @@ class PerritosController < ApplicationController
 
   # GET /perritos/1/edit
   def edit
+    @user = @perrito.user
   end
 
   # POST /perritos or /perritos.json
@@ -36,7 +38,7 @@ class PerritosController < ApplicationController
     @user = User.find(user_id)
     parametros = perrito_params.except(:tipo)
     @perrito = @user.perritos.build(parametros)
-    
+
     respond_to do |format|
       if @perrito.save
         if(@tipo=='mio')

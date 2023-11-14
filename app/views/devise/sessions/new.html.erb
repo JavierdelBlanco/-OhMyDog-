@@ -6,15 +6,21 @@
           <h2 class="card-title text-center mb-4">Iniciar sesión</h2>
 
           <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "mb-3" }) do |f| %>
+            
             <div class="mb-3">
-              <%= f.label :email, class: "form-label" %>
-              <%= f.email_field :email, class: "form-control", autofocus: true, autocomplete: "email" %>
+                <%= f.label :email , class: "form-label", style: "display: block;" %>
+                  <div class="input-group has-validation">
+                  <%= f.email_field :email, class: 'form-control', autofocus: true, autocomplete: "email", required: true, id: 'validationEmail' %>
+                  </div>
             </div>
 
             <div class="mb-3">
               <%= f.label 'Contraseña' , class: "form-label" %>
-              <%= f.password_field :password, class: "form-control", autocomplete: "current-password" %>
+              <div class="input-group has-validation">
+                  <%= f.password_field :password, class: "form-control", autocomplete: "current-password", required: true, id: 'validationPassword' %>
+              </div>
             </div>
+
 
             <div class="text-center">
               <%= f.submit "Iniciar sesión", class: "btn btn-turqueza" %>

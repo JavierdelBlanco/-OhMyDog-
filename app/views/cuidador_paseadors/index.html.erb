@@ -71,8 +71,8 @@
                       Desea eliminar la publicacion de cuidador/paseador de forma permanente ?
                     </div>
                     <div class="modal-footer">
-                      <%= link_to "Confirmar", cuidador_paseador, data: { turbo_method: :delete } ,  class: "btn btn-primary", style:'margin: 2px' %>
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+                      <%= link_to "Confirmar", cuidador_paseador, data: { turbo_method: :delete } ,  class: "btn btn-succes", style:'margin: 2px' %>
+                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Atras</button>
                     </div>
                   </div>
                 </div>
@@ -106,8 +106,8 @@
                       </ul>    
                     </div>
                     <div class="modal-footer">
-                      <%= link_to "Enviar", enviar_correo_path(id: cuidador_paseador.id), data: { turbo_method: :post },  class: "btn btn-primary", style:'margin: 2px' %>
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+                      <%= link_to "Enviar", enviar_correo_path(id: cuidador_paseador.id), data: { turbo_method: :post },  class: "btn btn-success", style:'margin: 2px' %>
+                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Atras</button>
                     </div>
                   </div>
                 </div>
@@ -153,8 +153,8 @@
                           <%= form.email_field :email, class: 'form-control', required: true %>
                         </div>
 
-                        <%= form.submit 'Enviar', id: "confirmarBtn", class: 'btn btn-primary', style:"margin: 2px" %>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+                        <%= form.submit 'Enviar', id: "confirmarBtn", class: 'btn btn-success', style:"margin: 2px" %>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Atras</button>
                       <% end %>
 
                     </div>

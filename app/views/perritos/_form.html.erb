@@ -1,67 +1,160 @@
 <%= form_with(model: perrito) do |form| %>
-  <% if perrito.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(perrito.errors.count, "error") %> prohibited this perrito from being saved:</h2>
-      <ul>
-        <% perrito.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+  <div class="row g-3 needs-validation" style="width: 500px; margin: 5px; border: 1px solid #000; border-radius: 5px;">
+    <% if perrito.errors.any? %>
+      <div class="col-md-12" style="color: red;">
+        <h2><%= pluralize(perrito.errors.count, "error") %> prohibited this perrito from being saved:</h2>
+        <ul>
+          <% perrito.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    
+    <div class="col-md-6">
+      <%= form.label :nombre, style: "display: block;" %>
+      <div class="input-group has-validation">
+        <%= form.text_field :nombre, class: 'form-control', required: true, id: 'validationName' %>
+        <div id="validationNameFeedback" class="invalid-feedback">
+          <%= perrito.errors.full_messages_for(:nombre).join(', ') %>
+        </div>
+      </div>
     </div>
-  <% end %>
 
-  <div>
-    <%= form.label :nombre, style: "display: block" %>
-    <%= form.text_field :nombre %>
-  </div>
-
-  <div>
-    <%= form.label :fecha_de_nacimiento, style: "display: block" %>
-    <div class="date-select">
-      <%= form.select :dia, (1..31) %>
-      <%= form.select :mes, Date::ABBR_MONTHNAMES.compact.each_with_index.map { |month, index| [month, index + 1] } %>
-      <%= form.select :año, (Date.current.year - 20)..(Date.current.year) %>
-    </div>
-  </div>
-
-  <div>
-    <%= form.label :caracteristicas, style: "display: block" %>
-    <%= form.text_area :caracteristicas %>
-  </div>
-
-  <div>
-    <%= form.label :condiciones, style: "display: block" %>
-    <%= form.text_area :condiciones %>
-  </div>
-
-  <div>
-    <%= form.label :raza, style: "display: block" %>
-    <%= form.text_field :raza %>
-  </div>
-
-  <div>
-    <%= form.label :color, style: "display: block" %>
-    <%= form.text_field :color %>
-  </div>
-
-  <div>
-    <%= form.label :tamaño, style: "display: block" %>
-    <%= form.text_field :tamaño %>
-  </div>
-
-  <div>
-    <%= form.label :fallecido, style: "display: block" %>
-    <%= form.check_box :fallecido %>
-  </div>
-
-  <%= form.hidden_field :user_id, value: @user.id %>
-  <%= form.hidden_field :tipo, value: @tipo %>
-  
-    <div>
-    <% if request.path == "/perritos/#{params[:id]}/edit" %>
-        <%= form.submit 'Actualizar perro'%>
-      <% else %> 
-            <%= form.submit 'Agregar perro'%>
+    <div class="col-md-6">
+  <%= form.label :fecha_de_nacimiento, style: "display: block;" %>
+  <div class="date-select">
+     <% if request.path == "/perritos/#{params[:id]}/edit" %>
+        <%= form.select :dia, (1..31) %>
+        <%= form.select :mes, Date::ABBR_MONTHNAMES.compact.each_with_index.map { |month, index| [month, index + 1] } %>
+        <%= form.select :año, (Date.current.year - 20)..(Date.current.year) %>
+      <% else %>
+        <%= form.select :dia, (1..31), selected: Time.now.day %>
+        <%= form.select :mes, Date::ABBR_MONTHNAMES.compact.each_with_index.map { |month, index| [month, index + 1] }, selected: Time.now.month %>
+        <%= form.select :año, (Date.current.year)..(Date.current.year - 20), selected: Time.now.year %>
       <% end %>
+  </div>
+</div>
+
+    <div class="col-md-6">
+  <%= form.label :caracteristicas, style: "display: block;" %>
+  <div class="input-group has-validation">
+    <%= form.text_area :caracteristicas, class: 'form-control', required: true, id: 'validationCaracteristicas' %>
+    <div id="validationCaracteristicasFeedback" class="invalid-feedback">
+      <%= perrito.errors.full_messages_for(:caracteristicas).join(', ') %>
     </div>
+  </div>
+</div>
+
+<div class="col-md-6">
+  <%= form.label :condiciones, style: "display: block;" %>
+  <div class="input-group has-validation">
+    <%= form.text_area :condiciones, class: 'form-control', required: true, id: 'validationCondiciones' %>
+    <div id="validationCondicionesFeedback" class="invalid-feedback">
+      <%= perrito.errors.full_messages_for(:condiciones).join(', ') %>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-6">
+  <%= form.label :raza, style: "display: block;" %>
+  <div class="input-group has-validation">
+    <%= form.text_field :raza, class: 'form-control', required: true, id: 'validationRaza' %>
+    <div id="validationRazaFeedback" class="invalid-feedback">
+      <%= perrito.errors.full_messages_for(:raza).join(', ') %>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-6">
+  <%= form.label :color, style: "display: block;" %>
+  <div class="input-group has-validation">
+    <%= form.text_field :color, class: 'form-control', required: true, id: 'validationColor' %>
+    <div id="validationColorFeedback" class="invalid-feedback">
+      <%= perrito.errors.full_messages_for(:color).join(', ') %>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-6">
+  <%= form.label :tamaño, style: "display: block;" %>
+  <div class="input-group has-validation">
+    <%= form.text_field :tamaño, class: 'form-control', required: true, id: 'validationTamaño' %>
+    <div id="validationTamañoFeedback" class="invalid-feedback">
+      <%= perrito.errors.full_messages_for(:tamaño).join(', ') %>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-6">
+  <%= form.label :fallecido, style: "display: block;" %>
+  <div class="input-group has-validation">
+    <%= form.check_box :fallecido, class: 'form-check-input', id: 'validationFallecido' %>
+    <div id="validationFallecidoFeedback" class="invalid-feedback">
+      <%= perrito.errors.full_messages_for(:fallecido).join(', ') %>
+    </div>
+  </div>
+</div>
+
+    <div class="col-md-12">
+      <%= form.hidden_field :user_id, value: @user.id %>
+      <%= form.hidden_field :tipo, value: @tipo %>
+
+      <div>
+        <% if request.path == "/perritos/#{params[:id]}/edit" %>
+          <button type="button" class="btn btn-success" style="margin-block: 10px;" data-bs-toggle="modal" data-bs-target="#ModalEditar-<%= perrito.id %>">
+            Actualizar perro
+          </button>
+        <% else %>
+          <button type="button" class="btn btn-success" style="margin-block: 10px;" data-bs-toggle="modal" data-bs-target="#ModalAgregar-<%= perrito.id %>">
+            Agregar perro
+          </button>
+        <% end %>
+         <%= link_to "Atras", perfil_path, class: "btn btn-primary", style: 'margin-block: 10px;' %>
+      </div>
+
+      <!-- Modales -->
+
+      <!-- Modal Agregar -->
+<div class="modal fade" id="ModalAgregar-<%= perrito.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar Agregar Perro</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro de que deseas agregar este perro?
+      </div>
+      <div class="modal-footer">
+        <%= form.submit 'Confirmar', class: "btn btn-primary", style: 'margin: 2px' %>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atrás</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Editar -->
+<div class="modal fade" id="ModalEditar-<%= perrito.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar Edición de Perro</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro de que deseas guardar los cambios realizados en este perro?
+      </div>
+      <div class="modal-footer">
+        <%= form.submit 'Confirmar', class: "btn btn-primary", style: 'margin: 2px' %>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atrás</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+    </div>
+  </div>
 <% end %>

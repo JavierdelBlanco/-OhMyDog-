@@ -1,8 +1,4 @@
 <% if current_user.tipo_usuario == 'administrador' %>
-<h1>Atencion al cliente</h1>
-<h2>Lista de usuarios</h2>
-
-
 
 <style>
 /* Estilos para la tabla */
@@ -21,7 +17,7 @@
 }
 
 #datos th {
-    background-color: #333;
+    background-color: #0D9BB5;
     color: #fff;
 }
 
@@ -45,7 +41,7 @@
 </style>
 </head>
 
-<form>
+<form style="margin: 20px;">
   Buscar: <input id="searchTerm" type="text" onkeyup="doSearch()" />
 </form>
 <script>
@@ -75,7 +71,7 @@
 
 
 <% if @users.any? %>
-  <table id="datos", class type>
+  <table id="datos">
     <thead>
       <tr>
         <th>Nombre</th>
@@ -95,7 +91,7 @@
           <td><%= user.email %></td>
           <td><%= user.tipo_usuario %></td>
           <td>
-            <a href="<%= user_path(user) %>">Ver perfil de <%= user.nombre %></a>
+            <a href="<%= user_path(user) %>"  style="text-decoration: none; color: #0D9BB5; transition: color 0.1s;" onmouseover="this.style.color='#FF914C'" onmouseout="this.style.color='#0D9BB5'">Ver perfil</a>
           </td>
           <!-- Agrega más celdas según tus necesidades -->
         </tr>

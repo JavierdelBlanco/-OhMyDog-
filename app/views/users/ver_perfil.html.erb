@@ -1,39 +1,42 @@
-<h1> Perfil </h1>
+<div class="container mt-5">
+  <h2 style="margin-block: 20px;">Cuenta</h2>
+  <table class="table table-bordered">
+    <tbody>
+      <tr>
+        <th>Nombre</th>
+        <td><%= current_user.nombre %></td>
+      </tr>
+      <tr>
+        <th>Apellido</th>
+        <td><%= current_user.apellido %></td>
+      </tr>
+      <tr>
+        <th>Email</th>
+        <td><%= current_user.email %></td>
+      </tr>
+      <tr>
+        <th>Dirección</th>
+        <td><%= current_user.direccion %></td>
+      </tr>
+      <tr>
+        <th>Número</th>
+        <td><%= current_user.nro %></td>
+      </tr>
+      <tr>
+        <th>Telefono</th>
+        <td><%= current_user.telefono %></td>
+      </tr>
+      <tr>
+        <th>Tipo de Usuario</th>
+        <td><%= current_user.tipo_usuario %></td>
+      </tr>
+    </tbody>
+  </table>
+  <%= link_to "Editar Perfil", edit_user_path(current_user), class: "btn btn-secondary" %>
+</div>
 
-<table class="table">
-  <tbody>
-    <tr>
-      <th>Email:</th>
-      <td><%= current_user.email %></td>
-    </tr>
-    <tr>
-      <th>Nombre:</th>
-      <td><%= current_user.nombre %></td>
-    </tr>
-    <tr>
-      <th>Apellido:</th>
-      <td><%= current_user.apellido %></td>
-    </tr>
-    <tr>
-      <th>Dirección:</th>
-      <td><%= current_user.direccion %></td>
-    </tr>
-    <tr>
-      <th>Número:</th>
-      <td><%= current_user.nro %></td>
-    </tr>
-    <tr>
-      <th>Tipo de Usuario:</th>
-      <td><%= current_user.tipo_usuario %></td>
-    </tr>
-    <th>Telefono:</th>
-      <td><%= current_user.telefono %></td>
-    </tr>
-  </tbody>
-</table>
-
-
-<h2> Tus perros </h2>
+<div style="margin: 20px;">
+  <h2> Tus perros </h2>
 
 <div class='d-flex'>
   <label class="form-check-label" style='margin: 5px; margin-right: 7px;'>  </label>
@@ -72,8 +75,8 @@
           <td>
             <!-- Botón "Editar" y "Eliminar" para el administrador -->
             <% if current_user.tipo_usuario == 'administrador' %>
-              <%= link_to "Editar", edit_perrito_path(perrito), class: "btn btn-sm btn-primary" %>
-              <%= link_to "Eliminar", perrito, data: { turbo_method: :delete }, class: "btn btn-primary", style: 'margin: 2px' %>
+              <%= link_to "Editar", edit_perrito_path(perrito), class: "btn btn-sm btn-secondary" %>
+              <%# link_to "Eliminar", perrito, data: { turbo_method: :delete }, class: "btn btn-sm btn-danger" %>
             <% end %>
           </td>
         </tr>
@@ -82,10 +85,10 @@
   </table>
 <% end %>
 
-<%= link_to "Editar Perfil", edit_user_path(current_user), class: "btn btn-primary" %>
-<%= link_to "Agregar perro", add_dog_path(current_user, tipo: 'mio'), class: "btn btn-primary" %>
 
+<%= link_to "Agregar perro", add_dog_path(current_user, tipo: 'mio'), class: "btn btn-turqueza" %>
 
+</div>
 
 <script>
   document.addEventListener("turbo:load", function() {
