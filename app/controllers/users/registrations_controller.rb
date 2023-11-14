@@ -5,9 +5,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
   before_action :configure_permitted_parameters, if: :devise_controller?
-  skip_before_action :authenticate_user, only: [:new, :create]
-  skip_before_action :require_no_authentication, only: [:new, :create]
-  before_action :authenticate_admin!, only: [:new, :create]
+
 
  # def create
  #   super do |resource|
@@ -59,15 +57,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
   protected
 
   def configure_account_update_params
-    devise_parameter_sanitizer.permit(:account_update, keys: [:nombre, :apellido, :email, :password, :password_confirmation, :direccion, :nro, :tipo_usuario, :telefono, :perrito => [:nombre_perro, :fecha_de_nacimiento, :caracteristicas, :condiciones, :raza, :color, :tamaño]])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:nombre, :apellido, :email, :password, :password_confirmation, :direccion, :nro, :tipo_usuario, :telefono, :perrito_attributes => [:nombre_perro, :fecha_de_nacimiento, :caracteristicas, :condiciones, :raza, :color, :tamaño]])
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:nombre, :apellido, :email, :password, :password_confirmation, :direccion, :nro, :telefono, :perrito => [:nombre_perro, :dia, :mes, :año, :caracteristicas, :condiciones, :raza, :color, :tamaño]])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:nombre, :apellido, :email, :password, :password_confirmation, :direccion, :nro, :telefono, :perrito_attributes => [:nombre_perro, :dia, :mes, :año, :caracteristicas, :condiciones, :raza, :color, :tamaño]])
   end
 
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:nombre, :apellido, :email, :password, :password_confirmation, :direccion, :nro, :tipo_usuario, :telefono, :perrito => [:nombre_perro, :dia, :mes, :año, :caracteristicas, :condiciones, :raza, :color, :tamaño]])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:nombre, :apellido, :email, :password, :password_confirmation, :direccion, :nro, :tipo_usuario, :telefono, :perrito_attributes => [:nombre_perro, :dia, :mes, :año, :caracteristicas, :condiciones, :raza, :color, :tamaño]])
   end
 
 
