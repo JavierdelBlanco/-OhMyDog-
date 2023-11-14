@@ -4,6 +4,9 @@ class PerrosEncontradosController < ApplicationController
 
   # GET /perros_encontrados or /perros_encontrados.json
   def index
+
+    @all_dogs = PerrosEncontrado.all
+
     if params[:filter].present?
       perros_encontrados = PerrosEncontrado.where(mail: params[:filter], status: 'Se busca al dueño').order(created_at: :desc)
       perros_reunidos = PerrosEncontrado.where(mail: params[:filter], status: 'Dueño encontrado').limit(50).order(created_at: :desc)
@@ -29,8 +32,14 @@ class PerrosEncontradosController < ApplicationController
       # Aplicar paginación a la lista
       @perros = Kaminari.paginate_array(@perros).page(params[:page]).per(4)
     end
-  
+
     @users = User.all
+    
+    respond_to do |format|
+      format.turbo_stream
+      format.html
+    end
+
   end
 
 

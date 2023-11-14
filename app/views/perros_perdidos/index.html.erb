@@ -7,12 +7,13 @@
   <%= link_to "Mis perros perdidos", perros_perdidos_path(filter: current_user.email) , class: "btn btn-turqueza mis-perros-encontrados-boton" %>
 <% end %>
 
-<% if @perros.empty? %>
+<% if @all_dogs.empty? %>
   <div class="no_mis_perros">
     <p>No hay publicaciones de perros perdidos en busqueda activa, te invitamos a que publiques si encontraste un perro para que se reencuentre con su dueño.</p>
   </div>
 <% end %>
-<% if user_signed_in? && @perros.none? { |perro| perro.mail == current_user.email } && @perros.none? { |perro| perro.mail == current_user.email } %>
+
+<% if user_signed_in? && @all_dogs.none? { |perro| perro.mail == current_user.email }   %>
   <div class="mis_perros">
     <p>No tienes publicaciones de perros perdidos.</p>
   </div>
@@ -144,7 +145,7 @@
             <div>
               <%= button_to "Marcar como encontrado", marcar_como_encontrado_perros_perdido_path(perros), method: :patch, class: "btn btn-turqueza", style: 'margin: 2px;' %>
             </div>
-           
+          
           <% end %>
 
 
@@ -161,7 +162,6 @@
 
 <script>
   document.addEventListener('turbo:load', function() {
-    // Función para ocultar y mostrar elementos según el botón presionado
     function toggleElements(showMisPerros) {
       var misPerrosDiv = document.querySelector('.mis_perros');
       var noMisPerrosDiv = document.querySelector('.no_mis_perros');
@@ -175,7 +175,22 @@
       }
     }
 
-    // Agregar función al botón "Perros encontrados"
+    function loadState() {
+      var showMisPerros = window.location.pathname.includes('/se-busca') && window.location.search.includes('filter');
+      toggleElements(showMisPerros);
+
+      var noMisPerrosDiv = document.querySelector('.no_mis_perros');
+      var misPerrosDiv = document.querySelector('.mis_perros');
+      
+      // Si la URL contiene solo /se-busca
+      if (window.location.pathname === '/se-busca' && !window.location.search.includes('filter')) {
+        noMisPerrosDiv.style.display = 'block';
+        misPerrosDiv.style.display = 'none';
+      }
+    }
+
+    loadState();
+
     var perrosEncontradosBoton = document.querySelector('.perros-encontrados-boton');
     if (perrosEncontradosBoton) {
       perrosEncontradosBoton.addEventListener('click', function() {
@@ -183,7 +198,6 @@
       });
     }
 
-    // Agregar función al botón "Mis perros encontrados"
     var misPerrosEncontradosBoton = document.querySelector('.mis-perros-encontrados-boton');
     if (misPerrosEncontradosBoton) {
       misPerrosEncontradosBoton.addEventListener('click', function() {
