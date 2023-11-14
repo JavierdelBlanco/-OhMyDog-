@@ -1,6 +1,8 @@
 class PerrosPerdido < ApplicationRecord
     attr_accessor :action_type
 
+    paginates_per 4
+
     has_one_attached :foto
 
     validates :foto, presence: { message: "Debe subir una foto" }
@@ -13,7 +15,7 @@ class PerrosPerdido < ApplicationRecord
         errors.add(:foto, 'El formato de imagen no es válido.')
       end
     end
-        
+
     def nombre_unico_para_usuario_actual
       if action_type == 'create'
         if PerrosPerdido.exists?(nombre: nombre, mail: mail, status: 'Se busca')

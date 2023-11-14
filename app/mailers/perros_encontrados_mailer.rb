@@ -1,10 +1,9 @@
 class PerrosEncontradosMailer < ApplicationMailer
-    
-    def enviar_correo_perros_encontrados(perro, owner, current_user)
+
+    def enviar_correo_perros_encontrados(perro, current_user)
         @perro = perro
-        @owner = owner
         @current_user = current_user
-        mail(to: perro.mail, subject: '¡Esta persona dice ser el dueño de este perro!')
+        mail(to: perro.mail, subject: '¡El dueño de uno de los perros que encontraste ha aparecido!')
     end
 
 end

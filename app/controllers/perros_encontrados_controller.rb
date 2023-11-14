@@ -4,10 +4,18 @@ class PerrosEncontradosController < ApplicationController
 
   # GET /perros_encontrados or /perros_encontrados.json
   def index
-      @perros_encontrados = PerrosEncontrado.where(status: 'Se busca al dueño').order(created_at: :desc)
-      @perros_reunidos = PerrosEncontrado.where(status: 'Dueño encontrado').order(created_at: :desc).limit(50)
+    if params[:tag]
+      perros_encontrados = PerrosEncontrado.where(status: 'Se busca al dueño').tagged_with(params[:tag]).order(created_at: :desc)
+      perros_reunidos = PerrosEncontrado.where(status: 'Dueño encontrado').tagged_with(params[:tag]).order(created_at: :desc)
+    else
+      perros_encontrados = PerrosEncontrado.where(status: 'Se busca al dueño').order(created_at: :desc)
+      perros_reunidos = PerrosEncontrado.where(status: 'Dueño encontrado').order(created_at: :desc)
+    end
 
-      @users = User.all
+    @perros = (perros_encontrados + perros_reunidos).sort_by { |perro| [perro.status, perro.created_at] }.reverse
+    @perros = Kaminari.paginate_array(@perros).page(params[:page]).per(6)
+
+    @users = User.all
   end
 
 
@@ -24,9 +32,6 @@ class PerrosEncontradosController < ApplicationController
   # GET /perros_encontrados/new
   def new
     @perros_encontrado = PerrosEncontrado.new
-    @perros_encontrado.status = "Se busca al dueño"
-    @perros_encontrado.fecha_de_publicacion = Date.current
-    @perros_encontrado.mail = current_user.email
   end
 
 
@@ -38,12 +43,16 @@ class PerrosEncontradosController < ApplicationController
   # POST /perros_encontrados or /perros_encontrados.json
   def create
     @perros_encontrado = PerrosEncontrado.new(perros_encontrado_params)
+
+    @perros_encontrado.usuario_autenticado = user_signed_in?
     @perros_encontrado.action_type = 'create'
     respond_to do |format|
       if @perros_encontrado.save
-        format.html { redirect_to perros_encontrados_path, notice: "La publicacion ha sido creada correctamente!" }
+        format.html { redirect_to perros_encontrados_path}
+        flash[:notice] = "El perro se ha publicado exitosamente."
         format.json { render :show, status: :created, location: @perros_encontrado }
       else
+        flash[:alert] = "Falló la publicacion del perro."
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @perros_encontrado.errors, status: :unprocessable_entity }
       end
@@ -53,6 +62,7 @@ class PerrosEncontradosController < ApplicationController
 
   # PATCH/PUT /perros_encontrados/1 or /perros_encontrados/1.json
   def update
+    @perros_encontrado.usuario_autenticado = user_signed_in?
     @perros_encontrado.action_type = 'update'
     respond_to do |format|
       if @perros_encontrado.update(perros_encontrado_params)
@@ -80,8 +90,8 @@ class PerrosEncontradosController < ApplicationController
 
   def marcar_como_dueno_encontrado
 
-
     @perros_encontrado = PerrosEncontrado.find(params[:id])
+    @perros_encontrado.usuario_autenticado = user_signed_in?
     if @perros_encontrado.update(status: 'Dueño encontrado')
       redirect_to perros_encontrados_path, notice: 'El perro ha sido marcado como dueño encontrado.'
     else
@@ -96,18 +106,16 @@ class PerrosEncontradosController < ApplicationController
     id = params[:id]
     @perro = PerrosEncontrado.find(id)
 
-    @owner = User.find_by(email: @perro.mail)
-
     @current_user = current_user
-    
-    PerrosEncontradosMailer.enviar_correo_perros_encontrados(@perro, @owner, @current_user).deliver_later
+
+    PerrosEncontradosMailer.enviar_correo_perros_encontrados(@perro, @current_user).deliver_later
 
     respond_to do |format|
       format.html { redirect_to root_path, flash: { notice: "El correo fue enviado con exito." } }
       format.json { head :no_content }
     end
 
-  end  
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -118,6 +126,6 @@ class PerrosEncontradosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def perros_encontrado_params
-      params.require(:perros_encontrado).permit(:nombre, :foto, :fecha_de_publicacion, :status, :mail, :descripcion)
+      params.require(:perros_encontrado).permit(:nombre, :foto, :fecha_de_publicacion, :status, :mail, :descripcion, :nombre_dueno, :apellido_dueno, :direccion_dueno)
     end
 end

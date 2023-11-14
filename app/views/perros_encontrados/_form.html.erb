@@ -1,13 +1,11 @@
 <%= form_with(model: perros_encontrado) do |form| %>
 
-
   <%= form.hidden_field :status, value: "Se busca al dueño" %>
   <%= form.hidden_field :fecha_de_publicacion, value: Date.current %>
-  <%= form.hidden_field :mail, value: current_user.email %>
- 
+
   <div class='row g-3 needs-validation', style='width: 500px; margin: 5px; border: 1px solid #000; border-radius: 5px;'>
     <div class="col-md-6">
-      <%= form.label :nombre, style: "display: block;" %>
+      <%= form.label :'nombre del perro (Opcional)', style: "display: block;" %>
       <div class="input-group has-validation">
         <%= form.text_field :nombre, class: 'form-control' + (perros_encontrado.errors[:nombre].any? ? ' is-invalid' : ''), id: 'validationName' %>
         <div id="validationFotoFeedback" class="invalid-feedback" style="<%= perros_encontrado.errors[:nombre].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
@@ -20,33 +18,85 @@
       <%= form.label :descripcion, style: "display: block;" %>
       <div class="input-group has-validation">
         <%= form.text_field :descripcion, class: 'form-control', required: true, id: 'validationLastname' %>
-      <div id="validationLastnameFeedback" class="invalid-feedback">
-        <%= perros_encontrado.errors.full_messages_for(:descripcion).join(', ') %>
+        <div id="validationLastnameFeedback" class="invalid-feedback">
+          <%= perros_encontrado.errors.full_messages_for(:descripcion).join(', ') %>
+        </div>
       </div>
     </div>
-  </div>
  
-  <div class="col-md-12">
-    <%= form.label :foto, style: "display: block;" %>
-    <div class="input-group has-validation">
+    <div class="col-md-12">
+      <%= form.label :foto, style: "display: block;" %>
+      <div class="input-group has-validation">
    
-      <%= form.file_field :foto, class: 'form-control' + (perros_encontrado.errors[:foto].any? ? ' is-invalid' : ''),  required: (request.path == '/se-busca/new'), id: 'validationFoto', accept: 'image/*' %>
-      <div id="validationFotoFeedback" class="invalid-feedback" style="<%= perros_encontrado.errors[:foto].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
-        <%= perros_encontrado.errors.messages_for(:foto).join(', ') %>
+        <%= form.file_field :foto, class: 'form-control' + (perros_encontrado.errors[:foto].any? ? ' is-invalid' : ''),  required: (request.path == '/se-busca/new'), id: 'validationFoto', accept: 'image/*' %>
+        <div id="validationFotoFeedback" class="invalid-feedback" style="<%= perros_encontrado.errors[:foto].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
+          <%= perros_encontrado.errors.messages_for(:foto).join(', ') %>
+        </div>
       </div>
+      <img id="preview" src="#" style="display: none; margin:2px; max-width: 200px; max-height: 200px;" />
     </div>
-    <img id="preview" src="#" style="display: none; margin:2px; max-width: 200px; max-height: 200px;" />
-  </div>
+
+    <div>
+      <% if user_signed_in? %>
+        <%= form.hidden_field :mail, value: current_user.email %>
+        <%= form.hidden_field :nombre_dueno, value: current_user.nombre %>
+        <%= form.hidden_field :apellido_dueno, value: current_user.apellido %>
+        <%= form.hidden_field :direccion_dueno, value: current_user.direccion %>
+      <% else %>
+        <p>Como no te encuentras registrado deberas ingresar los siguientes datos:</p>
+        <!-- -->
+        <div class="col-md-6">
+          <%= form.label :nombre, style: "display: block;" %>
+          <div class="input-group has-validation">
+            <%= form.text_field :nombre_dueno, class: 'form-control' + (perros_encontrado.errors[:nombre_dueno].any? ? ' is-invalid' : ''), id: 'validationName' %>
+            <div id="validationFotoFeedback" class="invalid-feedback" style="<%= perros_encontrado.errors[:nombre_dueno].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
+              <%= perros_encontrado.errors.messages_for(:nombre_dueno).join(', ') %>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <%= form.label :apellido, style: "display: block;" %>
+          <div class="input-group has-validation">
+            <%= form.text_field :apellido_dueno, class: 'form-control' + (perros_encontrado.errors[:apellido_dueno].any? ? ' is-invalid' : ''), id: 'validationName' %>
+            <div id="validationFotoFeedback" class="invalid-feedback" style="<%= perros_encontrado.errors[:apellido_dueno].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
+              <%= perros_encontrado.errors.messages_for(:apellido_dueno).join(', ') %>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <%= form.label :direccion, style: "display: block;" %>
+          <div class="input-group has-validation">
+            <%= form.text_field :direccion_dueno, class: 'form-control' + (perros_encontrado.errors[:direccion_dueno].any? ? ' is-invalid' : ''), id: 'validationName' %>
+            <div id="validationFotoFeedback" class="invalid-feedback" style="<%= perros_encontrado.errors[:direccion_dueno].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
+              <%= perros_encontrado.errors.messages_for(:direccion_dueno).join(', ') %>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <%= form.label :mail, style: "display: block;" %>
+          <div class="input-group has-validation">
+            <%= form.text_field :mail, class: 'form-control' + (perros_encontrado.errors[:mail].any? ? ' is-invalid' : ''), id: 'validationName' %>
+            <div id="validationFotoFeedback" class="invalid-feedback" style="<%= perros_encontrado.errors[:mail].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
+              <%= perros_encontrado.errors.messages_for(:mail).join(', ') %>
+            </div>
+          </div>
+        </div>
+        <!-- -->
+      <% end %>
+    </div>
 
 
-  <div>
-    <% if request.path == '/se-busca/new' %>
-      <button type="button" class="btn btn-success" style='margin-block: 10px;' data-bs-toggle="modal" data-bs-target="#ModalPublicar-<%= perros_encontrado.id %>">
-              Publicar
-      </button>
+    <div>
+      <% if request.path == '/perros_encontrados/new' %>
+        <button type="button" class="btn btn-success" style='margin-block: 10px;' data-bs-toggle="modal" data-bs-target="<%= (user_signed_in?) ? "#ModalPublicar-#{perros_encontrado.id}" : "#ModalPublicarNoRegistrado-#{perros_encontrado.id}" %>" >
+          Publicar
+        </button>
 
 
-      <!-- Modal Publicar-->
+        <!-- Modal Publicar-->
         <div class="modal fade" id="ModalPublicar-<%= perros_encontrado.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -65,23 +115,19 @@
           </div>
         </div>
 
-
-    <% else %>
-      <button type="button" class="btn btn-success" style='margin-block: 10px;' data-bs-toggle="modal" data-bs-target="#ModalEditar-<%= perros_encontrado.id %>">
-              Guardar cambios
-      </button>
-
-
-      <!-- Modal Editar-->
-        <div class="modal fade" id="ModalEditar-<%= perros_encontrado.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- Modal Publicar-->
+        <div class="modal fade" id="ModalPublicarNoRegistrado-<%= perros_encontrado.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar edicion</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar publicación</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
                 <div class="modal-body">
-                  Desea guardar los cambios efectuados a este paseador/cuidador ?
+                  <p>Debido a que esta creando una publicación sin estar registrado, 
+                  el sistema le enviara un correo electronico a la dirección ingresada en esta publicación, el cual contendra 
+                  un identificador unico o "token" que le permitira editar o eliminar la publicacion y marcar como dueño encontrado al perro.</p>
+                  Confirma la publicacion de este perro que encontro ?
                 </div>
               <div class="modal-footer">
                 <%= form.submit 'Confirmar',  class: "btn btn-turqueza", style:'margin: 2px' %>
@@ -92,13 +138,38 @@
         </div>
 
 
-    <% end%>
-    <%= link_to "Atras", perros_encontrados_path , class: "btn btn-turqueza", style:'margin-block: 10px;'%>
-  </div>  
+      <% else %>
+        <button type="button" class="btn btn-success" style='margin-block: 10px;' data-bs-toggle="modal" data-bs-target="#ModalEditar-<%= perros_encontrado.id %>">
+          Guardar cambios
+        </button>
+
+
+        <!-- Modal Editar-->
+        <div class="modal fade" id="ModalEditar-<%= perros_encontrado.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar edicion</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+                <div class="modal-body">
+                  Desea guardar los cambios efectuados a este perro que encontro ?
+                </div>
+              <div class="modal-footer">
+                <%= form.submit 'Confirmar',  class: "btn btn-turqueza", style:'margin: 2px' %>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      <% end%>
+      <%= link_to "Atras", perros_encontrados_path , class: "btn btn-turqueza", style:'margin-block: 10px;'%>
+    </div>  
   </div>
 
-
-<% end %>
+  <% end %>
 
 
 <script>

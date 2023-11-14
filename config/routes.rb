@@ -55,6 +55,13 @@ Rails.application.routes.draw do
 
   post '/enviar_correo_perros_perdidos', to: 'perros_perdidos#enviar_correo_perros_perdidos'
   post '/enviar_correo_perros_encontrados', to: 'perros_encontrados#enviar_correo_perros_encontrados'
+  post '/enviar_correo_perros_encontrados_no_registrado', to: 'perros_encontrados#enviar_correo_perros_encontrados_no_registrado'
+
+  resources :perros_encontrados do
+    member do
+      post 'enviar_correo_perros_encontrados_no_registrado'
+    end
+  end
 
 
 end

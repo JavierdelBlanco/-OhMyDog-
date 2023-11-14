@@ -1,0 +1,31 @@
+<div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+
+  <div style="background-color: #ffffff; max-width: 600px; margin: 0 auto; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-radius: 8px;">
+
+    <h1 style="color: #333;">Identificador para poder administrar tu publicacion en ¡OhMyDog!.</h1>
+
+    <p>
+    Hola <%= @perro.nombre_dueno %> <%= @perro.apellido_dueno %>,
+    </p>
+    <p>
+    Has hecho una publicacion sin estar registrado, por lo que para acceder a editar o 
+    eliminar la publicacion o marcar como Dueño encontrado al perro que encontraste, 
+    deberas usar este identificador unico o "token";
+    </p>
+    <ul>
+        <li><strong>Identificador: </strong><%= @perro.token %></li>
+    </ul>
+    <p>
+    <strong>¡Importante!</strong> No debes perder este identificador o compartirselo 
+    a alguien que no sea de confianza.
+    </p>
+    <p>
+    Para usar este identificador o token, dirigete a la seccion "Se busca" y "Perros encontrados". 
+    Ahi podra ingresarlo y acceder directamente a un formulario donde podra utilizar dichas funciones.
+    </p>
+    <p>Agradecemos tu cooperación y confianza en ¡OhMyDog!, y esperamos que pronto puedas reunir al dueño con su peludo amigo.</p>
+    <p>Saludos,</p>
+    <p>El equipo de ¡OhMyDog!.</p>
+
+  </div>
+</div>
