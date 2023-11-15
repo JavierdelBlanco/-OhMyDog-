@@ -8,6 +8,11 @@ class CuidadorPaseadorsController < ApplicationController
       else
         @cuidador_paseadors = CuidadorPaseador.all.order(created_at: :desc).page(params[:page])
       end
+      @cuidadores = CuidadorPaseador.where(rol: ['Cuidador', 'Ambos'])
+      @paseadores = CuidadorPaseador.where(rol: ['Paseador', 'Ambos'])
+      puts "Cuidadores encontrados: #{@cuidadores.inspect}"
+      puts "Paseadores encontrados: #{@paseadores.inspect}"
+
   end
 
   # GET /cuidador_paseadors/new

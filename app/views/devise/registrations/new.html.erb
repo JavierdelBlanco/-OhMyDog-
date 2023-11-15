@@ -113,7 +113,7 @@
 
   <div class="field">
     <%= f.label :tipo_usuario %><br />
-    <%= f.select :tipo_usuario, options_for_select([['Normal', 'normal'], ['Premium', 'premium'], ['Administrador', 'administrador']]), {}, autofocus: true, autocomplete: "tipo_usuario", required: true %>
+    <%= f.select :tipo_usuario, options_for_select([['Cliente', 'cliente'], ['Cliente Premium', 'cliente-premium'], ['Veterinario', 'veterinario']]), {}, autofocus: true, autocomplete: "tipo_usuario", required: true %>
   </div>
 
   <div class="field">

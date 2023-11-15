@@ -130,8 +130,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   private
 
   def authenticate_admin!
-    unless current_user && current_user.tipo_usuario == 'administrador'
-      redirect_to root_path, alert: "Solo los administradores pueden acceder a esta página."
+    unless current_user && current_user.tipo_usuario == 'veterinario'
+      redirect_to root_path, alert: "Solo los veterinarioes pueden acceder a esta página."
     end
   end
 end

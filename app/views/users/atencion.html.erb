@@ -1,6 +1,4 @@
-<% if current_user.tipo_usuario == 'administrador' %>
-
-<%= link_to "Crear usuario", creacion_usuario_path, class: "btn btn-turqueza" %>
+<% if current_user.tipo_usuario == 'veterinario' %>
 
 <style>
 /* Estilos para la tabla */
@@ -41,11 +39,17 @@
     color: #333;
 }
 </style>
-</head>
 
-<form style="margin: 20px;">
+
+
+<div class="d-flex align-items-center justify-content-between">
+  <%= link_to "Crear usuario", creacion_usuario_path, class: "btn btn-turqueza" %>
+  <form style="margin: 20px;">
   Buscar: <input id="searchTerm" type="text" onkeyup="doSearch()" />
 </form>
+</div>
+
+
 <script>
   function doSearch() {
     var tableReg = document.getElementById('datos');

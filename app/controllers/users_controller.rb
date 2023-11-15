@@ -2,16 +2,13 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!, only: [:show] # Asegura que el usuario esté autenticado
 
-
-
-  
   def agregar_perrito
     @perrito = Perrito.new
   end
 
   def crear_perrito
     @perrito = @user.perritos.build(perrito_params)
-  
+
     if @perrito.save
       redirect_to user_path(@user), notice: "Perrito agregado con éxito"
     else
@@ -60,7 +57,7 @@ class UsersController < ApplicationController
         format.json { render json: @perrito.errors, status: :unprocessable_entity }
       end
     end
-  end  
+  end
 
   def welcome_email
     UserMailer.welcome_email.deliver_now
@@ -69,17 +66,11 @@ class UsersController < ApplicationController
   def ver_perfil
     @user = User.find(params[:id])
     @perritos_vivos = @user.perritos.where(fallecido: false)
-    puts '##################CREATE######################'
-    puts @user.id
-    puts @perritos_vivos.empty?
   end
 
   def show
     @user = User.find(params[:id])
     @perritos_vivos = @user.perritos.where(fallecido: false)
-    puts '#################SHOW#########################'
-    puts @user.id
-    puts @perritos_vivos.empty?
   end
 
   def create
@@ -90,9 +81,9 @@ class UsersController < ApplicationController
       render 'new'
     end
   end
-  
+
   def index
-    if current_user.tipo_usuario == 'administrador'
+    if current_user.tipo_usuario == 'veterinario'
       @users = User.all
     else
       redirect_to root_path, alert: 'No tienes permisos para ver esta página.'
