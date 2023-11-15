@@ -1,8 +1,10 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+  devise :database_authenticatable, :recoverable, :rememberable, :validatable, :registerable, password_length: 8..128
+  
+         
+  validate :password_complexity
 
   def password_required?
     false
@@ -10,6 +12,12 @@ class User < ApplicationRecord
 
   def password_confirmation_required?
     false
+  end
+
+  def password_complexity
+    if password.present? && !password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
+      errors.add :password, ': La Contraseña debe contener al menos una letra minúscula, una letra mayúscula y un número'
+    end
   end
 
   validates :apellido, presence: true

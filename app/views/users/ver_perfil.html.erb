@@ -58,7 +58,7 @@
         <th>Nombre del perro</th>
         <th>Raza</th>
         <th>Fecha de Nacimiento</th>
-        <% if current_user.tipo_usuario == 'administrador' %>
+        <% if current_user.tipo_usuario == 'veterinario' %>
           <th>Acciones</th>
         <% end %>
       </tr>
@@ -73,9 +73,9 @@
           <td><%= perrito.raza %></td>
           <td><%= "#{perrito.dia}/#{perrito.mes}/#{perrito.año}" %></td>
           <td>
-            <!-- Botón "Editar" y "Eliminar" para el administrador -->
-            <% if current_user.tipo_usuario == 'administrador' %>
-              <%= link_to "Editar", edit_perrito_path(perrito), class: "btn btn-sm btn-secondary" %>
+            <!-- Botón "Editar" y "Eliminar" para el veterinario -->
+            <% if current_user.tipo_usuario == 'veterinario' %>
+              <%= link_to "Editar", edit_perrito_path(perrito, tipo: 'mio'), class: "btn btn-sm btn-secondary" %>
               <%# link_to "Eliminar", perrito, data: { turbo_method: :delete }, class: "btn btn-sm btn-danger" %>
             <% end %>
           </td>
@@ -85,6 +85,11 @@
   </table>
 <% end %>
 
+<% if @perritos_vivos.empty? %>
+  <p id="mensaje-perros" class="text-muted" style="display: block;">
+    No cuentas con perros actualmente. ¡Visita la sección de perros en adopción y encuentra el compañero que estás buscando!
+  </p>
+<% end %>
 
 <%= link_to "Agregar perro", add_dog_path(current_user, tipo: 'mio'), class: "btn btn-turqueza" %>
 
@@ -92,9 +97,11 @@
 
 <script>
   document.addEventListener("turbo:load", function() {
+
     // Obtiene referencias a los checkboxes y a los elementos de la lista
     const fallecidosCheckbox = document.getElementById("fallecidos-check");
     const listItems = document.querySelectorAll(".filasfallecidos");
+    
     for (var i = 0; i < listItems.length; i++) {
       listItems[i].style.display = 'none';
     }
@@ -118,5 +125,22 @@
         }
       });
     }
+  });
+</script>
+
+<script>
+  document.addEventListener("turbo:load", function() {
+    const fallecidosCheckbox = document.getElementById("fallecidos-check");
+    const mensajePerros = document.getElementById("mensaje-perros");
+
+    fallecidosCheckbox.addEventListener("change", function() {
+      const mostrarFallecidos = fallecidosCheckbox.checked;
+
+      if (!mostrarFallecidos && <%= @perritos_vivos.empty? %>) {
+        mensajePerros.style.display = 'block';
+      } else {
+        mensajePerros.style.display = 'none';
+      }
+    });
   });
 </script>

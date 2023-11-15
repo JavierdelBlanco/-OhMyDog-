@@ -1,13 +1,6 @@
-<% if user_signed_in? and current_user.tipo_usuario == 'administrador'  %>
+<% if user_signed_in? and current_user.tipo_usuario == 'veterinario'  %>
   <%= link_to "Cargar cuidador/paseador", new_cuidador_paseador_path , class: "btn btn-turqueza", style: 'margin-block: 10px;'%>
 <% end %>
-
-
-<% if @cuidador_paseadors.empty? %>
-  <div style= 'margin: 15px;'>
-    <p>No hay cuidadores ni paseadores a disposición en este momento. Te invitamos a explorar las demás secciones de nuestra página para aprovechar todos nuestros servicios.</p>
-  </div>
-<% else %>
 
 <div class='d-flex'>
   <label class="form-check-label" style='margin: 5px; margin-right: 7px;'> Mostrar </label>
@@ -24,6 +17,24 @@
     </label>
   </div>
 </div>
+
+<% if @cuidador_paseadors.empty? %>
+  <div style= 'margin: 15px;'>
+    <p>No hay cuidadores ni paseadores a disposición en este momento. Te invitamos a explorar las demás secciones de nuestra página para aprovechar todos nuestros servicios.</p>
+  </div>
+<% else %>
+
+  <% if @cuidadores.empty? %>
+    <div style= 'margin: 15px; display: none;' id="mensaje-cuidadores">
+      <p>No hay cuidadores a disposición en este momento. Te invitamos a explorar las demás secciones de nuestra página para aprovechar todos nuestros servicios.</p>
+    </div>
+  <% end %>
+
+  <% if @paseadores.empty? %>
+    <div style= 'margin: 15px; display: none;' id="mensaje-paseadores">
+      <p>No hay paseadores a disposición en este momento. Te invitamos a explorar las demás secciones de nuestra página para aprovechar todos nuestros servicios.</p>
+    </div>
+  <% end %>
 
 
   <div id="cuidadores_paseadores" class= 'd-flex flex-wrap'>
@@ -50,7 +61,7 @@
           <p id=ci class="card-text overflow-auto" style="max-height: 75px; overflow: hidden;"> Dias y horarios: <%= cuidador_paseador.dias_horarios %> </p>
         </div>
         <div class='d-flex flex-column align-items-center' style='margin-top: auto;'>
-    <% if user_signed_in? and current_user.tipo_usuario == 'administrador'  %>
+    <% if user_signed_in? and current_user.tipo_usuario == 'veterinario'  %>
       <div class='d-flex justify-content-center align-items-center'>
         <%= link_to "Editar", edit_cuidador_paseador_path(cuidador_paseador) , class: "btn btn-secondary", style:'margin: 3px' %>
         <button type="button" class="btn btn-danger" style='margin: 3px' data-bs-toggle="modal" data-bs-target="#ModalEliminar-<%= cuidador_paseador.id %>">
@@ -202,4 +213,36 @@
       });
     }
   });
+</script>
+
+
+<script>
+  document.addEventListener("turbo:load", function() {
+  const paseadoresCheckbox = document.getElementById("paseadores-check");
+  const mensajePaseadores = document.getElementById("mensaje-paseadores");
+  const cuidadoresCheckbox = document.getElementById("cuidadores-check");
+  const mensajeCuidadores = document.getElementById("mensaje-cuidadores");
+
+  const evaluarSituacion = function() {
+    const mostrarPaseadores = paseadoresCheckbox.checked;
+    const mostrarCuidadores = cuidadoresCheckbox.checked;
+
+    if (mostrarPaseadores && !mostrarCuidadores) {
+      mensajePaseadores.style.display = 'block';
+      mensajeCuidadores.style.display = 'none';
+      console.log('caso paseadores');
+    } else if (mostrarCuidadores && !mostrarPaseadores) {
+      mensajeCuidadores.style.display = 'block';
+      mensajePaseadores.style.display = 'none';
+      console.log('caso cuidadores');
+    } else {
+      mensajePaseadores.style.display = 'none';
+      mensajeCuidadores.style.display = 'none';
+      console.log('caso 3');
+    }
+  };
+
+  paseadoresCheckbox.addEventListener("change", evaluarSituacion);
+  cuidadoresCheckbox.addEventListener("change", evaluarSituacion);
+});
 </script>

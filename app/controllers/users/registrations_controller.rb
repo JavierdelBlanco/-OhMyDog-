@@ -6,6 +6,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_account_update_params, only: [:update]
   before_action :configure_permitted_parameters, if: :devise_controller?
 
+
  # def create
  #   super do |resource|
  #     if resource.persisted?
@@ -18,11 +19,19 @@ class Users::RegistrationsController < Devise::RegistrationsController
  #   end
  # end
 
+  def new
+    super
+  end
+
+
   def create
       build_resource(sign_up_params)
       resource.save
       if resource.persisted?
-        random_password = SecureRandom.hex(8)
+        random_password = SecureRandom.base64(8)
+        while(!(random_password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)))
+          random_password = SecureRandom.base64(8)
+        end
         resource.password = random_password
         resource.password_confirmation = random_password
         resource.save
@@ -52,7 +61,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:nombre, :apellido, :email, :password, :password_confirmation, :direccion, :nro, :telefono, perrito_attributes: [:nombre_perro, :dia, :mes, :año, :caracteristicas, :condiciones, :raza, :color, :tamaño]])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:nombre, :apellido, :email, :password, :password_confirmation, :direccion, :nro, :telefono, :perrito_attributes => [:nombre_perro, :dia, :mes, :año, :caracteristicas, :condiciones, :raza, :color, :tamaño]])
   end
 
   def configure_sign_up_params
@@ -117,4 +126,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+
+  private
+
+  def authenticate_admin!
+    unless current_user && current_user.tipo_usuario == 'veterinario'
+      redirect_to root_path, alert: "Solo los veterinarioes pueden acceder a esta página."
+    end
+  end
 end
