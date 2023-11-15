@@ -3,7 +3,16 @@
     <h2>Crear cuenta</h2>
 
     <%= form_with(model: @user, url: creacion_usuario_path, method: :post) do |f| %>
-
+      <% if @user.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(perrito.errors.count, "error") %> prohibited this perrito from being saved:</h2>
+        <ul>
+          <% @user.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
   <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email, autofocus: true, autocomplete: "email", required: true %>
@@ -84,4 +93,74 @@
 
 
 
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
 
+    #signup-form {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+  }
+
+    h2 {
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    select,
+    textarea,
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0 20px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    select {
+      height: 40px;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .date-select {
+      display: flex;
+      gap: 5px;
+    }
+
+    .actions {
+      text-align: center;
+    }
+
+    input[type="submit"] {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+  </style>

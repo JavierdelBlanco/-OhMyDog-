@@ -35,7 +35,8 @@ class UsersController < ApplicationController
     if @user.update(user_params)
       redirect_to user_path(@user)
     else
-      render 'edit'
+      flash[:alert] = "Falló la edicion del usuario."
+      render 'edit_otro', status: :unprocessable_entity
     end
   end
 
@@ -85,6 +86,7 @@ class UsersController < ApplicationController
   def index
     if current_user.tipo_usuario == 'veterinario'
       @users = User.all
+      @perritos_vivos = @user.perritos.where(fallecido: false)
     else
       redirect_to root_path, alert: 'No tienes permisos para ver esta página.'
     end
