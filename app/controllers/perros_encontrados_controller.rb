@@ -72,7 +72,7 @@ def edit_no_registrado
     if @perros_encontrado.status == 'Se busca al dueño'
       render :edit
     else
-      redirect_to root_path, alert: "Esta publicacion ha sido marcada como dueño encontrado."
+      redirect_to root_path, notice: "Esta publicacion ha sido marcada como dueño encontrado."
     end
   else
     redirect_to root_path, alert: "No se encontró un perro con este identificador."
@@ -104,15 +104,31 @@ end
 
     @perros_encontrado.usuario_autenticado = user_signed_in?
     @perros_encontrado.action_type = 'create'
-    respond_to do |format|
-      if @perros_encontrado.save
-        format.html { redirect_to perros_encontrados_path}
-        flash[:notice] = "El perro se ha publicado exitosamente."
-        format.json { render :show, status: :created, location: @perros_encontrado }
-      else
-        flash[:alert] = "Falló la publicacion del perro."
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @perros_encontrado.errors, status: :unprocessable_entity }
+    if user_signed_in?
+      respond_to do |format|
+        if @perros_encontrado.save
+          format.html { redirect_to perros_encontrados_path}
+          flash[:notice] = "El perro se ha publicado exitosamente."
+          format.json { render :show, status: :created, location: @perros_encontrado }
+        else
+          flash[:alert] = "Falló la publicacion del perro."
+          format.html { render :new, status: :unprocessable_entity }
+  
+          format.json { render json: @perros_encontrado.errors, status: :unprocessable_entity }
+        end
+      end
+    else
+      respond_to do |format|
+        if @perros_encontrado.save
+          format.html { redirect_to perros_encontrados_path}
+          flash[:notice] = "El perro se ha publicado exitosamente."
+          format.json { render :show, status: :created, location: @perros_encontrado }
+        else
+          flash[:alert] = "Falló la publicacion del perro."
+          format.html { redirect_to new_perros_encontrado_path, alert: "Mail ya registrado y/o nombre ya en uso con este mail" }
+  
+          format.json { render json: @perros_encontrado.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -134,10 +150,13 @@ end
         end
       end
     else
-      if @perros_encontrado.update(perros_encontrado_params)
-        redirect_to perros_encontrados_path, notice: 'La publicacion ha sido editada correctamente!'
-      else
-        redirect_to perros_encontrados_path, alert: 'La publicacion no pudo ser editada.'
+      respond_to do |format|
+        if @perros_encontrado.update(perros_encontrado_params)
+          redirect_to perros_encontrados_path, notice: 'La publicacion ha sido editada correctamente!'
+        else
+          format.html { render :edit, status: :unprocessable_entity }
+          format.json { render json: @perros_encontrado.errors, status: :unprocessable_entity }
+        end
       end
     end
 

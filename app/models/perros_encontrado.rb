@@ -42,7 +42,6 @@ class PerrosEncontrado < ApplicationRecord
 
 
   def nombre_unico_para_usuario_actual
-    if usuario_autenticado
       if action_type == 'create'
         if PerrosEncontrado.exists?(nombre: nombre, mail: mail, status: 'Se busca al dueño')
           errors.add(:nombre, "Ya tienes una publicacion con este nombre de perro!")
@@ -53,7 +52,6 @@ class PerrosEncontrado < ApplicationRecord
           errors.add(:nombre, "Ya tienes una publicacion con este nombre de perro!.")
         end
       end
-    end
   end
 
   private
