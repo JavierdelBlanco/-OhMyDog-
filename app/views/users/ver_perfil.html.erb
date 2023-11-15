@@ -91,9 +91,10 @@
   </p>
 <% end %>
 
-<%= link_to "Agregar perro al usuario", perrito_ajeno_path(@user), class: "btn btn-turqueza" %>
+        <% if current_user.tipo_usuario == 'veterinario' %>
+             <%= link_to "Agregar perro", add_dog_path(current_user, tipo: 'mio'), class: "btn btn-turqueza" %>
+        <% end %>
 
-<%= link_to "Agregar perro", add_dog_path(current_user, tipo: 'mio'), class: "btn btn-turqueza" %>
 
 </div>
 
