@@ -19,19 +19,19 @@
 </div>
 
 <% if @cuidador_paseadors.empty? %>
-  <div style= 'margin: 15px;'>
+  <div style= 'margin: 15px; '>
     <p>No hay cuidadores ni paseadores a disposición en este momento. Te invitamos a explorar las demás secciones de nuestra página para aprovechar todos nuestros servicios.</p>
   </div>
 <% else %>
 
   <% if @cuidadores.empty? %>
-    <div style= 'margin: 15px; display: none;' id="mensaje-cuidadores">
+    <div style= 'margin: 15px; display:none;' id="mensaje-cuidadores">
       <p>No hay cuidadores a disposición en este momento. Te invitamos a explorar las demás secciones de nuestra página para aprovechar todos nuestros servicios.</p>
     </div>
   <% end %>
 
   <% if @paseadores.empty? %>
-    <div style= 'margin: 15px; display: none;' id="mensaje-paseadores">
+    <div style= 'margin: 15px; display:none' id="mensaje-paseadores">
       <p>No hay paseadores a disposición en este momento. Te invitamos a explorar las demás secciones de nuestra página para aprovechar todos nuestros servicios.</p>
     </div>
   <% end %>
@@ -114,6 +114,7 @@
                         <li>Apellido</li>
                         <li>Direccion</li>
                         <li>Direccion de correo electronico</li>
+                        <li>Telefono</li>
                       </ul>    
                     </div>
                     <div class="modal-footer">
@@ -162,6 +163,12 @@
                         <div class="mb-3">
                           <%= form.label :email, 'Correo electrónico:' %>
                           <%= form.email_field :email, class: 'form-control', required: true %>
+                        </div>
+
+
+                        <div class="mb-3">
+                          <%= form.label :telefono, 'Telefono:' %>
+                          <%= form.text_field :telefono, class: 'form-control', required: true %>
                         </div>
 
                         <%= form.submit 'Enviar', id: "confirmarBtn", class: 'btn btn-success', style:"margin: 2px" %>
@@ -223,26 +230,29 @@
   const cuidadoresCheckbox = document.getElementById("cuidadores-check");
   const mensajeCuidadores = document.getElementById("mensaje-cuidadores");
 
-  const evaluarSituacion = function() {
+  paseadoresCheckbox.addEventListener("change", function() {
     const mostrarPaseadores = paseadoresCheckbox.checked;
     const mostrarCuidadores = cuidadoresCheckbox.checked;
 
-    if (mostrarPaseadores && !mostrarCuidadores) {
+    if (mostrarPaseadores &&  <%= @paseadores.empty? %>) {
       mensajePaseadores.style.display = 'block';
       mensajeCuidadores.style.display = 'none';
-      console.log('caso paseadores');
-    } else if (mostrarCuidadores && !mostrarPaseadores) {
-      mensajeCuidadores.style.display = 'block';
-      mensajePaseadores.style.display = 'none';
-      console.log('caso cuidadores');
     } else {
       mensajePaseadores.style.display = 'none';
-      mensajeCuidadores.style.display = 'none';
-      console.log('caso 3');
     }
-  };
+  });
 
-  paseadoresCheckbox.addEventListener("change", evaluarSituacion);
-  cuidadoresCheckbox.addEventListener("change", evaluarSituacion);
+  cuidadoresCheckbox.addEventListener("change", function() {
+    const mostrarCuidadores = cuidadoresCheckbox.checked;
+    const mostrarPaseadores = paseadoresCheckbox.checked;
+
+    if (mostrarCuidadores &&  <%= @cuidadores.empty? %>) {
+      mensajeCuidadores.style.display = 'block';
+      mensajePaseadores.style.display = 'none';
+    } else {
+      mensajeCuidadores.style.display = 'none';
+    }
+  });
 });
+
 </script>

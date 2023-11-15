@@ -85,9 +85,10 @@ class CuidadorPaseadorsController < ApplicationController
     direccion = params[:direccion]
     numero = params[:numero]
     email = params[:email]
+    telefono = params[:telefono]
     logger.info("Params: #{params.inspect}")
     # Corrige el acceso a los parámetros
-    CuidadorPaseadorsMailer.enviar_correo_no_registrado(@cuidador_paseador, nombre, apellido, direccion, numero, email).deliver_later
+    CuidadorPaseadorsMailer.enviar_correo_no_registrado(@cuidador_paseador, nombre, apellido, direccion, numero, email,telefono).deliver_later
 
     respond_to do |format|
       format.html { redirect_to root_path, flash: { notice: "El correo fue enviado con éxito a #{@cuidador_paseador.nombre}." } }

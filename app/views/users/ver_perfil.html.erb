@@ -75,7 +75,7 @@
           <td>
             <!-- Botón "Editar" y "Eliminar" para el veterinario -->
             <% if current_user.tipo_usuario == 'veterinario' %>
-              <%= link_to "Editar", edit_perrito_path(perrito, tipo: 'mio'), class: "btn btn-sm btn-secondary" %>
+              <%= link_to "Editar", edit_perrito_path(perrito), class: "btn btn-sm btn-secondary" %>
               <%# link_to "Eliminar", perrito, data: { turbo_method: :delete }, class: "btn btn-sm btn-danger" %>
             <% end %>
           </td>
@@ -90,6 +90,8 @@
     No cuentas con perros actualmente. ¡Visita la sección de perros en adopción y encuentra el compañero que estás buscando!
   </p>
 <% end %>
+
+<%= link_to "Agregar perro al usuario", perrito_ajeno_path(@user), class: "btn btn-turqueza" %>
 
 <%= link_to "Agregar perro", add_dog_path(current_user, tipo: 'mio'), class: "btn btn-turqueza" %>
 
