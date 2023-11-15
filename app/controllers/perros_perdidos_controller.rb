@@ -3,37 +3,44 @@ class PerrosPerdidosController < ApplicationController
 
   # GET /perros_perdidos or /perros_perdidos.json
   def index
-      if params[:filter].present?
-        @perros_perdidos = PerrosPerdido.where(mail: params[:filter]).where(status: 'Se busca')
-        @perros_encontrados = PerrosPerdido.where(mail: params[:filter]).where(status: 'Encontrado').limit(50)
 
-        # Combinar perros perdidos y encontrados
-        @perros = @perros_perdidos + @perros_encontrados
-
-        # Ordenar la lista combinada por status de forma descendente
-        @perros = @perros.sort_by { |perro| perro.status.downcase }.reverse
-
-        # Aplicar paginación a la lista
-        @perros = Kaminari.paginate_array(@perros).page(params[:page]).per(4)
-
-
-      else
-        @perros_perdidos = PerrosPerdido.where(status: 'Se busca')
-        @perros_encontrados = PerrosPerdido.where(status: 'Encontrado').limit(50)
-
-        # Combinar perros perdidos y encontrados
-        @perros = @perros_perdidos + @perros_encontrados
-
-        # Ordenar la lista combinada por status de forma descendente
-        @perros = @perros.sort_by { |perro| perro.status.downcase }.reverse
-
-        # Aplicar paginación a la lista
-        @perros = Kaminari.paginate_array(@perros).page(params[:page]).per(4)
-
+    @all_dogs = PerrosPerdido.all
+    
+    if params[:filter].present?
+      perros_perdidos = PerrosPerdido.where(mail: params[:filter], status: 'Se busca').order(created_at: :desc)
+      perros_encontrados = PerrosPerdido.where(mail: params[:filter], status: 'Encontrado').limit(50).order(created_at: :asc)
+  
+      # Combinar perros perdidos y encontrados
+      @perros = perros_perdidos + perros_encontrados
+  
+      # Ordenar la lista combinada por status y fecha de forma descendente
+      @perros = @perros.sort_by { |perro| [perro.status.downcase, perro.created_at] }.reverse
+  
+      # Aplicar paginación a la lista
+      @perros = Kaminari.paginate_array(@perros).page(params[:page]).per(4)
+    else
+      perros_perdidos = PerrosPerdido.where(status: 'Se busca').order(created_at: :desc)
+      perros_encontrados = PerrosPerdido.where(status: 'Encontrado').limit(50).order(created_at: :asc)
+  
+      # Combinar perros perdidos y encontrados
+      @perros = perros_perdidos + perros_encontrados
+  
+      # Ordenar la lista combinada por status y fecha de forma descendente
+      @perros = @perros.sort_by { |perro| [perro.status.downcase, perro.created_at] }.reverse
+  
+      # Aplicar paginación a la lista
+      @perros = Kaminari.paginate_array(@perros).page(params[:page]).per(4)
     end
 
     @users = User.all
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html
+    end
+
   end
+  
 
   # GET /perros_perdidos/1 or /perros_perdidos/1.json
   def show
@@ -116,6 +123,35 @@ class PerrosPerdidosController < ApplicationController
 
   end
 
+  def enviar_correo_perros_perdidos_contactar
+
+    id = params[:id]
+    @perro = PerrosPerdido.find(id)
+
+    @owner = User.find_by(email: @perro.mail)
+
+    nombre = params[:nombre]
+    apellido = params[:apellido]
+    direccion = params[:direccion]
+    numero = params[:numero]
+    email = params[:email]
+
+    existing_user = User.find_by(email: params[:email])
+
+    if existing_user || (email == @perro.mail)
+      # El correo electrónico ya está registrado, realiza alguna acción (por ejemplo, mostrar un mensaje de error)
+      flash[:alert] = "El correo electrónico ya está registrado en la veterinaria o estas intentando contactarrte a ti mismo"
+      redirect_back(fallback_location: root_path) # Puedes redirigir a donde desees
+    else
+      PerrosPerdidosMailer.enviar_correo_perros_perdidos_contactar(@perro, @owner, nombre, apellido, direccion, numero, email).deliver_later
+
+      respond_to do |format|
+        format.html { redirect_to root_path, flash: { notice: "El correo fue enviado con exito." } }
+        format.json { head :no_content }
+      end
+    end
+
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

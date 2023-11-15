@@ -47,6 +47,13 @@ Rails.application.routes.draw do
   post '/random_password_email', to: 'user_mailer#random_password_email'
   resources :cuidador_paseadors, path: 'cuidadores-y-paseadores'
   resources :perros_perdidos, path: 'se-busca'
+  
+  resources :perros_encontrados do
+    collection do
+      get 'edit_no_registrado'
+    end
+  end
+
   resources :perros_encontrados
   resources :perritos
 
@@ -65,6 +72,20 @@ Rails.application.routes.draw do
       post 'enviar_correo_perros_encontrados_no_registrado'
     end
   end
+
+ # config/routes.rb
+get '/perros_encontrados/edit_no_registrado', to: 'perros_encontrados#edit_no_registrado', as: 'edit_no_registrado_perros_encontrado'
+
+
+
+  
+
+
+
+
+  post '/enviar_correo_perros_perdidos_contactar', to: 'perros_perdidos#enviar_correo_perros_perdidos_contactar'
+  post '/enviar_correo_perros_encontrados_contactar', to: 'perros_encontrados#enviar_correo_perros_encontrados_contactar'
+  
 
 
 end

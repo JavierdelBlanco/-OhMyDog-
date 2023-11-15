@@ -4,18 +4,42 @@ class PerrosEncontradosController < ApplicationController
 
   # GET /perros_encontrados or /perros_encontrados.json
   def index
-    if params[:tag]
-      perros_encontrados = PerrosEncontrado.where(status: 'Se busca al dueño').tagged_with(params[:tag]).order(created_at: :desc)
-      perros_reunidos = PerrosEncontrado.where(status: 'Dueño encontrado').tagged_with(params[:tag]).order(created_at: :desc)
+
+    @all_dogs = PerrosEncontrado.all
+
+    if params[:filter].present?
+      perros_encontrados = PerrosEncontrado.where(mail: params[:filter], status: 'Se busca al dueño').order(created_at: :desc)
+      perros_reunidos = PerrosEncontrado.where(mail: params[:filter], status: 'Dueño encontrado').limit(50).order(created_at: :desc)
+  
+      # Combinar perros perdidos y encontrados
+      @perros = perros_encontrados + perros_reunidos
+  
+      # Ordenar la lista combinada por status y fecha de forma descendente
+      @perros = @perros.sort_by { |perro| [perro.status.downcase, perro.created_at] }.reverse
+  
+      # Aplicar paginación a la lista
+      @perros = Kaminari.paginate_array(@perros).page(params[:page]).per(4)
     else
       perros_encontrados = PerrosEncontrado.where(status: 'Se busca al dueño').order(created_at: :desc)
-      perros_reunidos = PerrosEncontrado.where(status: 'Dueño encontrado').order(created_at: :desc)
+      perros_reunidos = PerrosEncontrado.where(status: 'Dueño encontrado').limit(50).order(created_at: :desc)
+  
+      # Combinar perros perdidos y encontrados
+      @perros = perros_encontrados + perros_reunidos
+  
+      # Ordenar la lista combinada por status y fecha de forma descendente
+      @perros = @perros.sort_by { |perro| [perro.status.downcase, perro.created_at] }.reverse
+  
+      # Aplicar paginación a la lista
+      @perros = Kaminari.paginate_array(@perros).page(params[:page]).per(4)
     end
 
-    @perros = (perros_encontrados + perros_reunidos).sort_by { |perro| [perro.status, perro.created_at] }.reverse
-    @perros = Kaminari.paginate_array(@perros).page(params[:page]).per(6)
-
     @users = User.all
+    
+    #respond_to do |format|
+    #  format.turbo_stream
+    #  format.html
+    #end
+
   end
 
 
@@ -38,6 +62,40 @@ class PerrosEncontradosController < ApplicationController
   # GET /perros_encontrados/1/edit
   def edit
   end
+  
+  # app/controllers/perros_encontrados_controller.rb
+def edit_no_registrado
+  identificador = params[:identificador]
+  @perros_encontrado = PerrosEncontrado.find_by(token: identificador)
+
+  if @perros_encontrado
+    if @perros_encontrado.status == 'Se busca al dueño'
+      render :edit
+    else
+      redirect_to root_path, alert: "Esta publicacion ha sido marcada como dueño encontrado."
+    end
+  else
+    redirect_to root_path, alert: "No se encontró un perro con este identificador."
+  end
+end
+
+  
+  #def edit_no_registrado
+  #  identificador = params[:identificador]
+
+    #perro_existe = PerrosEncontrado.find_by(token: identificador)
+
+    #respond_to do |format|
+     # if perro_existe
+
+      #  format.html { redirect_to edit_perros_encontrado_path(perro_existe.id) }
+       # format.json { render json: { url: edit_perros_encontrado_path(perro_existe) } }
+      #else
+        #format.html { redirect_to root_path, alert: "No se encontro un perro con este identificador." }
+       # format.json { render json: { error: "No se encontro un perro con este identificador." }, status: :unprocessable_entity }
+     # end
+    #end
+  #end
 
 
   # POST /perros_encontrados or /perros_encontrados.json
@@ -64,15 +122,25 @@ class PerrosEncontradosController < ApplicationController
   def update
     @perros_encontrado.usuario_autenticado = user_signed_in?
     @perros_encontrado.action_type = 'update'
-    respond_to do |format|
+
+    if user_signed_in?
+      respond_to do |format|
+        if @perros_encontrado.update(perros_encontrado_params)
+          format.html { redirect_to perros_encontrados_path, notice: "La publicacion ha sido editada correctamente!" }
+          format.json { render :show, status: :ok, location: @perros_encontrado }
+        else
+          format.html { render :edit, status: :unprocessable_entity }
+          format.json { render json: @perros_encontrado.errors, status: :unprocessable_entity }
+        end
+      end
+    else
       if @perros_encontrado.update(perros_encontrado_params)
-        format.html { redirect_to perros_encontrados_path, notice: "La publicacion ha sido editada correctamente!" }
-        format.json { render :show, status: :ok, location: @perros_encontrado }
+        redirect_to perros_encontrados_path, notice: 'La publicacion ha sido editada correctamente!'
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @perros_encontrado.errors, status: :unprocessable_entity }
+        redirect_to perros_encontrados_path, alert: 'La publicacion no pudo ser editada.'
       end
     end
+
   end
 
 
@@ -117,6 +185,34 @@ class PerrosEncontradosController < ApplicationController
 
   end
 
+  def enviar_correo_perros_encontrados_contactar
+
+    id = params[:id]
+    @perro = PerrosEncontrado.find(id)
+
+    nombre = params[:nombre]
+    apellido = params[:apellido]
+    direccion = params[:direccion]
+    numero = params[:numero]
+    email = params[:email]
+
+    existing_user = User.find_by(email: params[:email])
+
+    if existing_user || (email == @perro.mail)
+      # El correo electrónico ya está registrado, realiza alguna acción (por ejemplo, mostrar un mensaje de error)
+      flash[:alert] = "El correo electrónico ya está registrado en la veterinaria o estas intentando contactarrte a ti mismo"
+      redirect_back(fallback_location: root_path) # Puedes redirigir a donde desees
+    else
+      PerrosEncontradosMailer.enviar_correo_perros_encontrados_contactar(@perro, nombre, apellido, direccion, numero, email).deliver_later
+
+      respond_to do |format|
+        format.html { redirect_to root_path, flash: { notice: "El correo fue enviado con exito." } }
+        format.json { head :no_content }
+      end
+    end
+
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_perros_encontrado
@@ -126,6 +222,6 @@ class PerrosEncontradosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def perros_encontrado_params
-      params.require(:perros_encontrado).permit(:nombre, :foto, :fecha_de_publicacion, :status, :mail, :descripcion, :nombre_dueno, :apellido_dueno, :direccion_dueno)
+      params.require(:perros_encontrado).permit(:nombre, :foto, :fecha_de_publicacion, :status, :mail, :descripcion, :nombre_dueno, :apellido_dueno, :direccion_dueno, :numero_dueno, :_method)
     end
 end

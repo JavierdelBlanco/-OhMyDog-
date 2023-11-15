@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_08_131607) do
+ActiveRecord::Schema[7.1].define(version: 2023_11_14_193817) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -92,6 +92,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_08_131607) do
     t.string "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "numero_dueno"
   end
 
   create_table "perros_perdidos", force: :cascade do |t|

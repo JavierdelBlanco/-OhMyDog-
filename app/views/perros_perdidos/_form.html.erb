@@ -1,6 +1,5 @@
 <%= form_with(model: perros_perdido) do |form| %>
 
-
   <%= form.hidden_field :status, value: "Se busca" %>
   <%= form.hidden_field :fecha_de_publicacion, value: Date.current %>
   <%= form.hidden_field :mail, value: current_user.email %>

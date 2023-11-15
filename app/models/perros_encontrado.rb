@@ -10,6 +10,7 @@ class PerrosEncontrado < ApplicationRecord
   validates :nombre_dueno, presence: true
   validates :apellido_dueno, presence: true
   validates :direccion_dueno, presence: true
+  validates :numero_dueno, presence: true
 
   validate :foto_content_type
   validate :validar_email
