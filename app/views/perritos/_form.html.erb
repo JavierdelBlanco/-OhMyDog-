@@ -31,7 +31,7 @@
       <% else %>
         <%= form.select :dia, (1..31), selected: Time.now.day %>
         <%= form.select :mes, Date::ABBR_MONTHNAMES.compact.each_with_index.map { |month, index| [month, index + 1] }, selected: Time.now.month %>
-        <%= form.select :año, (Date.current.year  - 20 )..(Date.current.year), selected: Time.now.year %>
+        <%= form.select :año, (Date.current.year - 20)..(Date.current.year), selected: Time.now.year %>
       <% end %>
   </div>
 </div>

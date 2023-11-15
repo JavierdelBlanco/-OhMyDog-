@@ -149,7 +149,7 @@
 
       <% else %>
 
-        <% if !user_signed_in? %>
+        <% if !user_signed_in? && request.path != '/perros_encontrados/new' %>
           <div class="mb-3">
             <%= form.label :Estado, class: 'form-label' %>
             <%= form.select :status, options_for_select(['Se busca al dueño', 'Dueño encontrado'], @perros_encontrado.status), class: 'form-select' %>
@@ -180,8 +180,9 @@
           </div>
         </div>
 
-        <button type="button" class="btn btn-danger" style='margin: 2px' data-bs-toggle="modal" data-bs-target="#ModalEliminar-<%= perros_encontrado.id %>">Eliminar</button>
-
+        <% if !user_signed_in? && request.path != '/perros_encontrados/new' %>
+          <button type="button" class="btn btn-danger" style='margin: 2px' data-bs-toggle="modal" data-bs-target="#ModalEliminar-<%= perros_encontrado.id %>">Eliminar</button>
+        <% end %>
         <!-- Modal Eliminar-->
             <div class="modal fade" id="ModalEliminar-<%= perros_encontrado.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog">
@@ -202,7 +203,7 @@
         </div>
 
 
-      <% end%>
+      <% end %>
 
       <%= link_to "Atras", perros_encontrados_path , class: "btn btn-turqueza", style:'margin-block: 10px;'%>
     </div>  
