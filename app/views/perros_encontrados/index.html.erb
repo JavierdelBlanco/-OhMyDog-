@@ -1,10 +1,36 @@
 <h1>Perros encontrados</h1>
 
-<a href="<%= new_perros_encontrado_path %>" class="btn btn-turqueza">Publicar un perro encontrado</a>
-<% if user_signed_in? %>
-  <%= link_to "Perros encontrados", perros_encontrados_path, class: "btn btn-turqueza perros-encontrados-boton" %>
-  <%= link_to "Mis perros encontrados", perros_encontrados_path(filter: current_user.email), class: "btn btn-turqueza mis-perros-encontrados-boton" %>
-<% end %>
+  <a href="<%= new_perros_encontrado_path %>" class="btn btn-turqueza" style="order: -1;">Publicar un perro encontrado</a>
+  
+  <% if user_signed_in? %>
+    <%= link_to "Perros encontrados", perros_encontrados_path, class: "btn btn-turqueza perros-encontrados-boton" %>
+    <%= link_to "Mis perros encontrados", perros_encontrados_path(filter: current_user.email), class: "btn btn-turqueza mis-perros-encontrados-boton" %>
+  <% else %>
+  <%= form_tag(edit_no_registrado_perros_encontrado_path, method: 'get') do %>
+    <div class="card bg-warning" style="border-radius: 5px; padding: 15px; width: 350px; margin-top: 5px; margin-bottom: 5px;">
+      <label for="identificador-field" class="text-dark">Ingrese identificador para editar su publicación:</label>
+      <div class="d-flex">
+        <%= text_field_tag :identificador, nil, class: 'form-control', id: 'identificador-field', style: 'width: 150px;' %>
+        <%= submit_tag 'Editar Publicación', class: 'btn btn-turqueza', style: 'margin-left: 10px;' %>
+      </div>
+    </div>
+  <% end %>
+  
+  
+  <% end %>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
 
 
 <% if @all_dogs.empty? %>
@@ -120,7 +146,7 @@
             
 
         <% else %>
-          <% if user_signed_in? && current_user.email == perros.mail %>
+          <% if user_signed_in? && current_user.email == perros.mail && perros.status == 'Se busca al dueño'%>
             <div class='d-flex align-items-end'>
               <%= link_to "Editar", edit_perros_encontrado_path(perros) , class: "btn btn-secondary", style:'margin: 2px' %>
               <button type="button" class="btn btn-danger" style='margin: 2px' data-bs-toggle="modal" data-bs-target="#ModalEliminar-<%= perros.id %>">Eliminar</button>

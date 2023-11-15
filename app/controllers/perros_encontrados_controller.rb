@@ -35,10 +35,10 @@ class PerrosEncontradosController < ApplicationController
 
     @users = User.all
     
-    respond_to do |format|
-      format.turbo_stream
-      format.html
-    end
+    #respond_to do |format|
+    #  format.turbo_stream
+    #  format.html
+    #end
 
   end
 
@@ -62,6 +62,40 @@ class PerrosEncontradosController < ApplicationController
   # GET /perros_encontrados/1/edit
   def edit
   end
+  
+  # app/controllers/perros_encontrados_controller.rb
+def edit_no_registrado
+  identificador = params[:identificador]
+  @perros_encontrado = PerrosEncontrado.find_by(token: identificador)
+
+  if @perros_encontrado
+    if @perros_encontrado.status == 'Se busca al dueño'
+      render :edit
+    else
+      redirect_to root_path, alert: "Esta publicacion ha sido marcada como dueño encontrado."
+    end
+  else
+    redirect_to root_path, alert: "No se encontró un perro con este identificador."
+  end
+end
+
+  
+  #def edit_no_registrado
+  #  identificador = params[:identificador]
+
+    #perro_existe = PerrosEncontrado.find_by(token: identificador)
+
+    #respond_to do |format|
+     # if perro_existe
+
+      #  format.html { redirect_to edit_perros_encontrado_path(perro_existe.id) }
+       # format.json { render json: { url: edit_perros_encontrado_path(perro_existe) } }
+      #else
+        #format.html { redirect_to root_path, alert: "No se encontro un perro con este identificador." }
+       # format.json { render json: { error: "No se encontro un perro con este identificador." }, status: :unprocessable_entity }
+     # end
+    #end
+  #end
 
 
   # POST /perros_encontrados or /perros_encontrados.json
@@ -88,15 +122,25 @@ class PerrosEncontradosController < ApplicationController
   def update
     @perros_encontrado.usuario_autenticado = user_signed_in?
     @perros_encontrado.action_type = 'update'
-    respond_to do |format|
+
+    if user_signed_in?
+      respond_to do |format|
+        if @perros_encontrado.update(perros_encontrado_params)
+          format.html { redirect_to perros_encontrados_path, notice: "La publicacion ha sido editada correctamente!" }
+          format.json { render :show, status: :ok, location: @perros_encontrado }
+        else
+          format.html { render :edit, status: :unprocessable_entity }
+          format.json { render json: @perros_encontrado.errors, status: :unprocessable_entity }
+        end
+      end
+    else
       if @perros_encontrado.update(perros_encontrado_params)
-        format.html { redirect_to perros_encontrados_path, notice: "La publicacion ha sido editada correctamente!" }
-        format.json { render :show, status: :ok, location: @perros_encontrado }
+        redirect_to perros_encontrados_path, notice: 'La publicacion ha sido editada correctamente!'
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @perros_encontrado.errors, status: :unprocessable_entity }
+        redirect_to perros_encontrados_path, alert: 'La publicacion no pudo ser editada.'
       end
     end
+
   end
 
 
@@ -178,6 +222,6 @@ class PerrosEncontradosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def perros_encontrado_params
-      params.require(:perros_encontrado).permit(:nombre, :foto, :fecha_de_publicacion, :status, :mail, :descripcion, :nombre_dueno, :apellido_dueno, :direccion_dueno, :numero_dueno)
+      params.require(:perros_encontrado).permit(:nombre, :foto, :fecha_de_publicacion, :status, :mail, :descripcion, :nombre_dueno, :apellido_dueno, :direccion_dueno, :numero_dueno, :_method)
     end
 end

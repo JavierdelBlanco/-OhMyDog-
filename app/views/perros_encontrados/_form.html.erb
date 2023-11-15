@@ -3,7 +3,7 @@
   <%= form.hidden_field :status, value: "Se busca al dueño" %>
   <%= form.hidden_field :fecha_de_publicacion, value: Date.current %>
 
-  <div class='row g-3 needs-validation', style='width: 500px; margin: 5px; border: 1px solid #000; border-radius: 5px;'>
+  <div class='row g-3 needs-validation', style='width: 590px; margin: 5px; border: 1px solid #000; border-radius: 5px;'>
     <div class="col-md-6">
       <%= form.label :'nombre del perro (Opcional)', style: "display: block;" %>
       <div class="input-group has-validation">
@@ -44,8 +44,6 @@
         <%= form.hidden_field :direccion_dueno, value: current_user.direccion %>
         <%= form.hidden_field :numero_dueno, value: current_user.nro %>
       <% else %>
-        <p>Como no te encuentras registrado deberas ingresar los siguientes datos:</p>
-        <!-- -->
         <div class="col-md-6">
           <%= form.label :nombre, style: "display: block;" %>
           <div class="input-group has-validation">
@@ -150,6 +148,14 @@
 
 
       <% else %>
+
+        <% if !user_signed_in? %>
+          <div class="mb-3">
+            <%= form.label :Estado, class: 'form-label' %>
+            <%= form.select :status, options_for_select(['Se busca al dueño', 'Dueño encontrado'], @perros_encontrado.status), class: 'form-select' %>
+          </div>
+        <% end %>
+
         <button type="button" class="btn btn-success" style='margin-block: 10px;' data-bs-toggle="modal" data-bs-target="#ModalEditar-<%= perros_encontrado.id %>">
           Guardar cambios
         </button>
@@ -174,8 +180,30 @@
           </div>
         </div>
 
+        <button type="button" class="btn btn-danger" style='margin: 2px' data-bs-toggle="modal" data-bs-target="#ModalEliminar-<%= perros_encontrado.id %>">Eliminar</button>
+
+        <!-- Modal Eliminar-->
+            <div class="modal fade" id="ModalEliminar-<%= perros_encontrado.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Publicacion</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    Desea eliminar la publicacion de este perro que busca dueño de forma permanente ?
+                  </div>
+                  <div class="modal-footer">
+                    <%= link_to "Confirmar", perros_encontrado, data: { turbo_method: :delete } ,  class: "btn btn-turqueza", style:'margin: 2px' %>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+                  </div>
+                </div>
+              </div>
+        </div>
+
 
       <% end%>
+
       <%= link_to "Atras", perros_encontrados_path , class: "btn btn-turqueza", style:'margin-block: 10px;'%>
     </div>  
   </div>

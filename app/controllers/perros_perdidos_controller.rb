@@ -38,7 +38,7 @@ class PerrosPerdidosController < ApplicationController
       format.turbo_stream
       format.html
     end
-    
+
   end
   
 
