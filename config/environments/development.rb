@@ -69,7 +69,7 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
+config.action_mailer.smtp_settings = {
   :user_name => '0be9f7fb92aee5',
   :password => '1cbd2a6770b7e8',
   :address => 'sandbox.smtp.mailtrap.io',
