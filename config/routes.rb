@@ -31,8 +31,11 @@ Rails.application.routes.draw do
   
   get 'profile/edit', to: 'profile#edit', as: :edit_profile
   end
+
+  #Creacion de usuario del veterinario
   get 'creacion_usuario', to: 'users/registro#new', as: 'creacion_usuario'
   post 'creacion_usuario', to: 'users/registro#create'
+
   #Atencion al cliente
   get 'perrito_ajeno/:id', to: 'perritos#new_ajeno', as: 'perrito_ajeno'
   get 'edit_other/:id', to: 'users#edit_otro', as: 'edit_other'
@@ -40,11 +43,20 @@ Rails.application.routes.draw do
   get '/perfil/:id', to: 'users#ver_perfil', as: 'ver_perfil'
   get 'atencion_cliente', to: 'users#atencion'
 
-  get 'show_perrito/:id', to: 'perritos#show', as: 'show_perrito'
 
+  get 'show_perrito/:id', to: 'perritos#show', as: 'show_perrito'
   get 'add_dog.:id', to: 'perritos#new', as: 'add_dog'
-  #mi mail envio
+  get 'marcar_fallecido/:id', to: 'perritos#marcar_fallecido', as: 'marcar_fallecido'
+  resources :perritos do
+    member do
+      patch 'marcar_fallecido'
+    end
+  end
+
+  #Envio de mail de joaco
   post '/random_password_email', to: 'user_mailer#random_password_email'
+
+
   resources :cuidador_paseadors, path: 'cuidadores-y-paseadores'
   resources :perros_perdidos, path: 'se-busca'
   
