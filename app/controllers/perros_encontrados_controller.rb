@@ -10,31 +10,31 @@ class PerrosEncontradosController < ApplicationController
     if params[:filter].present?
       perros_encontrados = PerrosEncontrado.where(mail: params[:filter], status: 'Se busca al dueño').order(created_at: :desc)
       perros_reunidos = PerrosEncontrado.where(mail: params[:filter], status: 'Dueño encontrado').limit(50).order(created_at: :desc)
-  
+
       # Combinar perros perdidos y encontrados
       @perros = perros_encontrados + perros_reunidos
-  
+
       # Ordenar la lista combinada por status y fecha de forma descendente
       @perros = @perros.sort_by { |perro| [perro.status.downcase, perro.created_at] }.reverse
-  
+
       # Aplicar paginación a la lista
-      @perros = Kaminari.paginate_array(@perros).page(params[:page]).per(4)
+      @perros = Kaminari.paginate_array(@perros).page(params[:page]).per(3)
     else
       perros_encontrados = PerrosEncontrado.where(status: 'Se busca al dueño').order(created_at: :desc)
       perros_reunidos = PerrosEncontrado.where(status: 'Dueño encontrado').limit(50).order(created_at: :desc)
-  
+
       # Combinar perros perdidos y encontrados
       @perros = perros_encontrados + perros_reunidos
-  
+
       # Ordenar la lista combinada por status y fecha de forma descendente
       @perros = @perros.sort_by { |perro| [perro.status.downcase, perro.created_at] }.reverse
-  
+
       # Aplicar paginación a la lista
-      @perros = Kaminari.paginate_array(@perros).page(params[:page]).per(4)
+      @perros = Kaminari.paginate_array(@perros).page(params[:page]).per(3)
     end
 
     @users = User.all
-    
+
     #respond_to do |format|
     #  format.turbo_stream
     #  format.html
@@ -62,7 +62,7 @@ class PerrosEncontradosController < ApplicationController
   # GET /perros_encontrados/1/edit
   def edit
   end
-  
+
   # app/controllers/perros_encontrados_controller.rb
 def edit_no_registrado
   identificador = params[:identificador]
@@ -79,7 +79,7 @@ def edit_no_registrado
   end
 end
 
-  
+
   #def edit_no_registrado
   #  identificador = params[:identificador]
 
@@ -113,7 +113,7 @@ end
         else
           flash[:alert] = "Falló la publicacion del perro."
           format.html { render :new, status: :unprocessable_entity }
-  
+
           format.json { render json: @perros_encontrado.errors, status: :unprocessable_entity }
         end
       end
@@ -126,7 +126,7 @@ end
         else
           flash[:alert] = "Falló la publicacion del perro."
           format.html { redirect_to new_perros_encontrado_path, alert: "Mail ya registrado y/o nombre ya en uso con este mail" }
-  
+
           format.json { render json: @perros_encontrado.errors, status: :unprocessable_entity }
         end
       end

@@ -5,37 +5,37 @@ class PerrosPerdidosController < ApplicationController
   def index
 
     @all_dogs = PerrosPerdido.all
-    
+
     if params[:filter].present?
       perros_perdidos = PerrosPerdido.where(mail: params[:filter], status: 'Se busca').order(created_at: :desc)
       perros_encontrados = PerrosPerdido.where(mail: params[:filter], status: 'Encontrado').limit(50).order(created_at: :asc)
-  
+
       # Combinar perros perdidos y encontrados
       @perros = perros_perdidos + perros_encontrados
-  
+
       # Ordenar la lista combinada por status y fecha de forma descendente
       @perros = @perros.sort_by { |perro| [perro.status.downcase, perro.created_at] }.reverse
-  
+
       # Aplicar paginación a la lista
-      @perros = Kaminari.paginate_array(@perros).page(params[:page]).per(4)
+      @perros = Kaminari.paginate_array(@perros).page(params[:page]).per(3)
     else
       perros_perdidos = PerrosPerdido.where(status: 'Se busca').order(created_at: :desc)
       perros_encontrados = PerrosPerdido.where(status: 'Encontrado').limit(50).order(created_at: :asc)
-  
+
       # Combinar perros perdidos y encontrados
       @perros = perros_perdidos + perros_encontrados
-  
+
       # Ordenar la lista combinada por status y fecha de forma descendente
       @perros = @perros.sort_by { |perro| [perro.status.downcase, perro.created_at] }.reverse
-  
+
       # Aplicar paginación a la lista
-      @perros = Kaminari.paginate_array(@perros).page(params[:page]).per(4)
+      @perros = Kaminari.paginate_array(@perros).page(params[:page]).per(3)
     end
 
     @users = User.all
 
   end
-  
+
 
   # GET /perros_perdidos/1 or /perros_perdidos/1.json
   def show
