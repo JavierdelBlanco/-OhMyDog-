@@ -152,7 +152,8 @@ end
     else
       respond_to do |format|
         if @perros_encontrado.update(perros_encontrado_params)
-          redirect_to perros_encontrados_path, notice: 'La publicacion ha sido editada correctamente!'
+          format.html { redirect_to perros_encontrados_path, notice: "La publicacion ha sido editada correctamente!" }
+          format.json { render :show, status: :ok, location: @perros_encontrado }
         else
           format.html { render :edit, status: :unprocessable_entity }
           format.json { render json: @perros_encontrado.errors, status: :unprocessable_entity }
@@ -241,6 +242,6 @@ end
 
     # Only allow a list of trusted parameters through.
     def perros_encontrado_params
-      params.require(:perros_encontrado).permit(:nombre, :foto, :fecha_de_publicacion, :status, :mail, :descripcion, :nombre_dueno, :apellido_dueno, :direccion_dueno, :numero_dueno, :_method)
+      params.require(:perros_encontrado).permit(:nombre, :foto, :fecha_de_publicacion, :status, :mail, :descripcion, :nombre_dueno, :apellido_dueno, :direccion_dueno, :numero_dueno, :_method, :raza, :edad_aproximada, :tamano, :lugar_zona_donde_se_encontro)
     end
 end
