@@ -156,7 +156,7 @@ class PerrosPerdidosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def perros_perdido_params
-      params.require(:perros_perdido).permit(:nombre, :foto, :fecha_de_publicacion, :status, :descripcion, :mail)
+      params.require(:perros_perdido).permit(:nombre, :foto, :fecha_de_publicacion, :status, :descripcion, :mail, :raza, :edad_aproximada, :tamano, :lugar_zona_donde_se_encontro)
     end
 
 

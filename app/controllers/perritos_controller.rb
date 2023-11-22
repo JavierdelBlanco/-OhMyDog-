@@ -79,6 +79,22 @@ class PerritosController < ApplicationController
     end
   end
 
+  def marcar_fallecido
+    @user = User.find(params[:user])
+    tipo = params[:tipo]
+    puts '#########################################'
+    puts tipo
+    puts '#########################################'
+    @perrito = @user.perritos.find_by(id: params[:id])
+    if (@perrito.update(fallecido: true))
+      if(tipo=='mio')
+        redirect_to ver_perfil_path(current_user), notice: "Se actualizó el perro exitosamente."
+      else
+        redirect_to user_path(@user), notice: "Se actualizó el perro exitosamente."
+      end
+    end
+  end
+
   # DELETE /perritos/1 or /perritos/1.json
   def destroy
    # user_id = params[:user_id]

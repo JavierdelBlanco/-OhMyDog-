@@ -93,6 +93,10 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_20_213820) do
     t.string "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "raza"
+    t.integer "edad_aproximada"
+    t.string "tamano"
+    t.string "lugar_zona_donde_se_encontro"
   end
 
   create_table "perros_perdidos", force: :cascade do |t|
@@ -104,6 +108,10 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_20_213820) do
     t.text "descripcion"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "raza"
+    t.integer "edad_aproximada"
+    t.string "tamano"
+    t.string "lugar_zona_donde_se_encontro"
   end
 
   create_table "solicitud_turnos", force: :cascade do |t|

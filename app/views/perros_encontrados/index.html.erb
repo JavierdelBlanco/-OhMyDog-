@@ -49,11 +49,15 @@
 <div class='d-flex flex-wrap'>
   <% @perros.each do |perros| %>
    
-    <div class="card d-flex" style="max-width: 350px; max-height: 500px; min-width: 350px; min-height: 500px; margin: 10px">
+    <div class="card d-flex" style="max-width: 350px; max-height: 650px; min-width: 350px; min-height: 500px; margin: 10px">
       <%= image_tag(perros.foto, class:'card-img-top', style:'max-height: 200px; min-height: 200px; max-width: 100%; object-fit: cover;  object-position: top; ') %>
       <div class="card-body">
         <p class="card-text", style=''> <strong> Nombre: </strong> <%= perros.nombre %> </p>
         <p id=ci class="card-text" style="max-height: 100px; overflow: hidden;"> <strong> Descripcion: </strong> <%= perros.descripcion %> </p>
+        <p class="card-text", style=''> <strong> Raza: </strong> <%= perros.raza %> </p>
+        <p class="card-text", style=''> <strong> Edad aproximada: </strong> <%= perros.edad_aproximada %> </p>
+        <p class="card-text", style=''> <strong> Tamaño: </strong> <%= perros.tamano %> </p>
+        <p class="card-text", style=''> <strong> Lugar/zona donde se perdio: </strong> <%= perros.lugar_zona_donde_se_encontro %> </p>
         <p class="card-text"> <strong> Estado: </strong><%= perros.status %> </p>
         <p class="card-text"> <strong> Fecha de publicacion: </strong><%= perros.fecha_de_publicacion.strftime("%d/%m/%y") %> </p>
       </div>
