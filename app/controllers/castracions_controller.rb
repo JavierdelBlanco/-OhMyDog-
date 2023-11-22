@@ -13,6 +13,7 @@ class CastracionsController < ApplicationController
   # GET /castracions/new
   def new
     @castracion = Castracion.new
+    @perrito = Perrito.find(params[:id])
   end
 
   # GET /castracions/1/edit
@@ -21,16 +22,28 @@ class CastracionsController < ApplicationController
 
   # POST /castracions or /castracions.json
   def create
-    @castracion = Castracion.new(castracion_params)
-
-    respond_to do |format|
-      if @castracion.save
-        format.html { redirect_to castracion_url(@castracion), notice: "Castracion was successfully created." }
-        format.json { render :show, status: :created, location: @castracion }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @castracion.errors, status: :unprocessable_entity }
+    parametros = castracion_params.except(:perrito_id)
+    @castracion = Castracion.new(parametros)
+    perro_id = params[:castracion][:perrito_id]
+    @perrito = Perrito.find(perro_id)
+    
+    if(!@perrito.historia_c.castracion)
+      @perrito.historia_c.castracion = @castracion
+      @perrito.save
+      respond_to do |format|
+        if @castracion.save
+          puts '################################'
+          puts 'SE GUARDO LA CASTRACION'
+          format.html { redirect_to ver_perrito_path(@perrito), notice: "Se registró la castración con éxito." }
+          format.json { render :show, status: :created, location: @castracion }
+        else
+          format.html { render :new, status: :unprocessable_entity }
+          format.json { render json: @castracion.errors, status: :unprocessable_entity }
+        end
       end
+    else
+      flash[:alert] = 'El perro ya ha sido castrado'
+      redirect_to ver_perrito_path(@perrito)
     end
   end
 
@@ -65,6 +78,6 @@ class CastracionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def castracion_params
-      params.require(:castracion).permit(:historia_c_id, :dia, :mes, :anio, :detalle)
+      params.require(:castracion).permit(:historia_c_id, :dia, :mes, :anio, :detalle, :perrito_id)
     end
 end

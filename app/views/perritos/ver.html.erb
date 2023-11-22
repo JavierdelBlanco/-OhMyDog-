@@ -34,15 +34,17 @@
   </table>
 
 
-  <% if @historia_clinica != nil %>
-  <p>Detalles de la Historia Clínica:</p>
+  <%= link_to "Agregar evento a la historia", crear_historia_path(@perrito, current_user), class: "btn btn-secondary" %>
+  <h3>Detalles de la Historia Clínica:</h3>
+ 
+  <% if @historia_clinica.nil? %>
   <ul>
     <li>Fecha de atención: <%= @perrito.historia_c.fecha_atencion %></li>
-    <li>Tipo de vacuna: <%= @perrito.historia_c.tipo_vacuna %></li>
+    <li>Tipo: <%= @perrito.historia_c.tipo_vacuna %></li>
     <!-- Agrega más detalles según la estructura de tu HistoriaC -->
   </ul>
-    <% else %>
-        <p>Este perrito no tiene una Historia Clínica registrada.</p>
+  <% else %>
+        <p>Este perro no tiene una Historia Clínica registrada.</p>
     <% end %>
   <%= link_to "Volver al perfil", ver_perfil_path(current_user), class: "btn btn-secondary" %>
 </div>

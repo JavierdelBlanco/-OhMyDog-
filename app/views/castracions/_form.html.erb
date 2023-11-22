@@ -12,11 +12,6 @@
   <% end %>
 
   <div>
-    <%= form.label :historia_c_id, style: "display: block" %>
-    <%= form.text_field :historia_c_id %>
-  </div>
-
-  <div>
     <%= form.label :dia, style: "display: block" %>
     <%= form.number_field :dia %>
   </div>
@@ -27,7 +22,7 @@
   </div>
 
   <div>
-    <%= form.label :anio, style: "display: block" %>
+    <%= form.label :año, style: "display: block" %>
     <%= form.number_field :anio %>
   </div>
 
@@ -35,6 +30,8 @@
     <%= form.label :detalle, style: "display: block" %>
     <%= form.text_area :detalle %>
   </div>
+
+  <%= form.hidden_field :perrito_id, value: @perrito.id %>
 
   <div>
     <%= form.submit %>
