@@ -124,11 +124,25 @@ class PerritosController < ApplicationController
   end
 
   def ver
+    @perrito = Perrito.find(params[:id])
     @user = User.find(params[:user])
-    @perrito = @user.perritos.find_by(id: params[:id])
-    if (@perrito.historia_c.castracion.nil? && @perrito.historia_c.ambulatorium.nil? && @perrito.historia_c.vacuna_e.nil? && @perrito.historia_c.vacuna_r.nil? && @perrito.historia_c.desparasitacion.nil?)
-      @historia_clinica = nil
+
+    if (@perrito.historia_c.present?)
+      puts '################################'
+      puts 'Hay historia clinica'
+      if(@perrito.historia_c.nil?)
+        puts 'Pero esta vacia'
+      else
+        puts 'Y no esta vacia'
+      end
+    else
+      puts '################################'
+      puts 'No hay historia clinica'
     end
+  end
+
+  def agregar_historia
+    @perrito = Perrito.find(params[:id])
   end
 
   private

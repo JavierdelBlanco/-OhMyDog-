@@ -56,16 +56,19 @@ Rails.application.routes.draw do
   get '/perfil/:id', to: 'users#ver_perfil', as: 'ver_perfil'
   get 'atencion_cliente', to: 'users#atencion'
 
-
+  #Interfaz de los perros
   get 'show_perrito/:id', to: 'perritos#show', as: 'show_perrito'
   get 'add_dog.:id', to: 'perritos#new', as: 'add_dog'
   get 'marcar_fallecido/:id', to: 'perritos#marcar_fallecido', as: 'marcar_fallecido'
-  get 'ver_perrito/:id', to: 'perritos#ver', as: 'ver_perrito'
   resources :perritos do
     member do
       patch 'marcar_fallecido'
     end
   end
+  #Historia clinica del perro
+  get 'ver_perrito/:id', to: 'perritos#ver', as: 'ver_perrito'
+  get 'crear_historia/:id', to: 'perritos#agregar_historia', as: 'crear_historia'
+  get 'crear_castracion/:id', to: 'castracions#new', as: 'crear_castracion'
 
   #Envio de mail de joaco
   post '/random_password_email', to: 'user_mailer#random_password_email'
