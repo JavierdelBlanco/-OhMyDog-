@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  historia_c: one
+  dia: 1
+  mes: 1
+  anio: 1
+  sintomas: MyText
+  diagnostico: MyText
+  tratamiento: MyText
+  detalles: MyText
+
+two:
+  historia_c: two
+  dia: 1
+  mes: 1
+  anio: 1
+  sintomas: MyText
+  diagnostico: MyText
+  tratamiento: MyText
+  detalles: MyText

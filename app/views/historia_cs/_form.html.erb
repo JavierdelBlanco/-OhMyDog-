@@ -1,0 +1,47 @@
+<%= form_with(model: historia_c) do |form| %>
+  <% if historia_c.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(historia_c.errors.count, "error") %> prohibited this historia_c from being saved:</h2>
+
+      <ul>
+        <% historia_c.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :perrito_id, style: "display: block" %>
+    <%= form.text_field :perrito_id %>
+  </div>
+
+  <div>
+    <%= form.label :castracion_id, style: "display: block" %>
+    <%= form.text_field :castracion_id %>
+  </div>
+
+  <div>
+    <%= form.label :vacuna_e_id, style: "display: block" %>
+    <%= form.text_field :vacuna_e_id %>
+  </div>
+
+  <div>
+    <%= form.label :vacuna_r_id, style: "display: block" %>
+    <%= form.text_field :vacuna_r_id %>
+  </div>
+
+  <div>
+    <%= form.label :desparasitacion_id, style: "display: block" %>
+    <%= form.text_field :desparasitacion_id %>
+  </div>
+
+  <div>
+    <%= form.label :ambulatorium_id, style: "display: block" %>
+    <%= form.text_field :ambulatorium_id %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

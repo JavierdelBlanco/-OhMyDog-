@@ -6,6 +6,7 @@ class Perrito < ApplicationRecord
   validates :color, presence: true
   validates :tamaño, presence: true
 
+  has_one :historia_c
   belongs_to :user
 
 

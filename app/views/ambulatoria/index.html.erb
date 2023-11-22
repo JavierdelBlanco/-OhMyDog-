@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Ambulatoria</h1>
+
+<div id="ambulatoria">
+  <% @ambulatoria.each do |ambulatorium| %>
+    <%= render ambulatorium %>
+    <p>
+      <%= link_to "Show this ambulatorium", ambulatorium %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New ambulatorium", new_ambulatorium_path %>
