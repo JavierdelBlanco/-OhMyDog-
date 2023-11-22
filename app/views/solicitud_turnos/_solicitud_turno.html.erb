@@ -98,7 +98,7 @@
                   ¿Desea rechezar el turno solicitado?
                 </div>
               <div class="modal-footer">
-                <%= button_to "Confirmar", @solicitud_turno, method: :delete,  class: "btn btn-success", style:'margin: 2px' %>
+                <%= button_to "Confirmar", rechazar_turno_path(id: @solicitud_turno.id), method: :post,  class: "btn btn-success", style:'margin: 2px' %>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Atras</button>
               </div>
             </div>

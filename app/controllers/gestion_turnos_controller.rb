@@ -5,8 +5,17 @@ class GestionTurnosController < ApplicationController
 
   # GET /turnos or /turnos.json
   def index
+    if params[:filter].present?
+
+      @turnos =  Turno.where(email_cliente: params[:filter]).order(dia: :asc)
+      @solicitud_turnoS = SolicitudTurno.where(email_cliente: params[:filter]).order(dia: :asc)
+
+    else
+
     @turnos = Turno.all.order(dia: :asc)
     @solicitud_turnos = SolicitudTurno.all.order(dia: :asc)
+
+    end
   end
 
   def generar
@@ -31,11 +40,26 @@ class GestionTurnosController < ApplicationController
       if @turno.save
         @solicitud_turno.destroy!  # Aquí eliminamos la solicitud de turno después de guardar el turno
         GestionTurnosMailer.notificar_turno_otorgado(@turno).deliver_later
-        format.html { redirect_to gestion_turnos_url, notice: "Turno was successfully created." }
+        format.html { redirect_to gestion_turnos_url, notice: "El turno cargado con exito" }
         format.json { render :show, status: :created, location: @turno }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @turno.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def rechazar
+    @solicitud_turno = SolicitudTurno.find(params[:id])
+
+    respond_to do |format|
+      if GestionTurnosMailer.notificar_turno_rechazado(@solicitud_turno).deliver_now
+        @solicitud_turno.destroy
+        format.html { redirect_to root_path, flash: { notice: "Turno rechazado con éxito." } }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to root_path, flash: { error: "Hubo un problema al enviar el correo." } }
+        format.json { render json: { error: "Hubo un problema al enviar el correo." }, status: :unprocessable_entity }
       end
     end
   end

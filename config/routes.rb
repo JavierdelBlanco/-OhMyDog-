@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   resources :solicitud_turnos
   get 'gestion-turnos', to: 'gestion_turnos#index'
   post 'gestion_turnos', to: 'gestion_turnos#generar', as: 'generar_turno'
-
+  post 'gestion_turnos/rechazar', to: 'gestion_turnos#rechazar', as: 'rechazar_turno'
 
   root 'home#index'
 

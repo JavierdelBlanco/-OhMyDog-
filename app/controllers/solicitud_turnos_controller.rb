@@ -28,7 +28,7 @@ class SolicitudTurnosController < ApplicationController
 
     respond_to do |format|
       if @solicitud_turno.save
-        format.html { redirect_to gestion_turnos_url, notice: "Solicitud turno was successfully created." }
+        format.html { redirect_to gestion_turnos_url, notice: "Se ha enviado tu solicitud de turno correctamente" }
         format.json { render :show, status: :created, location: @solicitud_turno }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -55,7 +55,7 @@ class SolicitudTurnosController < ApplicationController
     @solicitud_turno.destroy!
 
     respond_to do |format|
-      format.html { redirect_to gestion_turnos_url, notice: "Solicitud turno was successfully destroyed." }
+      format.html { redirect_to gestion_turnos_url}
       format.json { head :no_content }
     end
   end
