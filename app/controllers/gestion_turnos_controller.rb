@@ -40,7 +40,7 @@ class GestionTurnosController < ApplicationController
       if @turno.save
         @solicitud_turno.destroy!  # Aquí eliminamos la solicitud de turno después de guardar el turno
         GestionTurnosMailer.notificar_turno_otorgado(@turno).deliver_later
-        format.html { redirect_to gestion_turnos_url, notice: "El turno cargado con exito" }
+        format.html { redirect_to gestion_turnos_url, notice: "El turno fue cargado con exito" }
         format.json { render :show, status: :created, location: @turno }
       else
         format.html { render :new, status: :unprocessable_entity }

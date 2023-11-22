@@ -41,7 +41,7 @@
 </div>
 
 <div class="col-md-6">
-  <%= form.label :dia_deseado, style: "display: block;" %>
+  <%= form.label :fecha_deseado, style: "display: block;" %>
   <div class="input-group has-validation">
     <%= form.date_field :dia, class: 'form-control' + (solicitud_turno.errors[:dia].any? ? ' is-invalid' : ''), required: true, min: Date.today.to_s, id: 'validationDia' %>
     <div id="validationEmailFeedback" class="invalid-feedback" style="<%= solicitud_turno.errors[:dia].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
@@ -58,7 +58,7 @@
 </div>
 
     <div class="col-md-12">
-      <%= form.label :descripcion, style: "display: block;" %>
+      <%= form.label :detalle, style: "display: block;" %>
       <div class="input-group has-validation">
         <%= form.text_area :descripcion, class: 'form-control' %>
       </div>
@@ -67,7 +67,7 @@
     <div class="col-md-12 mb-2" >
       <div>
         <button type="button" class="btn btn-success" style='margin-top: 10px;' data-bs-toggle="modal" data-bs-target="#ModalSolicitarTurno-<%= solicitud_turno.id %>">
-              Generar Solicitud
+              Enviar Solicitud
         </button>
 
       <!-- Modal Solicitar Turno-->

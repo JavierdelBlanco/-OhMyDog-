@@ -31,7 +31,8 @@ class SolicitudTurnosController < ApplicationController
         format.html { redirect_to gestion_turnos_url, notice: "Se ha enviado tu solicitud de turno correctamente" }
         format.json { render :show, status: :created, location: @solicitud_turno }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        flash[:alert] = "Fallo la solicitud de turno, usted ya cuenta con un turno para ese día"
+        format.html { render :new, status: :unprocessable_entity}
         format.json { render json: @solicitud_turno.errors, status: :unprocessable_entity }
       end
     end
