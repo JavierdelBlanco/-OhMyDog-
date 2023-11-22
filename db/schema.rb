@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_17_182601) do
+ActiveRecord::Schema[7.1].define(version: 2023_11_20_213820) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -89,10 +89,10 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_17_182601) do
     t.string "nombre_dueno"
     t.string "apellido_dueno"
     t.string "direccion_dueno"
+    t.integer "numero_dueno"
     t.string "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "numero_dueno"
     t.string "raza"
     t.integer "edad_aproximada"
     t.string "tamano"
@@ -112,6 +112,32 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_17_182601) do
     t.integer "edad_aproximada"
     t.string "tamano"
     t.string "lugar_zona_donde_se_encontro"
+  end
+
+  create_table "solicitud_turnos", force: :cascade do |t|
+    t.string "nombre_cliente"
+    t.string "apellido_cliente"
+    t.string "email_cliente"
+    t.string "nombres_perros"
+    t.string "tipo_turno"
+    t.date "dia"
+    t.time "horario"
+    t.text "descripcion"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "turnos", force: :cascade do |t|
+    t.string "nombre_cliente"
+    t.string "apellido_cliente"
+    t.string "email_cliente"
+    t.string "nombres_perros"
+    t.string "tipo_turno"
+    t.date "dia"
+    t.time "horario"
+    t.text "descripcion"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

@@ -89,7 +89,7 @@
 <% end %>
 
 <% if @perritos_vivos.empty? %>
-  <p id="mensaje-perros" class="text-muted" style="display: block;">
+  <p id="mensaje-perros" class="text-muted">
     No cuentas con perros actualmente. ¡Visita la sección de perros en adopción y encuentra el compañero que estás buscando!
   </p>
 <% end %>
@@ -139,13 +139,19 @@
     const fallecidosCheckbox = document.getElementById("fallecidos-check");
     const mensajePerros = document.getElementById("mensaje-perros");
 
+    if ( <%= !@perritos_vivos.empty? %>) {
+        mensajePerros.style.display = 'none';
+      } else {
+        mensajePerros.style.display = 'block';
+      }
+
     fallecidosCheckbox.addEventListener("change", function() {
       const mostrarFallecidos = fallecidosCheckbox.checked;
 
-      if (!mostrarFallecidos && <%= @perritos_vivos.empty? %>) {
-        mensajePerros.style.display = 'block';
-      } else {
+      if !(!mostrarFallecidos && <%= @perritos_vivos.empty? %>) {
         mensajePerros.style.display = 'none';
+      } else {
+        mensajePerros.style.display = 'block';
       }
     });
   });

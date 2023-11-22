@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nombre_cliente: MyString
+  apellido_cliente: MyString
+  nombres_perros: MyString
+  tipo_turno: MyString
+  dia: 2023-11-20
+  horario: 2023-11-20 18:37:32
+  descripcion: MyText
+
+two:
+  nombre_cliente: MyString
+  apellido_cliente: MyString
+  nombres_perros: MyString
+  tipo_turno: MyString
+  dia: 2023-11-20
+  horario: 2023-11-20 18:37:32
+  descripcion: MyText
