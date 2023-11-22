@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :perros_en_adopcions
 
   root 'home#index'
 
@@ -71,6 +72,7 @@ Rails.application.routes.draw do
 
   patch '/perros_perdidos/:id/marcar_como_encontrado', to: 'perros_perdidos#marcar_como_encontrado', as: :marcar_como_encontrado_perros_perdido
   patch '/perros_encontrados/:id/marcar_como_dueno_encontrado', to: 'perros_encontrados#marcar_como_dueno_encontrado', as: :marcar_como_dueno_encontrado_perros_encontrado
+  patch '/perros_en_adopcion/:id/marcar_como_adoptado', to: 'perros_en_adopcions#marcar_como_adoptado', as: :marcar_como_adoptado_perros_en_adopcion
   #mails javi
   post '/enviar_correo', to: 'cuidador_paseadors#enviar_correo'
   post '/enviar_correo_no_registrado', to: 'cuidador_paseadors#enviar_correo_no_registrado'

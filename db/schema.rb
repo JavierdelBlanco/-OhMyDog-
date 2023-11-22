@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_17_182601) do
+ActiveRecord::Schema[7.1].define(version: 2023_11_21_230015) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -77,6 +77,21 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_17_182601) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_perritos_on_user_id"
+  end
+
+  create_table "perros_en_adopcions", force: :cascade do |t|
+    t.string "nombre"
+    t.binary "foto"
+    t.date "fecha_de_publicacion"
+    t.boolean "status"
+    t.string "raza"
+    t.string "sexo"
+    t.integer "edad"
+    t.string "tamano"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "descripcion"
+    t.string "mail"
   end
 
   create_table "perros_encontrados", force: :cascade do |t|
