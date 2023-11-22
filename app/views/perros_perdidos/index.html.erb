@@ -1,3 +1,15 @@
+<style>
+  /* Encontrado */
+  .activo {
+    background-color: #FFF8E6;
+  }
+
+  /* Se busca */
+  .no-activo {
+    background-color: #e5f7fa;
+  }
+</style>
+
 <h1>Perros perdidos</h1>
 
 
@@ -23,7 +35,7 @@
 
   <% @perros.each do |perros| %>
    
-    <div class="<%= (user_signed_in? && current_user.email == perros.mail) ? '' : 'no_mis_perros' %> card d-flex" style="max-width: 350px; max-height: 650px; min-width: 350px; min-height: 500px; margin: 10px">
+    <div class="<%= (user_signed_in? && current_user.email == perros.mail) ? '' : 'no_mis_perros' %> card d-flex <%= perros.status == "Se busca" ? 'activo' : 'no-activo' %>" style="max-width: 350px; max-height: 650px; min-width: 350px; min-height: 500px; margin: 10px">
      
       <%= image_tag(perros.foto, class:'card-img-top', style:'max-height: 200px; min-height: 200px; max-width: 100%; object-fit: cover;  object-position: top; ') %>
       <div class="card-body">

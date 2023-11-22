@@ -102,6 +102,53 @@ class PerrosEnAdopcionsController < ApplicationController
 
   end
 
+  def enviar_correo_contactar_registrado
+
+    id = params[:id]
+    @perro = PerrosEnAdopcion.find(id)
+
+    @owner = User.find_by(email: @perro.mail)
+
+    @current_user = current_user
+
+    PerrosEnAdopcionsMailer.enviar_correo_contactar_registrado(@perro, @owner, @current_user).deliver_later
+
+    respond_to do |format|
+      format.html { redirect_to perros_en_adopcions_path, flash: { notice: "El correo fue enviado con exito." } }
+      format.json { head :no_content }
+    end
+
+  end
+
+  def enviar_correo_contactar_no_registrado
+
+    id = params[:id]
+    @perro = PerrosEnAdopcion.find(id)
+
+    @owner = User.find_by(email: @perro.mail)
+
+    nombre = params[:nombre]
+    apellido = params[:apellido]
+    direccion = params[:direccion]
+    numero = params[:numero]
+    email = params[:email]
+
+    existing_user = User.find_by(email: params[:email])
+
+    if existing_user || (email == @perro.mail)
+      # El correo electrónico ya está registrado, realiza alguna acción (por ejemplo, mostrar un mensaje de error)
+      flash[:alert] = "El correo electrónico ya está registrado en la veterinaria o estas intentando contactarrte a ti mismo"
+      redirect_back(fallback_location: perros_en_adopcions_path) # Puedes redirigir a donde desees
+    else
+      PerrosEnAdopcionsMailer.enviar_correo_contactar_no_registrado(@perro, @owner, nombre, apellido, direccion, numero, email).deliver_later
+
+      respond_to do |format|
+        format.html { redirect_to perros_en_adopcions_path, flash: { notice: "El correo fue enviado con exito." } }
+        format.json { head :no_content }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_perros_en_adopcion
