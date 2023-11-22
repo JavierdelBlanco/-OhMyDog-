@@ -17,16 +17,20 @@
           </li>
         <% end %>
         <li class="nav-item dropdown <%= 'active' if current_page?(perros_perdidos_path) || current_page?(perros_encontrados_path) %>">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Se busca
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#"><%= link_to('Perros perdidos', perros_perdidos_path, class:"dropdown-item #{'active' if current_page?(perros_perdidos_path)}") %></a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#"><%= link_to('Perros encontrados', perros_encontrados_path, class:"dropdown-item #{'active' if current_page?(perros_encontrados_path)}") %></a></li>
-          </ul>
-        </li>
-        <li class="nav-item">
+  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Se busca
+  </a>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="#"><%= link_to('Perros perdidos', perros_perdidos_path, class:"dropdown-item #{'active' if current_page?(perros_perdidos_path)}") %></a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="#"><%= link_to('Perros encontrados', perros_encontrados_path, class:"dropdown-item #{'active' if current_page?(perros_encontrados_path)}") %></a></li>
+  </ul>
+</li>
+  <li class="nav-item">
+    <%= link_to('Perros en adopcion', perros_en_adopcions_path, class:"nav-link #{'active' if current_page?(perros_en_adopcions_path)}") %>
+  </li>
+<li class="nav-item">
+
           <%= link_to('Cuidadores y paseadores', cuidador_paseadors_path, class:"nav-link #{'active' if current_page?(cuidador_paseadors_path)}") %>
         </li>
       </ul>

@@ -1,3 +1,15 @@
+<style>
+  /* Encontrado */
+  .activo {
+    background-color: #FFF8E6;
+  }
+
+  /* Se busca */
+  .no-activo {
+    background-color: #e5f7fa;
+  }
+</style>
+
 <h1>Perros encontrados</h1>
 
   <a href="<%= new_perros_encontrado_path %>" class="btn btn-turqueza" style="order: -1;">Publicar un perro encontrado</a>
@@ -49,7 +61,7 @@
 <div class='d-flex flex-wrap'>
   <% @perros.each do |perros| %>
    
-    <div class="card d-flex" style="max-width: 350px; max-height: 650px; min-width: 350px; min-height: 500px; margin: 10px">
+    <div class="card d-flex <%= perros.status == "Se busca al dueño" ? 'activo' : 'no-activo' %>" style="max-width: 350px; max-height: 650px; min-width: 350px; min-height: 500px; margin: 10px">
       <%= image_tag(perros.foto, class:'card-img-top', style:'max-height: 200px; min-height: 200px; max-width: 100%; object-fit: cover;  object-position: top; ') %>
       <div class="card-body">
         <p class="card-text", style=''> <strong> Nombre: </strong> <%= perros.nombre %> </p>
