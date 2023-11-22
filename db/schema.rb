@@ -10,7 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema[7.1].define(version: 2023_11_21_230015) do
+
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -49,6 +51,31 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_21_230015) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "ambulatoria", force: :cascade do |t|
+    t.integer "historia_c_id", null: false
+    t.integer "dia"
+    t.integer "mes"
+    t.integer "anio"
+    t.text "sintomas"
+    t.text "diagnostico"
+    t.text "tratamiento"
+    t.text "detalles"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["historia_c_id"], name: "index_ambulatoria_on_historia_c_id"
+  end
+
+  create_table "castracions", force: :cascade do |t|
+    t.integer "historia_c_id", null: false
+    t.integer "dia"
+    t.integer "mes"
+    t.integer "anio"
+    t.text "detalle"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["historia_c_id"], name: "index_castracions_on_historia_c_id"
+  end
+
   create_table "cuidador_paseadors", force: :cascade do |t|
     t.binary "foto"
     t.string "apellido"
@@ -60,6 +87,37 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_21_230015) do
     t.string "rol"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "desparasitacions", force: :cascade do |t|
+    t.integer "historia_c_id", null: false
+    t.integer "dia"
+    t.integer "mes"
+    t.integer "anio"
+    t.string "producto"
+    t.string "lote"
+    t.integer "dosis"
+    t.text "detalle"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["historia_c_id"], name: "index_desparasitacions_on_historia_c_id"
+  end
+
+  create_table "historia_cs", force: :cascade do |t|
+    t.integer "perrito_id", null: false
+    t.bigint "castracion_id"
+    t.bigint "vacuna_e_id"
+    t.bigint "vacuna_r_id"
+    t.bigint "desparasitacion_id"
+    t.bigint "ambulatorium_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ambulatorium_id"], name: "index_historia_cs_on_ambulatorium_id"
+    t.index ["castracion_id"], name: "index_historia_cs_on_castracion_id"
+    t.index ["desparasitacion_id"], name: "index_historia_cs_on_desparasitacion_id"
+    t.index ["perrito_id"], name: "index_historia_cs_on_perrito_id"
+    t.index ["vacuna_e_id"], name: "index_historia_cs_on_vacuna_e_id"
+    t.index ["vacuna_r_id"], name: "index_historia_cs_on_vacuna_r_id"
   end
 
   create_table "perritos", force: :cascade do |t|
@@ -173,7 +231,48 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_21_230015) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "vacuna_es", force: :cascade do |t|
+    t.integer "historia_c_id", null: false
+    t.integer "dia"
+    t.integer "mes"
+    t.integer "anio"
+    t.string "tipo"
+    t.string "lote"
+    t.integer "dosis"
+    t.text "detalle"
+    t.text "marca"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["historia_c_id"], name: "index_vacuna_es_on_historia_c_id"
+  end
+
+  create_table "vacuna_rs", force: :cascade do |t|
+    t.integer "historia_c_id", null: false
+    t.integer "dia"
+    t.integer "mes"
+    t.integer "anio"
+    t.string "tipo"
+    t.string "lote"
+    t.integer "dosis"
+    t.text "detalle"
+    t.text "marca"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["historia_c_id"], name: "index_vacuna_rs_on_historia_c_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "ambulatoria", "historia_cs"
+  add_foreign_key "castracions", "historia_cs"
+  add_foreign_key "desparasitacions", "historia_cs"
+  add_foreign_key "historia_cs", "ambulatoria"
+  add_foreign_key "historia_cs", "castracions"
+  add_foreign_key "historia_cs", "desparasitacions"
+  add_foreign_key "historia_cs", "perritos"
+  add_foreign_key "historia_cs", "vacuna_es"
+  add_foreign_key "historia_cs", "vacuna_rs"
   add_foreign_key "perritos", "users"
+  add_foreign_key "vacuna_es", "historia_cs"
+  add_foreign_key "vacuna_rs", "historia_cs"
 end

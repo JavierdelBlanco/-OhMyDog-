@@ -1,0 +1,48 @@
+<div class="container mt-5">
+<h2 style="margin-block: 20px;">Información de <%= @perrito.nombre %></h2>
+  <table class="table table-bordered">
+    <tbody>
+      <tr>
+        <th>Nombre</th>
+        <td><%= @perrito.nombre %></td>
+      </tr>
+      <tr>
+        <th>Fecha de Nacimiento</th>
+        <td><%= "#{@perrito.dia}/#{@perrito.mes}/#{@perrito.año}" %></td>
+      </tr>
+      <tr>
+        <th>Caracteristicas</th>
+        <td><%= @perrito.caracteristicas %></td>
+      </tr>
+      <tr>
+        <th>Condiciones</th>
+        <td><%= @perrito.condiciones %></td>
+      </tr>
+      <tr>
+        <th>Raza</th>
+        <td><%= @perrito.raza %></td>
+      </tr>
+      <tr>
+        <th>color</th>
+        <td><%= @perrito.color %></td>
+      </tr>
+      <tr>
+        <th>Tamaño</th>
+        <td><%= @perrito.tamaño %></td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <% if @historia_clinica != nil %>
+  <p>Detalles de la Historia Clínica:</p>
+  <ul>
+    <li>Fecha de atención: <%= @perrito.historia_c.fecha_atencion %></li>
+    <li>Tipo de vacuna: <%= @perrito.historia_c.tipo_vacuna %></li>
+    <!-- Agrega más detalles según la estructura de tu HistoriaC -->
+  </ul>
+    <% else %>
+        <p>Este perrito no tiene una Historia Clínica registrada.</p>
+    <% end %>
+  <%= link_to "Volver al perfil", ver_perfil_path(current_user), class: "btn btn-secondary" %>
+</div>

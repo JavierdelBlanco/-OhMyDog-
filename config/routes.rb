@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  resources :ambulatoria
+  resources :desparasitacions
+  resources :vacuna_rs
+  resources :vacuna_es
+  resources :castracions
+  resources :historia_cs
 
   resources :perros_en_adopcions
   resources :turnos
@@ -54,6 +60,7 @@ Rails.application.routes.draw do
   get 'show_perrito/:id', to: 'perritos#show', as: 'show_perrito'
   get 'add_dog.:id', to: 'perritos#new', as: 'add_dog'
   get 'marcar_fallecido/:id', to: 'perritos#marcar_fallecido', as: 'marcar_fallecido'
+  get 'ver_perrito/:id', to: 'perritos#ver', as: 'ver_perrito'
   resources :perritos do
     member do
       patch 'marcar_fallecido'

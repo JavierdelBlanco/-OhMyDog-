@@ -80,6 +80,7 @@
               <% if perrito.fallecido == false %>
                 <%= link_to "Marcar como fallecido", marcar_fallecido_path(perrito, tipo: 'mio', user: current_user), class: "btn btn-sm btn-secondary" %>
               <% end %>
+              <%= link_to "Ver perro", ver_perrito_path(perrito, user: current_user), class: "btn btn-sm btn-secondary" %>
             <% end %>
           </td>
         </tr>

@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Vacuna rs</h1>
+
+<div id="vacuna_rs">
+  <% @vacuna_rs.each do |vacuna_r| %>
+    <%= render vacuna_r %>
+    <p>
+      <%= link_to "Show this vacuna r", vacuna_r %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New vacuna r", new_vacuna_r_path %>

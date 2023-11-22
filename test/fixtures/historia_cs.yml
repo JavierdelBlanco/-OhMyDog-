@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  perrito: one
+  castracion: one
+  vacuna_e: one
+  vacuna_r: one
+  desparasitacion: one
+  ambulatorium: one
+
+two:
+  perrito: two
+  castracion: two
+  vacuna_e: two
+  vacuna_r: two
+  desparasitacion: two
+  ambulatorium: two

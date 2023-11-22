@@ -1,0 +1,57 @@
+<%= form_with(model: ambulatorium) do |form| %>
+  <% if ambulatorium.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(ambulatorium.errors.count, "error") %> prohibited this ambulatorium from being saved:</h2>
+
+      <ul>
+        <% ambulatorium.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :historia_c_id, style: "display: block" %>
+    <%= form.text_field :historia_c_id %>
+  </div>
+
+  <div>
+    <%= form.label :dia, style: "display: block" %>
+    <%= form.number_field :dia %>
+  </div>
+
+  <div>
+    <%= form.label :mes, style: "display: block" %>
+    <%= form.number_field :mes %>
+  </div>
+
+  <div>
+    <%= form.label :anio, style: "display: block" %>
+    <%= form.number_field :anio %>
+  </div>
+
+  <div>
+    <%= form.label :sintomas, style: "display: block" %>
+    <%= form.text_area :sintomas %>
+  </div>
+
+  <div>
+    <%= form.label :diagnostico, style: "display: block" %>
+    <%= form.text_area :diagnostico %>
+  </div>
+
+  <div>
+    <%= form.label :tratamiento, style: "display: block" %>
+    <%= form.text_area :tratamiento %>
+  </div>
+
+  <div>
+    <%= form.label :detalles, style: "display: block" %>
+    <%= form.text_area :detalles %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
