@@ -1,6 +1,6 @@
-<%= form_with(model: perros_perdido) do |form| %>
+<%= form_with(model: perros_en_adopcion) do |form| %>
 
-  <%= form.hidden_field :status, value: "Se busca" %>
+  <%= form.hidden_field :status, value: true %>
   <%= form.hidden_field :fecha_de_publicacion, value: Date.current %>
   <%= form.hidden_field :mail, value: current_user.email %>
  
@@ -9,9 +9,9 @@
     <div class="col-md-6">
       <%= form.label :nombre, style: "display: block;" %>
       <div class="input-group has-validation">
-        <%= form.text_field :nombre, class: 'form-control' + (perros_perdido.errors[:nombre].any? ? ' is-invalid' : ''), required: true, id: 'validationName' %>
-          <div id="validationFotoFeedback" class="invalid-feedback" style="<%= perros_perdido.errors[:nombre].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
-            <%= perros_perdido.errors.messages_for(:nombre).join(', ') %>
+        <%= form.text_field :nombre, class: 'form-control' + (perros_en_adopcion.errors[:nombre].any? ? ' is-invalid' : ''), required: true, id: 'validationName' %>
+          <div id="validationFotoFeedback" class="invalid-feedback" style="<%= perros_en_adopcion.errors[:nombre].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
+            <%= perros_en_adopcion.errors.messages_for(:nombre).join(', ') %>
           </div>
         </div>
       </div>
@@ -21,7 +21,7 @@
         <div class="input-group has-validation">
           <%= form.text_field :descripcion, class: 'form-control', required: true, id: 'validationLastname' %>
         <div id="validationLastnameFeedback" class="invalid-feedback">
-          <%= perros_perdido.errors.full_messages_for(:raza).join(', ') %>
+          <%= perros_en_adopcion.errors.full_messages_for(:raza).join(', ') %>
         </div>
       </div>
     </div>
@@ -31,17 +31,27 @@
         <div class="input-group has-validation">
           <%= form.text_field :raza, class: 'form-control', required: true, id: 'validationLastname' %>
         <div id="validationLastnameFeedback" class="invalid-feedback">
-          <%= perros_perdido.errors.full_messages_for(:descripcion).join(', ') %>
+          <%= perros_en_adopcion.errors.full_messages_for(:descripcion).join(', ') %>
         </div>
       </div>
     </div>
 
     <div class="col-md-6">
-      <%= form.label :edad_aproximada, style: "display: block;" %>
+      <%= form.label :sexo, style: "display: block;" %>
         <div class="input-group has-validation">
-          <%= form.text_field :edad_aproximada, class: 'form-control', required: true, id: 'validationLastname' %>
+          <%= form.text_field :sexo, class: 'form-control', required: true, id: 'validationLastname' %>
         <div id="validationLastnameFeedback" class="invalid-feedback">
-          <%= perros_perdido.errors.full_messages_for(:edad_aproximada).join(', ') %>
+          <%= perros_en_adopcion.errors.full_messages_for(:descripcion).join(', ') %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <%= form.label :edad, style: "display: block;" %>
+        <div class="input-group has-validation">
+          <%= form.text_field :edad, class: 'form-control', required: true, id: 'validationLastname' %>
+        <div id="validationLastnameFeedback" class="invalid-feedback">
+          <%= perros_en_adopcion.errors.full_messages_for(:edad).join(', ') %>
         </div>
       </div>
     </div>
@@ -51,17 +61,7 @@
         <div class="input-group has-validation">
           <%= form.text_field :tamano, class: 'form-control', required: true, id: 'validationLastname' %>
         <div id="validationLastnameFeedback" class="invalid-feedback">
-          <%= perros_perdido.errors.full_messages_for(:tamano).join(', ') %>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-6">
-      <%= form.label :lugar_zona_donde_se_perdio, style: "display: block;" %>
-        <div class="input-group has-validation">
-          <%= form.text_field :lugar_zona_donde_se_encontro, class: 'form-control', required: true, id: 'validationLastname' %>
-        <div id="validationLastnameFeedback" class="invalid-feedback">
-          <%= perros_perdido.errors.full_messages_for(:lugar_zona_donde_se_encontro).join(', ') %>
+          <%= perros_en_adopcion.errors.full_messages_for(:tamano).join(', ') %>
         </div>
       </div>
     </div>
@@ -69,9 +69,9 @@
     <div class="col-md-12">
       <%= form.label :foto, style: "display: block;" %>
       <div class="input-group has-validation">
-        <%= form.file_field :foto, class: 'form-control' + (perros_perdido.errors[:foto].any? ? ' is-invalid' : ''),  required: (request.path == '/se-busca/new'), id: 'validationFoto', accept: 'image/*' %>
-        <div id="validationFotoFeedback" class="invalid-feedback" style="<%= perros_perdido.errors[:foto].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
-          <%= perros_perdido.errors.messages_for(:foto).join(', ') %>
+        <%= form.file_field :foto, class: 'form-control' + (perros_en_adopcion.errors[:foto].any? ? ' is-invalid' : ''),  required: (request.path == '/se-busca/new'), id: 'validationFoto', accept: 'image/*' %>
+        <div id="validationFotoFeedback" class="invalid-feedback" style="<%= perros_en_adopcion.errors[:foto].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
+          <%= perros_en_adopcion.errors.messages_for(:foto).join(', ') %>
        </div>
       </div>
       <img id="preview" src="#" style="display: none; margin:2px; max-width: 200px; max-height: 200px;" />
@@ -79,14 +79,14 @@
 
 
   <div>
-    <% if request.path == '/se-busca/new' %>
-      <button type="button" class="btn btn-success" style='margin-block: 10px;' data-bs-toggle="modal" data-bs-target="#ModalPublicar-<%= perros_perdido.id %>">
+    <% if request.path == '/perros_en_adopcions/new' %>
+      <button type="button" class="btn btn-success" style='margin-block: 10px;' data-bs-toggle="modal" data-bs-target="#ModalPublicar-<%= perros_en_adopcion.id %>">
         Publicar
       </button>
 
 
       <!-- Modal Publicar-->
-      <div class="modal fade" id="ModalPublicar-<%= perros_perdido.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fade" id="ModalPublicar-<%= perros_en_adopcion.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -105,13 +105,13 @@
       </div>
 
     <% else %>
-      <button type="button" class="btn btn-success" style='margin-block: 10px;' data-bs-toggle="modal" data-bs-target="#ModalEditar-<%= perros_perdido.id %>">
+      <button type="button" class="btn btn-success" style='margin-block: 10px;' data-bs-toggle="modal" data-bs-target="#ModalEditar-<%= perros_en_adopcion.id %>">
               Guardar cambios
       </button>
 
 
       <!-- Modal Editar-->
-      <div class="modal fade" id="ModalEditar-<%= perros_perdido.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fade" id="ModalEditar-<%= perros_en_adopcion.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -131,7 +131,7 @@
 
 
     <% end%>
-    <%= link_to "Atras", perros_perdidos_path , class: "btn btn-turqueza", style:'margin-block: 10px;'%>
+    <%= link_to "Atras", perros_en_adopcions_path , class: "btn btn-turqueza", style:'margin-block: 10px;'%>
   </div>  
   </div>
 

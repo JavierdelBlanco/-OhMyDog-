@@ -72,10 +72,10 @@ def edit_no_registrado
     if @perros_encontrado.status == 'Se busca al dueño'
       render :edit
     else
-      redirect_to root_path, notice: "Esta publicacion ha sido marcada como dueño encontrado."
+      redirect_to perros_encontrados_path, notice: "Esta publicacion ha sido marcada como dueño encontrado."
     end
   else
-    redirect_to root_path, alert: "No se encontró un perro con este identificador."
+    redirect_to perros_encontrados_path, alert: "No se encontró un perro con este identificador."
   end
 end
 
@@ -152,7 +152,8 @@ end
     else
       respond_to do |format|
         if @perros_encontrado.update(perros_encontrado_params)
-          redirect_to perros_encontrados_path, notice: 'La publicacion ha sido editada correctamente!'
+          format.html { redirect_to perros_encontrados_path, notice: "La publicacion ha sido editada correctamente!" }
+          format.json { render :show, status: :ok, location: @perros_encontrado }
         else
           format.html { render :edit, status: :unprocessable_entity }
           format.json { render json: @perros_encontrado.errors, status: :unprocessable_entity }
@@ -198,7 +199,7 @@ end
     PerrosEncontradosMailer.enviar_correo_perros_encontrados(@perro, @current_user).deliver_later
 
     respond_to do |format|
-      format.html { redirect_to root_path, flash: { notice: "El correo fue enviado con exito." } }
+      format.html { redirect_to perros_encontrados_path, flash: { notice: "El correo fue enviado con exito." } }
       format.json { head :no_content }
     end
 
@@ -220,12 +221,12 @@ end
     if existing_user || (email == @perro.mail)
       # El correo electrónico ya está registrado, realiza alguna acción (por ejemplo, mostrar un mensaje de error)
       flash[:alert] = "El correo electrónico ya está registrado en la veterinaria o estas intentando contactarrte a ti mismo"
-      redirect_back(fallback_location: root_path) # Puedes redirigir a donde desees
+      redirect_back(fallback_location: perros_encontrados_path) # Puedes redirigir a donde desees
     else
       PerrosEncontradosMailer.enviar_correo_perros_encontrados_contactar(@perro, nombre, apellido, direccion, numero, email).deliver_later
 
       respond_to do |format|
-        format.html { redirect_to root_path, flash: { notice: "El correo fue enviado con exito." } }
+        format.html { redirect_to perros_encontrados_path, flash: { notice: "El correo fue enviado con exito." } }
         format.json { head :no_content }
       end
     end
@@ -241,6 +242,6 @@ end
 
     # Only allow a list of trusted parameters through.
     def perros_encontrado_params
-      params.require(:perros_encontrado).permit(:nombre, :foto, :fecha_de_publicacion, :status, :mail, :descripcion, :nombre_dueno, :apellido_dueno, :direccion_dueno, :numero_dueno, :_method)
+      params.require(:perros_encontrado).permit(:nombre, :foto, :fecha_de_publicacion, :status, :mail, :descripcion, :nombre_dueno, :apellido_dueno, :direccion_dueno, :numero_dueno, :_method, :raza, :edad_aproximada, :tamano, :lugar_zona_donde_se_encontro)
     end
 end
