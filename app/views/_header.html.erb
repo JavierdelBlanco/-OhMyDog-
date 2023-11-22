@@ -8,6 +8,9 @@
         <li class="nav-item">
           <%= link_to('Inicio', root_path, class: "nav-link #{'active' if current_page?(root_path)}") %>
         </li>
+        <li class="nav-item">
+          <%= link_to('Turnos', gestion_turnos_path, class:"nav-link #{'active' if current_page?(gestion_turnos_path)}") %>
+        </li>
         <% if user_signed_in? and current_user.tipo_usuario == 'veterinario' %>
           <li class="nav-item">
             <%= link_to('Atención al cliente', atencion_cliente_path, class: "nav-link #{'active' if current_page?(atencion_cliente_path)}") %>
@@ -27,6 +30,7 @@
     <%= link_to('Perros en adopcion', perros_en_adopcions_path, class:"nav-link #{'active' if current_page?(perros_en_adopcions_path)}") %>
   </li>
 <li class="nav-item">
+
           <%= link_to('Cuidadores y paseadores', cuidador_paseadors_path, class:"nav-link #{'active' if current_page?(cuidador_paseadors_path)}") %>
         </li>
       </ul>

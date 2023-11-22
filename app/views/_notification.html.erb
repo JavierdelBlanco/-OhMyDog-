@@ -16,19 +16,19 @@
 
 <style>
   .animacion-alerta {
-    position: fixed;
-    top: 132px;
-    left: 0;
-    z-index: 1000;
-    animation: desplazamiento 0.5s ease-in-out forwards; /* Agregado "forwards" para conservar el estado final */
-  }
+  position: fixed;
+  top: 132px;
+  left: 40%; /* Posición inicial (fuera de la pantalla a la izquierda) */
+  z-index: 1000;
+  animation: desplazamiento 0.5s ease-in-out forwards;
+}
 
-  @keyframes desplazamiento {
-    from {
-      left: -100%; /* La posición inicial (fuera de la pantalla a la izquierda) */
-    }
-    to {
-      left: 40%; /* La posición final */
-    }
+@keyframes desplazamiento {
+  from {
+    left: -100%; /* La posición inicial (fuera de la pantalla a la izquierda) */
   }
+  to {
+    left: 40%; /* La posición final */
+  }
+}
 </style>

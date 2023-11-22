@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
+
   resources :perros_en_adopcions
+  resources :turnos
+  resources :solicitud_turnos
+  get 'gestion-turnos', to: 'gestion_turnos#index'
+  post 'gestion_turnos', to: 'gestion_turnos#generar', as: 'generar_turno'
+
 
   root 'home#index'
 
@@ -29,7 +35,7 @@ Rails.application.routes.draw do
     resources :perritos # Esto anida las rutas de perritos dentro de las rutas de usuarios
   end
 
-  
+
   get 'profile/edit', to: 'profile#edit', as: :edit_profile
   end
 
@@ -60,7 +66,7 @@ Rails.application.routes.draw do
 
   resources :cuidador_paseadors, path: 'cuidadores-y-paseadores'
   resources :perros_perdidos, path: 'se-busca'
-  
+
   resources :perros_encontrados do
     collection do
       get 'edit_no_registrado'
@@ -92,7 +98,7 @@ get '/perros_encontrados/edit_no_registrado', to: 'perros_encontrados#edit_no_re
 
 
 
-  
+
 
 
 
@@ -101,7 +107,7 @@ get '/perros_encontrados/edit_no_registrado', to: 'perros_encontrados#edit_no_re
   post '/enviar_correo_perros_encontrados_contactar', to: 'perros_encontrados#enviar_correo_perros_encontrados_contactar'
   post '/enviar_correo_contactar_registrado', to: 'perros_en_adopcions#enviar_correo_contactar_registrado'
   post '/enviar_correo_contactar_no_registrado', to: 'perros_en_adopcions#enviar_correo_contactar_no_registrado'
-  
+
 
 
 end
