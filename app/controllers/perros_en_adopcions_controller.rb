@@ -111,7 +111,9 @@ class PerrosEnAdopcionsController < ApplicationController
 
     @current_user = current_user
 
-    PerrosEnAdopcionsMailer.enviar_correo_contactar_registrado(@perro, @owner, @current_user).deliver_later
+    @detalle = params[:detalle]
+
+    PerrosEnAdopcionsMailer.enviar_correo_contactar_registrado(@perro, @owner, @current_user, @detalle).deliver_later
 
     respond_to do |format|
       format.html { redirect_to perros_en_adopcions_path, flash: { notice: "El correo fue enviado con exito." } }
@@ -132,6 +134,7 @@ class PerrosEnAdopcionsController < ApplicationController
     direccion = params[:direccion]
     numero = params[:numero]
     email = params[:email]
+    detalle = params[:detalle]
 
     existing_user = User.find_by(email: params[:email])
 
@@ -140,7 +143,7 @@ class PerrosEnAdopcionsController < ApplicationController
       flash[:alert] = "El correo electrónico ya está registrado en la veterinaria o estas intentando contactarrte a ti mismo"
       redirect_back(fallback_location: perros_en_adopcions_path) # Puedes redirigir a donde desees
     else
-      PerrosEnAdopcionsMailer.enviar_correo_contactar_no_registrado(@perro, @owner, nombre, apellido, direccion, numero, email).deliver_later
+      PerrosEnAdopcionsMailer.enviar_correo_contactar_no_registrado(@perro, @owner, nombre, apellido, direccion, numero, email, detalle).deliver_later
 
       respond_to do |format|
         format.html { redirect_to perros_en_adopcions_path, flash: { notice: "El correo fue enviado con exito." } }

@@ -68,7 +68,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    <p>Se le enviara un email a <%= @users.find_by(email: perros.mail).nombre %> <%= @users.find_by(email: perros.mail).apellido %> para informarle que has encontrado a este perro.</p>
+                    <p>Se le enviara un email a <%= @users.find_by(email: perros.mail).nombre %> <%= @users.find_by(email: perros.mail).apellido %> para informarle que estas interesado/a en adoptar a este perro.</p>
                     <p>Este incluira la siguiente informacion de su cuenta:</p>
                     <ul>
                       <li>Nombre</li>
@@ -77,11 +77,20 @@
                       <li>Numero</li>
                       <li>Direccion de correo electronico</li>
                     </ul>
-                    <p>Pronto <%= @users.find_by(email: perros.mail).nombre %> <%= @users.find_by(email: perros.mail).apellido %> se comunicara con usted.</p>
-                  </div>
-                  <div class="modal-footer">
-                    <%= link_to "Enviar", enviar_correo_contactar_registrado_path(id: perros.id) , data: { turbo_method: :post },  class: "btn btn-turqueza", style:'margin: 2px' %>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+
+                    <!-- -->
+                    <%= form_with url: enviar_correo_contactar_registrado_path(id: perros.id) , method: :post, id: 'formularioDatos' do |form| %>
+                      <div class="mb-3">
+                        <%= form.label :detalle, 'Detalle por que quiere adoptar al perro y por que cree que sera un buen dueño:' %>
+                        <%= form.text_area :detalle, class: 'form-control', required: true %>
+                      </div>
+
+                      <p>Pronto <%= @users.find_by(email: perros.mail).nombre %> <%= @users.find_by(email: perros.mail).apellido %> se comunicara con usted.</p>
+
+                      <%= form.submit 'Enviar', id: "confirmarBtn", class: 'btn btn-turqueza', style:"margin: 2px" %>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+                    <% end %>
+
                   </div>
                 </div>
               </div>
@@ -125,8 +134,15 @@
                         <%= form.email_field :email, class: 'form-control', required: true %>
                       </div>
 
-                      <%= form.submit 'Enviar', id: "confirmarBtn", class: 'btn btn-success', style:"margin: 2px" %>
-                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Atras</button>
+                      <div class="mb-3">
+                        <%= form.label :detalle, 'Detalle por que quiere adoptar al perro y por que cree que sera un buen dueño:' %>
+                        <%= form.text_area :detalle, class: 'form-control', required: true %>
+                      </div>
+
+                      <p>Pronto <%= @users.find_by(email: perros.mail).nombre %> <%= @users.find_by(email: perros.mail).apellido %> se comunicara con usted.</p>
+
+                      <%= form.submit 'Enviar', id: "confirmarBtn", class: 'btn btn-turqueza', style:"margin: 2px" %>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
                     <% end %>
 
                   </div>
