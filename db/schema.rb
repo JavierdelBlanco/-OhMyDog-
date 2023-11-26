@@ -101,6 +101,25 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_21_230015) do
     t.index ["historia_c_id"], name: "index_desparasitacions_on_historia_c_id"
   end
 
+  create_table "historia_clinicas", force: :cascade do |t|
+    t.integer "perrito_id", null: false
+    t.string "tipo"
+    t.integer "dia"
+    t.integer "mes"
+    t.integer "año"
+    t.text "detalle"
+    t.string "tipoVacuna"
+    t.string "lote"
+    t.integer "dosis"
+    t.string "producto"
+    t.text "sintomas"
+    t.text "diagnostico"
+    t.text "tratamiento"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["perrito_id"], name: "index_historia_clinicas_on_perrito_id"
+  end
+
   create_table "historia_cs", force: :cascade do |t|
     t.integer "perrito_id", null: false
     t.bigint "castracion_id"
@@ -264,6 +283,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_21_230015) do
   add_foreign_key "ambulatoria", "historia_cs"
   add_foreign_key "castracions", "historia_cs"
   add_foreign_key "desparasitacions", "historia_cs"
+  add_foreign_key "historia_clinicas", "perritos"
   add_foreign_key "historia_cs", "ambulatoria"
   add_foreign_key "historia_cs", "castracions"
   add_foreign_key "historia_cs", "desparasitacions"

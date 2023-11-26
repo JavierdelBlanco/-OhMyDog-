@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Historia clinicas</h1>
+
+<div id="historia_clinicas">
+  <% @historia_clinicas.each do |historia_clinica| %>
+    <%= render historia_clinica %>
+    <p>
+      <%= link_to "Show this historia clinica", historia_clinica %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New historia clinica", new_historia_clinica_path %>

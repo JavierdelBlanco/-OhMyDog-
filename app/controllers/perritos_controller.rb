@@ -40,9 +40,9 @@ class PerritosController < ApplicationController
     @perrito = @user.perritos.build(parametros)
 
     # Crear la historia clínica asociada sin asignar asociaciones específicas
-    @historia_c = HistoriaC.new
+    @historia_clinica = HistoriaClinica.new
     # Asignar la historia clínica al perrito
-    @perrito.historia_c = @historia_c
+    @perrito.historia_clinica = @historia_clinica
 
     respond_to do |format|
       if @perrito.save
@@ -126,23 +126,18 @@ class PerritosController < ApplicationController
   def ver
     @perrito = Perrito.find(params[:id])
     @user = User.find(params[:user])
-
-    if (@perrito.historia_c.present?)
-      puts '################################'
-      puts 'Hay historia clinica'
-      if(@perrito.historia_c.nil?)
-        puts 'Pero esta vacia'
-      else
-        puts 'Y no esta vacia'
-      end
-    else
-      puts '################################'
-      puts 'No hay historia clinica'
-    end
+    @historia_clinicas = HistoriaClinica.all
   end
 
   def agregar_historia
     @perrito = Perrito.find(params[:id])
+    if @perrito.tiene_historia_clinica_de_tipo?('castracion')
+      puts '##########################'
+      puts @perrito.tiene_historia_clinica_de_tipo?('castracion')
+      @castrado=true
+    else
+      @castrado=false
+    end
   end
 
   private

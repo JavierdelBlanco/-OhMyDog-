@@ -6,7 +6,7 @@ class Perrito < ApplicationRecord
   validates :color, presence: true
   validates :tamaño, presence: true
 
-  has_one :historia_c
+  has_many :historia_clinicas, dependent: :destroy
   belongs_to :user
 
 
@@ -16,5 +16,8 @@ class Perrito < ApplicationRecord
     !fallecido
   end
 
+  def tiene_historia_clinica_de_tipo?(tipo)
+    historia_clinicas.any? { |hc| hc.tipo == tipo }
+  end
 
 end

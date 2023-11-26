@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :historia_clinicas
   resources :ambulatoria
   resources :desparasitacions
   resources :vacuna_rs
@@ -68,7 +69,15 @@ Rails.application.routes.draw do
   #Historia clinica del perro
   get 'ver_perrito/:id', to: 'perritos#ver', as: 'ver_perrito'
   get 'crear_historia/:id', to: 'perritos#agregar_historia', as: 'crear_historia'
-  get 'crear_castracion/:id', to: 'castracions#new', as: 'crear_castracion'
+  get 'crear_castracion/:id', to: 'historia_clinicas#new_castracion', as: 'crear_castracion'
+  get 'crear_vacunae/:id', to: 'historia_clinicas#new_vacunae', as: 'crear_vacunae'
+  get 'crear_vacunar/:id', to: 'historia_clinicas#new_vacunar', as: 'crear_vacunar'
+  get 'crear_desparasitacion/:id', to: 'historia_clinicas#new_desparasitacion', as: 'crear_desparasitacion'
+  get 'crear_atencion_clinica/:id', to: 'historia_clinicas#new_atencion_clinica', as: 'crear_atencion_clinica'
+  resources :historia_clinicas do
+    post 'create_vacunar', on: :collection
+    post 'create_vacunae', on: :collection
+  end
 
   #Envio de mail de joaco
   post '/random_password_email', to: 'user_mailer#random_password_email'
