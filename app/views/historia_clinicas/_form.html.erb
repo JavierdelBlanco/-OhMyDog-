@@ -1,0 +1,82 @@
+<%= form_with(model: historia_clinica) do |form| %>
+  <% if historia_clinica.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(historia_clinica.errors.count, "error") %> prohibited this historia_clinica from being saved:</h2>
+
+      <ul>
+        <% historia_clinica.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :perrito_id, style: "display: block" %>
+    <%= form.text_field :perrito_id %>
+  </div>
+
+  <div>
+    <%= form.label :tipo, style: "display: block" %>
+    <%= form.text_field :tipo %>
+  </div>
+
+  <div>
+    <%= form.label :dia, style: "display: block" %>
+    <%= form.number_field :dia %>
+  </div>
+
+  <div>
+    <%= form.label :mes, style: "display: block" %>
+    <%= form.number_field :mes %>
+  </div>
+
+  <div>
+    <%= form.label :año, style: "display: block" %>
+    <%= form.number_field :año %>
+  </div>
+
+  <div>
+    <%= form.label :detalle, style: "display: block" %>
+    <%= form.text_area :detalle %>
+  </div>
+
+  <div>
+    <%= form.label :tipoVacuna, style: "display: block" %>
+    <%= form.text_field :tipoVacuna %>
+  </div>
+
+  <div>
+    <%= form.label :lote, style: "display: block" %>
+    <%= form.text_field :lote %>
+  </div>
+
+  <div>
+    <%= form.label :dosis, style: "display: block" %>
+    <%= form.number_field :dosis %>
+  </div>
+
+  <div>
+    <%= form.label :producto, style: "display: block" %>
+    <%= form.text_field :producto %>
+  </div>
+
+  <div>
+    <%= form.label :sintomas, style: "display: block" %>
+    <%= form.text_area :sintomas %>
+  </div>
+
+  <div>
+    <%= form.label :diagnostico, style: "display: block" %>
+    <%= form.text_area :diagnostico %>
+  </div>
+
+  <div>
+    <%= form.label :tratamiento, style: "display: block" %>
+    <%= form.text_area :tratamiento %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

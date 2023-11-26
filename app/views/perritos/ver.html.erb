@@ -36,6 +36,34 @@
 
   <%= link_to "Agregar evento a la historia", crear_historia_path(@perrito, current_user), class: "btn btn-secondary" %>
   <h3>Detalles de la Historia Clínica:</h3>
+
+  <% if @perrito.historia_clinicas.empty? %>
+    <p class="text-muted">Este perro no cuenta con historia clinica actualmente.</p>
+  <% else %>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Tipo de historia</th>
+          <th>Fecha de Atencion</th>
+          <% if current_user.tipo_usuario == 'veterinario' %>
+            <th>Acciones</th>
+          <% end %>
+        </tr>
+      </thead>
+
+      
+
+      <tbody>
+      <% @perrito.historia_clinicas.each do |historia_clinica| %>
+        <tr>
+            <td><%= historia_clinica.tipo %></td>
+            <td><%= "#{historia_clinica.dia}/#{historia_clinica.mes}/#{historia_clinica.año}" %></td>
+            </td>
+          </tr>
+      <% end %>
+    </tbody>
+    </table>
+  <% end %>
  
   <%= link_to "Volver al perfil", ver_perfil_path(current_user), class: "btn btn-secondary" %>
 </div>

@@ -1,0 +1,45 @@
+<%= form_with(model: @historia_clinica) do |form| %>
+
+    <div>
+      <%= form.label :dia, style: "display: block" %>
+      <%= form.number_field :dia %>
+    </div>
+  
+    <div>
+      <%= form.label :mes, style: "display: block" %>
+      <%= form.number_field :mes %>
+    </div>
+  
+    <div>
+      <%= form.label :año, style: "display: block" %>
+      <%= form.number_field :año %>
+    </div>
+  
+    <div>
+      <%= form.label :marca, style: "display: block" %>
+      <%= form.text_field :producto %>
+    </div>
+
+    <div>
+      <%= form.label :lote, style: "display: block" %>
+      <%= form.text_field :lote %>
+    </div>
+  
+    <div>
+      <%= form.label :dosis, style: "display: block" %>
+      <%= form.number_field :dosis %>
+    </div>
+  
+    <div>
+      <%= form.label :detalle, style: "display: block" %>
+      <%= form.text_area :detalle %>
+    </div>
+  
+    <%= form.hidden_field :id, value: @perrito.id %>
+    <%= form.hidden_field :tipo, value: 'Vacuna Anti Enfermedades' %>
+    <%= form.hidden_field :tipoVacuna, value: 'vacunae' %>
+
+    <div>
+      <%= form.submit %>
+    </div>
+  <% end %>

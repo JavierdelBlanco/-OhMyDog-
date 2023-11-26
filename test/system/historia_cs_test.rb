@@ -14,12 +14,19 @@ class HistoriaCsTest < ApplicationSystemTestCase
     visit historia_cs_url
     click_on "New historia c"
 
-    fill_in "Ambulatorium", with: @historia_c.ambulatorium_id
-    fill_in "Castracion", with: @historia_c.castracion_id
-    fill_in "Desparasitacion", with: @historia_c.desparasitacion_id
+    fill_in "Año", with: @historia_c.año
+    fill_in "Detalle", with: @historia_c.detalle
+    fill_in "Dia", with: @historia_c.dia
+    fill_in "Diagnostico", with: @historia_c.diagnostico
+    fill_in "Dosis", with: @historia_c.dosis
+    fill_in "Lote", with: @historia_c.lote
+    fill_in "Mes", with: @historia_c.mes
     fill_in "Perrito", with: @historia_c.perrito_id
-    fill_in "Vacuna e", with: @historia_c.vacuna_e_id
-    fill_in "Vacuna r", with: @historia_c.vacuna_r_id
+    fill_in "Producto", with: @historia_c.producto
+    fill_in "Sintomas", with: @historia_c.sintomas
+    fill_in "Tipo", with: @historia_c.tipo
+    fill_in "Tipovacuna", with: @historia_c.tipoVacuna
+    fill_in "Tratamiento", with: @historia_c.tratamiento
     click_on "Create Historia c"
 
     assert_text "Historia c was successfully created"
@@ -30,12 +37,19 @@ class HistoriaCsTest < ApplicationSystemTestCase
     visit historia_c_url(@historia_c)
     click_on "Edit this historia c", match: :first
 
-    fill_in "Ambulatorium", with: @historia_c.ambulatorium_id
-    fill_in "Castracion", with: @historia_c.castracion_id
-    fill_in "Desparasitacion", with: @historia_c.desparasitacion_id
+    fill_in "Año", with: @historia_c.año
+    fill_in "Detalle", with: @historia_c.detalle
+    fill_in "Dia", with: @historia_c.dia
+    fill_in "Diagnostico", with: @historia_c.diagnostico
+    fill_in "Dosis", with: @historia_c.dosis
+    fill_in "Lote", with: @historia_c.lote
+    fill_in "Mes", with: @historia_c.mes
     fill_in "Perrito", with: @historia_c.perrito_id
-    fill_in "Vacuna e", with: @historia_c.vacuna_e_id
-    fill_in "Vacuna r", with: @historia_c.vacuna_r_id
+    fill_in "Producto", with: @historia_c.producto
+    fill_in "Sintomas", with: @historia_c.sintomas
+    fill_in "Tipo", with: @historia_c.tipo
+    fill_in "Tipovacuna", with: @historia_c.tipoVacuna
+    fill_in "Tratamiento", with: @historia_c.tratamiento
     click_on "Update Historia c"
 
     assert_text "Historia c was successfully updated"
