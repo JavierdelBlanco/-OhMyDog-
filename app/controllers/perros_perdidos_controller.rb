@@ -112,7 +112,7 @@ class PerrosPerdidosController < ApplicationController
     PerrosPerdidosMailer.enviar_correo_perros_perdidos(@perro, @owner, @current_user).deliver_later
 
     respond_to do |format|
-      format.html { redirect_to root_path, flash: { notice: "El correo fue enviado con exito." } }
+      format.html { redirect_to perros_perdidos_path, flash: { notice: "El correo fue enviado con exito." } }
       format.json { head :no_content }
     end
 
@@ -136,12 +136,12 @@ class PerrosPerdidosController < ApplicationController
     if existing_user || (email == @perro.mail)
       # El correo electrónico ya está registrado, realiza alguna acción (por ejemplo, mostrar un mensaje de error)
       flash[:alert] = "El correo electrónico ya está registrado en la veterinaria o estas intentando contactarrte a ti mismo"
-      redirect_back(fallback_location: root_path) # Puedes redirigir a donde desees
+      redirect_back(fallback_location: perros_perdidos_path) # Puedes redirigir a donde desees
     else
       PerrosPerdidosMailer.enviar_correo_perros_perdidos_contactar(@perro, @owner, nombre, apellido, direccion, numero, email).deliver_later
 
       respond_to do |format|
-        format.html { redirect_to root_path, flash: { notice: "El correo fue enviado con exito." } }
+        format.html { redirect_to perros_perdidos_path, flash: { notice: "El correo fue enviado con exito." } }
         format.json { head :no_content }
       end
     end
@@ -156,7 +156,7 @@ class PerrosPerdidosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def perros_perdido_params
-      params.require(:perros_perdido).permit(:nombre, :foto, :fecha_de_publicacion, :status, :descripcion, :mail)
+      params.require(:perros_perdido).permit(:nombre, :foto, :fecha_de_publicacion, :status, :descripcion, :mail, :raza, :edad_aproximada, :tamano, :lugar_zona_donde_se_encontro)
     end
 
 

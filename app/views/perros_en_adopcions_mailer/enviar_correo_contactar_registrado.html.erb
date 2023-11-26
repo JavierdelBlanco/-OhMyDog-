@@ -1,0 +1,26 @@
+<div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+
+  <div style="background-color: #ffffff; max-width: 600px; margin: 0 auto; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-radius: 8px;">
+
+    <h1 style="color: #333;">¡Alguien quiere adoptar a tu perro!</h1>
+    <p>Hola <%= @owner.nombre %> <%= @owner.apellido %>,</p>
+    <p>Nos complace informarte que alguien esta interesado en adoptar a uno de tus perros, <%= @perro.nombre %>.</p>
+    <p>Los detalles del usuario que quiere adoptarlo son los siguientes:</p>
+
+    <ul>
+      <li><strong>Nombre: </strong><%= @current_user.nombre %></li>
+      <li><strong>Apellido: </strong><%= @current_user.apellido %></li>
+      <li><strong>Dirección: </strong><%= @current_user.direccion %></li>
+      <li><strong>Numero: </strong><%= @current_user.nro %></li>
+      <li><strong>Correo Electrónico: </strong><%= @current_user.email %></li>
+    </ul>
+
+    <p>Te recomendamos que te pongas en contacto con esta persona para coordinar la adopcion de <%= @perro.nombre %>.</p>
+    <p>Para mantener actualizada nuestra comunidad te pedimos que por favor marques a <%= @perro.nombre %> como "Adoptado" en nuestra página.</p>
+    <p>Agradecemos tu cooperación y confianza en OhMyDog.</p>
+
+    <p>Saludos,</p>
+    <p>El equipo de OhMyDog.</p>
+
+  </div>
+</div>

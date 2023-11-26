@@ -1,0 +1,110 @@
+<div id="<%= dom_id solicitud_turno %>" class="card mt-3 mx-auto" style="width: 600px;">
+  <div class="card-body">
+    <h5 class="card-title text-center">Detalles de la Solicitud</h5>
+    <ul class="list-group list-group-flush" style="margin: 10px; margin-top: 20px;">
+      <li class="list-group-item">
+        <strong>Nombre y apellido:</strong>
+        <%= solicitud_turno.nombre_cliente %> <%= solicitud_turno.apellido_cliente %>
+      </li>
+      <li class="list-group-item">
+       <strong>Nombre de los perros:</strong>
+        <%= solicitud_turno.nombres_perros.gsub(/[\[\]\"]/, '').split(',').join(', ') %>
+      </li>
+      <li class="list-group-item">
+        <strong>Tipo de turno:</strong>
+        <%= solicitud_turno.tipo_turno %>
+      </li>
+      <li class="list-group-item">
+        <strong>Fecha deseada:</strong>
+        <%= solicitud_turno.dia.strftime('%d/%m/%y') %>
+      </li>
+      <li class="list-group-item">
+        <strong>Horario deseado:</strong>
+        <%= solicitud_turno.horario.strftime('%H:%Mhs') %>
+      </li>
+      <li class="list-group-item">
+        <strong>Detalle:</strong>
+        <%= solicitud_turno.descripcion %>
+      </li>
+    </ul>
+  </div>
+  <div class="d-flex justify-content-between" style="margin: 22px; margin-block: 5px;">
+    <div class="d-flex">
+      <button type="button" class= "btn btn-success" style= 'margin: 2px;' data-bs-toggle="modal" data-bs-target="#ModalGenerarTurno-<%= solicitud_turno.id %>">
+              Generar turno
+        </button>
+
+      <!-- Modal Generar Turno-->
+        <div class="modal fade" id="ModalGenerarTurno-<%= solicitud_turno.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar turno</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+                <div class="modal-body">
+                  <p>Ingresa la fecha, horario y descripcion (opcional) del turno: </p>
+                  <%= form_with url: generar_turno_path(id: @solicitud_turno.id), method: :post, id: 'formularioDatos' do |form| %>
+
+                  <div class='row g-3 needs-validation' style='width: 400px; margin: 5px; border: 1px solid #000; border-radius: 5px;'>
+
+                  <div class="col-md-6">
+                    <%= form.label :fecha, style: "display: block;" %>
+                    <div class="input-group has-validation">
+                      <%= form.date_field :fecha, class: 'form-control' + (solicitud_turno.errors[:dia].any? ? ' is-invalid' : ''), required: true, min: Date.today.to_s, id: 'validationDia', value: @solicitud_turno.dia %>
+                      <div id="validationEmailFeedback" class="invalid-feedback" style="<%= solicitud_turno.errors[:dia].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
+                        <%= solicitud_turno.errors.messages_for(:dia).join(', ') %>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <%= form.label :horario, style: "display: block;" %>
+                    <div class="input-group has-validation">
+                      <%= form.time_field :horario, class: 'form-control', required: true, min: '09:00', max: '19:00', value: @solicitud_turno.horario %>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12">
+                    <%= form.label :detalle, style: "display: block;" %>
+                    <div class="input-group has-validation">
+                      <%= form.text_area :descripcion, class: 'form-control' %>
+                    </div>
+                  </div>
+                </div>
+              
+        
+                <%= form.submit 'Confirmar', id: "confirmarBtn", class: 'btn btn-success', style:"margin: 2px" %>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Atras</button>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <button type="button" class= "btn btn-danger" style= 'margin: 2px;' data-bs-toggle="modal" data-bs-target="#ModalRechazarTurno-<%= solicitud_turno.id %>">
+              Rechazar turno
+        </button>
+
+      <!-- Modal Rechazar Turno-->
+        <div class="modal fade" id="ModalRechazarTurno-<%= solicitud_turno.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar solicitud de turno</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+                <div class="modal-body">
+                  ¿Desea rechezar el turno solicitado?
+                </div>
+              <div class="modal-footer">
+                <%= button_to "Confirmar", rechazar_turno_path(id: @solicitud_turno.id), method: :post,  class: "btn btn-success", style:'margin: 2px' %>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Atras</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <%= link_to "Atrás", gestion_turnos_path, class: "btn btn-primary", style:'margin:2px;' %>
+  </div>
+</div>
