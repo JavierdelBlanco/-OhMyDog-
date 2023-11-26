@@ -69,6 +69,7 @@ Rails.application.routes.draw do
   get 'crear_atencion_clinica/:id', to: 'historia_clinicas#new_atencion_clinica', as: 'crear_atencion_clinica'
   resources :historia_clinicas do
     post 'create_vacunar', on: :collection
+    post 'create_vacunae', on: :collection
   end
 
   #Envio de mail de joaco

@@ -53,25 +53,46 @@ class HistoriaClinicasController < ApplicationController
   def create
     perrito_id = params[:historia_clinica][:id]
     @perrito = Perrito.find(perrito_id)
-    if(params[:historia_clinica][:tipoVacuna] == 'vacunae')
-      fecha_perrito = Date.new(@perrito.año, @perrito.mes, @perrito.dia)
-      fecha_historia_clinica = Date.new(params[:historia_clinica][:año].to_i, params[:historia_clinica][:mes].to_i, params[:historia_clinica][:dia].to_i)
+    parametros = historia_clinica_params.except(:id)
+    @historia_clinica = @perrito.historia_clinicas.build(parametros)
+    respond_to do |format|
+      if @historia_clinica.save
+        format.html { redirect_to ver_perrito_path(@perrito, user: current_user), notice: 'Se registró la historia clínica con éxito.' }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @historia_clinica.errors, status: :unprocessable_entity }
+      end
     end
+  end
 
-    if !(params[:historia_clinica][:tipoVacuna] == 'vacunae' && ((fecha_historia_clinica - fecha_perrito).to_i < 4 * 30))
-      parametros = historia_clinica_params.except(:id)
-      @historia_clinica = @perrito.historia_clinicas.build(parametros)
-  
-      respond_to do |format|
-        if @historia_clinica.save
-          format.html { redirect_to ver_perrito_path(@perrito, user: current_user), notice: 'Se registró la historia clínica con éxito.' }
-        else
-          format.html { render :new, status: :unprocessable_entity }
-          format.json { render json: @historia_clinica.errors, status: :unprocessable_entity }
+  def create_vacunae
+    puts '###################################'
+    puts 'ENTRE A CREATE_VACUNAE'
+    perrito_id = params[:historia_clinica][:id]
+    @perrito = Perrito.find(perrito_id)
+    @historias = @perrito.historia_clinicas
+    fecha_perrito = Date.new(@perrito.año, @perrito.mes, @perrito.dia)
+    fecha_historia_clinica = Date.new(params[:historia_clinica][:año].to_i, params[:historia_clinica][:mes].to_i, params[:historia_clinica][:dia].to_i)
+    if((fecha_historia_clinica - fecha_perrito).to_i > 4*30)
+      vacunase_validas?(params[:historia_clinica])
+      if (@puede)
+        parametros = historia_clinica_params.except(:id)
+        @historia_clinica = @perrito.historia_clinicas.build(parametros)
+    
+        respond_to do |format|
+          if @historia_clinica.save
+            format.html { redirect_to ver_perrito_path(@perrito, user: current_user), notice: 'Se registró la historia clínica con éxito.' }
+          else
+            format.html { render :new, status: :unprocessable_entity }
+            format.json { render json: @historia_clinica.errors, status: :unprocessable_entity }
+          end
         end
+      else
+        flash[:alert] = 'Fallo la carga de la vacunación: el perro se vacuno hace menos de 1 año'
+        redirect_to ver_perrito_path(@perrito, user: current_user)
       end
     else
-      flash[:alert] = 'Fallo la carga de la vacunación: el perro posee menos de 4 meses de vida'
+      flash[:alert] = 'Fallo la carga de la vacunación: el perro tiene menos de 4 meses'
       redirect_to ver_perrito_path(@perrito, user: current_user)
     end
   end
@@ -84,16 +105,13 @@ class HistoriaClinicasController < ApplicationController
     @historias = @perrito.historia_clinicas
     fecha_perrito = Date.new(@perrito.año, @perrito.mes, @perrito.dia)
     fecha_historia_clinica = Date.new(params[:historia_clinica][:año].to_i, params[:historia_clinica][:mes].to_i, params[:historia_clinica][:dia].to_i)
-    puts fecha_historia_clinica
-    puts fecha_perrito
-    puts 'RESTA DE AMBOS'
-    puts (fecha_historia_clinica - fecha_perrito).to_i
     #CASO ENTRE 2 Y 4 MESES (FALTA CHECKEAR SI SE DIO UNA VACUNA 21 DIAS ANTES)
     if ((fecha_historia_clinica - fecha_perrito).to_i > 2 * 30 && (fecha_historia_clinica - fecha_perrito).to_i < 4 * 30)
       #Checkeo si se dio una vacuna hace menos de 21 dias
       puts '#####################################'
       puts 'ENTRE AL IF DE ENTRE 2 Y 4 MESES'
-      if (vacunasr_validas_2_a_4_meses?(params[:historia_clinica]))
+      vacunasr_validas_2_a_4_meses?(params[:historia_clinica])
+      if (@puede)
         parametros = historia_clinica_params.except(:id)
         @historia_clinica = @perrito.historia_clinicas.build(parametros)
     
@@ -115,7 +133,8 @@ class HistoriaClinicasController < ApplicationController
         #Checkeo si se dio una vacuna hace menos de 1 año
         puts '#################################################'
         puts 'ENTRE AL IF MAYOR A 4 MESES'
-        if (vacunasr_validas_mayor_a_4_meses?(params[:historia_clinica]))
+        vacunas_validas?(params[:historia_clinica])
+        if (@puede)
           parametros = historia_clinica_params.except(:id)
           @historia_clinica = @perrito.historia_clinicas.build(parametros)
       
@@ -177,16 +196,56 @@ class HistoriaClinicasController < ApplicationController
     def vacunasr_validas_2_a_4_meses?(params_historia_clinica)
       fecha_historia_clinica = Date.new(params_historia_clinica[:año].to_i, params_historia_clinica[:mes].to_i, params_historia_clinica[:dia].to_i)
       # Obtener todas las vacunas del tipo 'vacunar' del perrito
-      vacunas = @perrito.historia_clinicas.where(tipo: 'vacunar')
+      vacunas = @perrito.historia_clinicas.where(tipoVacuna: 'vacunar')
+      @puede = true
       # Verificar que la nueva fecha sea válida respecto a todas las vacunas existentes
-      vacunas.all? { |vacuna| (fecha_historia_clinica - vacuna.fecha).to_i > 21 }
+      result = vacunas.any? do |vacuna|
+        vacuna_fecha = Date.new(vacuna.año, vacuna.mes, vacuna.dia)
+        (fecha_historia_clinica - vacuna_fecha).to_i > 365
+        puts '#################'
+        puts 'Fecha historia clinica'
+        puts fecha_historia_clinica
+        puts 'Fecha vacuna'
+        puts vacuna_fecha
+        puts 'RESTA'
+        puts (fecha_historia_clinica - vacuna_fecha).to_i
+        if (((fecha_historia_clinica - vacuna_fecha).to_i) < 21 && ((fecha_historia_clinica - vacuna_fecha).to_i) > 0)
+          @puede = false
+        end
+        puts @puede
+      end
     end
 
-    def vacunasr_validas_mayor_a_4_meses?(params_historia_clinica)
+    def vacunas_validas?(params_historia_clinica)
       fecha_historia_clinica = Date.new(params_historia_clinica[:año].to_i, params_historia_clinica[:mes].to_i, params_historia_clinica[:dia].to_i)
       # Obtener todas las vacunas del tipo 'vacunar' del perrito
-      vacunas = @perrito.historia_clinicas.where(tipo: 'vacunar')
+      vacunas = @perrito.historia_clinicas.where(tipoVacuna: 'vacunar')
+      @puede = true
       # Verificar que la nueva fecha sea válida respecto a todas las vacunas existentes
-      vacunas.all? { |vacuna| (fecha_historia_clinica - vacuna.fecha).to_i > 30*12 }
+      result = vacunas.any? do |vacuna|
+        vacuna_fecha = Date.new(vacuna.año, vacuna.mes, vacuna.dia)
+        (fecha_historia_clinica - vacuna_fecha).to_i > 365
+        puts (fecha_historia_clinica - vacuna_fecha).to_i
+        if (((fecha_historia_clinica - vacuna_fecha).to_i) < 365)
+          @puede = false
+        end
+        puts @puede
+      end
+    end
+
+    def vacunase_validas?(params_historia_clinica)
+      fecha_historia_clinica = Date.new(params_historia_clinica[:año].to_i, params_historia_clinica[:mes].to_i, params_historia_clinica[:dia].to_i)
+      # Obtener todas las vacunas del tipo 'vacunae' del perrito
+      vacunas = @perrito.historia_clinicas.where(tipoVacuna: 'vacunae')
+      @puede = true
+      # Verificar que la nueva fecha sea válida respecto a todas las vacunas existentes
+      result = vacunas.any? do |vacuna|
+        vacuna_fecha = Date.new(vacuna.año, vacuna.mes, vacuna.dia)
+        puts (fecha_historia_clinica - vacuna_fecha).to_i
+        if (((fecha_historia_clinica - vacuna_fecha).to_i) < 365)
+          @puede = false
+        end
+        puts @puede
+      end
     end
 end
