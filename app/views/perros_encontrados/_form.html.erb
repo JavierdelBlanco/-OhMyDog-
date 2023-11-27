@@ -45,22 +45,24 @@
     </div>
 
     <div class="col-md-6">
-      <%= form.label :tamaño, style: "display: block;" %>
-        <div class="input-group has-validation">
-          <%= form.text_field :tamano, class: 'form-control', required: true, id: 'validationLastname' %>
-        <div id="validationLastnameFeedback" class="invalid-feedback">
-          <%= perros_encontrado.errors.full_messages_for(:tamano).join(', ') %>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-6">
       <%= form.label :lugar_zona_donde_se_encontro, style: "display: block;" %>
         <div class="input-group has-validation">
           <%= form.text_field :lugar_zona_donde_se_encontro, class: 'form-control', required: true, id: 'validationLastname' %>
         <div id="validationLastnameFeedback" class="invalid-feedback">
           <%= perros_encontrado.errors.full_messages_for(:lugar_zona_donde_se_encontro).join(', ') %>
         </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <%= form.label :tamaño, style: "display: block;" %>
+      <div class="input-group has-validation">
+        <%= form.select :tamano, options_for_select(['Pequeño', 'Mediano', 'Grande'], perros_encontrado.tamano), { prompt: 'Seleccione...' }, class: 'form-select', id: 'validationServer04', required: true, 'aria-describedby': 'validationServer04Feedback' %>
+        <% if perros_encontrado.errors[:rol].any? %>
+          <div id="validationRolFeedback" class="invalid-feedback">
+            <%= perros_encontrado.errors.full_messages_for(:tamano).join(', ') %>
+          </div>
+        <% end %>
       </div>
     </div>
  

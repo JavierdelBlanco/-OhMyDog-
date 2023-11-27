@@ -31,7 +31,7 @@
   </div>
 </div>
 
-  <div class="col-md-6">
+<div class="col-md-6">
   <%= form.label :rol, style: "display: block;" %>
   <div class="input-group has-validation">
     <%= form.select :rol, options_for_select(['Cuidador', 'Paseador', 'Ambos'], cuidador_paseador.rol), { prompt: 'Seleccione...' }, class: 'form-select', id: 'validationServer04', required: true, 'aria-describedby': 'validationServer04Feedback' %>

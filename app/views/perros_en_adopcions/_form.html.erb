@@ -37,16 +37,6 @@
     </div>
 
     <div class="col-md-6">
-      <%= form.label :sexo, style: "display: block;" %>
-        <div class="input-group has-validation">
-          <%= form.text_field :sexo, class: 'form-control', required: true, id: 'validationLastname' %>
-        <div id="validationLastnameFeedback" class="invalid-feedback">
-          <%= perros_en_adopcion.errors.full_messages_for(:descripcion).join(', ') %>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-6">
       <%= form.label :edad, style: "display: block;" %>
         <div class="input-group has-validation">
           <%= form.text_field :edad, class: 'form-control', required: true, id: 'validationLastname' %>
@@ -58,14 +48,29 @@
 
     <div class="col-md-6">
       <%= form.label :tamaño, style: "display: block;" %>
-        <div class="input-group has-validation">
-          <%= form.text_field :tamano, class: 'form-control', required: true, id: 'validationLastname' %>
-        <div id="validationLastnameFeedback" class="invalid-feedback">
-          <%= perros_en_adopcion.errors.full_messages_for(:tamano).join(', ') %>
+      <div class="input-group has-validation">
+        <%= form.select :tamano, options_for_select(['Pequeño', 'Mediano', 'Grande'], perros_en_adopcion.tamano), { prompt: 'Seleccione...' }, class: 'form-select', id: 'validationServer04', required: true, 'aria-describedby': 'validationServer04Feedback' %>
+          <% if perros_en_adopcion.errors[:tamano].any? %>
+            <div id="validationRolFeedback" class="invalid-feedback">
+            <%= perros_en_adopcion.errors.full_messages_for(:rol).join(', ') %>
+            </div>
+          <% end %>
         </div>
-      </div>
+    </div>
+
+    <div class="col-md-6">
+      <%= form.label :sexo, style: "display: block;" %>
+      <div class="input-group has-validation">
+        <%= form.select :sexo, options_for_select(['Macho', 'Hembra'], perros_en_adopcion.sexo), { prompt: 'Seleccione...' }, class: 'form-select', id: 'validationServer04', required: true, 'aria-describedby': 'validationServer04Feedback' %>
+          <% if perros_en_adopcion.errors[:sexo].any? %>
+            <div id="validationRolFeedback" class="invalid-feedback">
+            <%= perros_en_adopcion.errors.full_messages_for(:rol).join(', ') %>
+            </div>
+          <% end %>
+        </div>
     </div>
  
+    <!--
     <div class="col-md-12">
       <%= form.label :foto, style: "display: block;" %>
       <div class="input-group has-validation">
@@ -76,6 +81,7 @@
       </div>
       <img id="preview" src="#" style="display: none; margin:2px; max-width: 200px; max-height: 200px;" />
     </div>
+    -->
 
 
   <div>

@@ -1,0 +1,2 @@
+class VeterinariasDeGuardium < ApplicationRecord
+end

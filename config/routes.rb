@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'calendar', to: 'calendar#index', as: 'calendar'
   resources :perros_en_adopcions
 
   root 'home#index'
@@ -102,6 +103,5 @@ get '/perros_encontrados/edit_no_registrado', to: 'perros_encontrados#edit_no_re
   post '/enviar_correo_contactar_registrado', to: 'perros_en_adopcions#enviar_correo_contactar_registrado'
   post '/enviar_correo_contactar_no_registrado', to: 'perros_en_adopcions#enviar_correo_contactar_no_registrado'
   
-
 
 end
