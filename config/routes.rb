@@ -61,6 +61,7 @@ Rails.application.routes.draw do
   end
   #Historia clinica del perro
   get 'ver_perrito/:id', to: 'perritos#ver', as: 'ver_perrito'
+  get 'ver_perrito_ajeno/:id', to: 'perritos#ver_ajeno', as: 'ver_perrito_ajeno'
   get 'crear_historia/:id', to: 'perritos#agregar_historia', as: 'crear_historia'
   get 'crear_castracion/:id', to: 'historia_clinicas#new_castracion', as: 'crear_castracion'
   get 'crear_vacunae/:id', to: 'historia_clinicas#new_vacunae', as: 'crear_vacunae'

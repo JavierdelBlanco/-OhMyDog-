@@ -38,6 +38,8 @@
     <%= form.hidden_field :id, value: @perrito.id %>
     <%= form.hidden_field :tipo, value: 'Vacuna Antirrábica' %>
     <%= form.hidden_field :tipoVacuna, value: 'vacunar' %>
+    <%= form.hidden_field :quien, value: params[:tipo] %>
+    <%= form.hidden_field :user_id, value: params[:user_id] %>
 
     <div>
       <%= form.submit %>
