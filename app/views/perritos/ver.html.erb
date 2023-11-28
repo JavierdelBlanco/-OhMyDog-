@@ -23,7 +23,7 @@
         <td><%= @perrito.raza %></td>
       </tr>
       <tr>
-        <th>color</th>
+        <th>Color</th>
         <td><%= @perrito.color %></td>
       </tr>
       <tr>
@@ -33,21 +33,28 @@
     </tbody>
   </table>
 
+  <% if current_user.tipo_usuario == 'veterinario' %>
+    <%= link_to "Agregar evento a la historia", crear_historia_path(@perrito, user_id: current_user.id, quien: 'mio'), class: "btn btn-secondary" %>
+  <% end %>
 
-  <%= link_to "Agregar evento a la historia", crear_historia_path(@perrito, current_user), class: "btn btn-secondary" %>
   <h3>Detalles de la Historia Clínica:</h3>
+
 
   <% if @perrito.historia_clinicas.empty? %>
     <p class="text-muted">Este perro no cuenta con historia clinica actualmente.</p>
   <% else %>
+
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="vacunaCheckbox">
+      <label class="form-check-label" for="vacunaCheckbox">Mostrar solo la Libreta Sanitaria</label>
+    </div>
+
     <table class="table table-striped">
       <thead>
         <tr>
           <th>Tipo de historia</th>
           <th>Fecha de Atencion</th>
-          <% if current_user.tipo_usuario == 'veterinario' %>
-            <th>Acciones</th>
-          <% end %>
+          <th>Acciones</th>
         </tr>
       </thead>
 
@@ -55,10 +62,26 @@
 
       <tbody>
       <% @perrito.historia_clinicas.each do |historia_clinica| %>
-        <tr>
+        <tr class="<%= (!(historia_clinica.tipo == 'Vacuna Antirrábica' || historia_clinica.tipo == 'Vacuna Anti Enfermedades')) ? 'filasvacunas' : '' %>">
             <td><%= historia_clinica.tipo %></td>
             <td><%= "#{historia_clinica.dia}/#{historia_clinica.mes}/#{historia_clinica.año}" %></td>
-            </td>
+            <td>
+            <% if historia_clinica.tipo == 'Castración' %>
+              <%= link_to "Ver Historia", ver_castracion_path(user_id: @user.id, quien: 'mio', historia: historia_clinica, perrito_id: @perrito.id), class: "btn btn-secondary" %>
+            <% end %>
+            <% if historia_clinica.tipo == 'Desparasitación' %>
+              <%= link_to "Ver Historia", ver_desparasitacion_path(user_id: @user.id, quien: 'mio', historia: historia_clinica, perrito_id: @perrito.id), class: "btn btn-secondary" %>
+            <% end %>
+            <% if historia_clinica.tipo == 'Vacuna Antirrábica' %>
+              <%= link_to "Ver Historia", ver_vacunar_path(user_id: @user.id, quien: 'mio', historia: historia_clinica, perrito_id: @perrito.id), class: "btn btn-secondary" %>
+            <% end %>
+            <% if historia_clinica.tipo == 'Vacuna Anti Enfermedades' %>
+              <%= link_to "Ver Historia", ver_vacunae_path(user_id: @user.id, quien: 'mio', historia: historia_clinica, perrito_id: @perrito.id), class: "btn btn-secondary" %>
+            <% end %>
+            <% if historia_clinica.tipo == 'Atención Clínica Ambulatoria' %>
+              <%= link_to "Ver Historia", ver_atencion_path(user_id: @user.id, quien: 'mio', historia: historia_clinica, perrito_id: @perrito.id), class: "btn btn-secondary" %>
+            <% end %>
+          </td>
           </tr>
       <% end %>
     </tbody>
@@ -67,3 +90,18 @@
  
   <%= link_to "Volver al perfil", ver_perfil_path(current_user), class: "btn btn-secondary" %>
 </div>
+
+<script>
+  document.addEventListener("turbo:load", function() {
+    const vacunaCheckbox = document.getElementById("vacunaCheckbox");
+
+    vacunaCheckbox.addEventListener("change", function() {
+      const mostrarVacunas = vacunaCheckbox.checked;
+      const filasVacunas = document.querySelectorAll(".filasvacunas");
+
+      filasVacunas.forEach(function(fila) {
+        fila.style.display = mostrarVacunas ? "none" : "";
+      });
+    });
+  });
+</script>
