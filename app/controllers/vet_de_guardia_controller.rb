@@ -62,20 +62,16 @@ class VetDeGuardiaController < ApplicationController
 
   # DELETE /vet_de_guardia/1 or /vet_de_guardia/1.json
   def destroy
-    @vet_de_guardium = VetDeGuardium.find_by(id: params[:id])
-  
+    puts "Destroy action called for VetDeGuardium with ID #{params[:id]}"
+
+    @vet_de_guardium = VetDeGuardium.find(params[:id])
+    @vet_de_guardium.destroy!
+
     respond_to do |format|
-      if @vet_de_guardium&.destroy
-        format.html { redirect_to vet_de_guardia_url, notice: 'Vet de guardium was successfully destroyed.' }
-        format.json { head :no_content }
-      else
-        format.html { redirect_to vet_de_guardia_url, notice: 'Event not found or could not be destroyed.' }
-        format.json { render json: { error: 'Event not found or could not be destroyed' }, status: :not_found }
-      end
+      format.html { redirect_to vet_de_guardia_url, notice: "Vet de guardium was successfully destroyed." }
+      format.json { head :no_content }
     end
   end
-  
-  
 
   private
     # Use callbacks to share common setup or constraints between actions.

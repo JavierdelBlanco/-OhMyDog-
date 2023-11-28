@@ -26,7 +26,7 @@
       <div class="col-md-6">
       <%= form.label :telefono, style: "display: block;" %>
       <div class="input-group has-validation">
-        <%= form.text_field :telefono, class: 'form-control' + (vet_de_guardium.errors[:telefono].any? ? ' is-invalid' : ''), required: true, id: 'validationName' %>
+        <%= form.number_field :telefono, class: 'form-control' + (vet_de_guardium.errors[:telefono].any? ? ' is-invalid' : ''), required: true, id: 'validationName' %>
           <div id="validationFotoFeedback" class="invalid-feedback" style="<%= vet_de_guardium.errors[:telefono].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
             <%= vet_de_guardium.errors.messages_for(:telefono).join(', ') %>
           </div>
@@ -108,6 +108,27 @@
 
 
     <% end%>
+    <% if request.path != '/vet_de_guardia/new' %>
+          <button type="button" class="btn btn-danger" style='margin: 2px' data-bs-toggle="modal" data-bs-target="#ModalEliminar-<%= vet_de_guardium.id %>">Eliminar</button>
+        <% end %>
+        <!-- Modal Eliminar-->
+            <div class="modal fade" id="ModalEliminar-<%= vet_de_guardium.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Publicacion</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    Desea eliminar la publicacion de este perro que busca dueño de forma permanente ?
+                  </div>
+                  <div class="modal-footer">
+                    <%= link_to "Confirmar", vet_de_guardium, data: { turbo_method: :delete } ,  class: "btn btn-turqueza", style:'margin: 2px' %>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+                  </div>
+                </div>
+              </div>
+            </div>
     <%= link_to "Atras", vet_de_guardia_path , class: "btn btn-turqueza", style:'margin-block: 10px;'%>
   </div>  
   </div>
