@@ -19,10 +19,15 @@
 
 # Learn more: http://github.com/javan/whenever
 
+
 set :environment, 'development'
 set :output, './log/cron.log'
 
 
-every 1.days, at: '9:38' do
-    runner "Turno.send_reminder_emails"
-end
+#every 1.days, at: '9:38' do
+#    runner "Turno.send_reminder_emails"
+#end
+
+#every 5.minutes do
+#    runner "Perrito.enviar_vacunae"
+#end

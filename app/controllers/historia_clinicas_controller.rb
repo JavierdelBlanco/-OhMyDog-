@@ -105,11 +105,15 @@ class HistoriaClinicasController < ApplicationController
     else
       @user = current_user
     end
+    @fecha = Date.parse(params[:historia_clinica][:fecha])
+    @dia = @fecha.day
+    @mes = @fecha.month
+    @año = @fecha.year
     perrito_id = params[:historia_clinica][:id]
     @perrito = Perrito.find(perrito_id)
     @historias = @perrito.historia_clinicas
     fecha_perrito = Date.new(@perrito.año, @perrito.mes, @perrito.dia)
-    fecha_historia_clinica = Date.new(params[:historia_clinica][:año].to_i, params[:historia_clinica][:mes].to_i, params[:historia_clinica][:dia].to_i)
+    fecha_historia_clinica = Date.new(@año.to_i, @mes.to_i, @dia.to_i)
     if((fecha_historia_clinica - fecha_perrito).to_i > 4*30)
       vacunase_validas?(params[:historia_clinica])
       if (@puede)
@@ -118,7 +122,7 @@ class HistoriaClinicasController < ApplicationController
         @fecha = Date.parse(params[:historia_clinica][:fecha])
         @historia_clinica.dia = @fecha.day
         @historia_clinica.mes = @fecha.month
-        @historia_clinca.año = @fecha.year
+        @historia_clinica.año = @fecha.year
     
         respond_to do |format|
           if @historia_clinica.save
@@ -151,11 +155,15 @@ class HistoriaClinicasController < ApplicationController
     else
       @user = current_user
     end
+    @fecha = Date.parse(params[:historia_clinica][:fecha])
+    @dia = @fecha.day
+    @mes = @fecha.month
+    @año = @fecha.year
     perrito_id = params[:historia_clinica][:id]
     @perrito = Perrito.find(perrito_id)
     @historias = @perrito.historia_clinicas
     fecha_perrito = Date.new(@perrito.año, @perrito.mes, @perrito.dia)
-    fecha_historia_clinica = Date.new(params[:historia_clinica][:año].to_i, params[:historia_clinica][:mes].to_i, params[:historia_clinica][:dia].to_i)
+    fecha_historia_clinica = Date.new(@año.to_i, @mes.to_i, @dia.to_i)
     #CASO ENTRE 2 Y 4 MESES (FALTA CHECKEAR SI SE DIO UNA VACUNA 21 DIAS ANTES)
     if ((fecha_historia_clinica - fecha_perrito).to_i > 2 * 30 && (fecha_historia_clinica - fecha_perrito).to_i < 4 * 30)
       #Checkeo si se dio una vacuna hace menos de 21 dias
@@ -168,7 +176,7 @@ class HistoriaClinicasController < ApplicationController
         @fecha = Date.parse(params[:historia_clinica][:fecha])
         @historia_clinica.dia = @fecha.day
         @historia_clinica.mes = @fecha.month
-        @historia_clinca.año = @fecha.year
+        @historia_clinica.año = @fecha.year
     
         respond_to do |format|
           if @historia_clinica.save
@@ -199,7 +207,7 @@ class HistoriaClinicasController < ApplicationController
           @fecha = Date.parse(params[:historia_clinica][:fecha])
           @historia_clinica.dia = @fecha.day
           @historia_clinica.mes = @fecha.month
-          @historia_clinca.año = @fecha.year
+          @historia_clinica.año = @fecha.year
       
           respond_to do |format|
             if @historia_clinica.save
@@ -292,7 +300,7 @@ class HistoriaClinicasController < ApplicationController
     end
 
     def vacunasr_validas_2_a_4_meses?(params_historia_clinica)
-      fecha_historia_clinica = Date.new(params_historia_clinica[:año].to_i, params_historia_clinica[:mes].to_i, params_historia_clinica[:dia].to_i)
+      fecha_historia_clinica = Date.new(@año.to_i, @mes.to_i, @dia.to_i)
       # Obtener todas las vacunas del tipo 'vacunar' del perrito
       vacunas = @perrito.historia_clinicas.where(tipoVacuna: 'vacunar')
       @puede = true
@@ -315,7 +323,7 @@ class HistoriaClinicasController < ApplicationController
     end
 
     def vacunas_validas?(params_historia_clinica)
-      fecha_historia_clinica = Date.new(params_historia_clinica[:año].to_i, params_historia_clinica[:mes].to_i, params_historia_clinica[:dia].to_i)
+      fecha_historia_clinica = Date.new(@año.to_i, @mes.to_i, @dia.to_i)
       # Obtener todas las vacunas del tipo 'vacunar' del perrito
       vacunas = @perrito.historia_clinicas.where(tipoVacuna: 'vacunar')
       @puede = true
@@ -332,7 +340,7 @@ class HistoriaClinicasController < ApplicationController
     end
 
     def vacunase_validas?(params_historia_clinica)
-      fecha_historia_clinica = Date.new(params_historia_clinica[:año].to_i, params_historia_clinica[:mes].to_i, params_historia_clinica[:dia].to_i)
+      fecha_historia_clinica = Date.new(@año.to_i, @mes.to_i, @dia.to_i)
       # Obtener todas las vacunas del tipo 'vacunae' del perrito
       vacunas = @perrito.historia_clinicas.where(tipoVacuna: 'vacunae')
       @puede = true
