@@ -39,11 +39,6 @@ class PerritosController < ApplicationController
     parametros = perrito_params.except(:tipo)
     @perrito = @user.perritos.build(parametros)
 
-    # Crear la historia clínica asociada sin asignar asociaciones específicas
-    @historia_clinica = HistoriaClinica.new
-    # Asignar la historia clínica al perrito
-    @perrito.historia_clinica = @historia_clinica
-
     respond_to do |format|
       if @perrito.save
         if(@tipo=='mio')
@@ -129,16 +124,23 @@ class PerritosController < ApplicationController
     @historia_clinicas = HistoriaClinica.all
   end
 
-  def agregar_historia
+  def ver_ajeno
     @perrito = Perrito.find(params[:id])
-    if @perrito.tiene_historia_clinica_de_tipo?('castracion')
-      puts '##########################'
-      puts @perrito.tiene_historia_clinica_de_tipo?('castracion')
-      @castrado=true
+    @user = User.find(params[:user_id])
+    @historia_clinicas = HistoriaClinica.all
+  end
+
+  def agregar_historia
+    @tipo = params[:tipo]
+    @user = User.find(params[:user_id])
+    @perrito = Perrito.find(params[:id])
+    if @perrito.historia_clinicas.exists?(tipo: 'Castracion')
+      @castrado = true
     else
-      @castrado=false
+      @castrado = false
     end
   end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

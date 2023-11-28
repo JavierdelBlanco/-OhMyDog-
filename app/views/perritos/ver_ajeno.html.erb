@@ -1,0 +1,90 @@
+<div class="container mt-5">
+<h2 style="margin-block: 20px;">Información de <%= @perrito.nombre %></h2>
+  <table class="table table-bordered">
+    <tbody>
+      <tr>
+        <th>Nombre</th>
+        <td><%= @perrito.nombre %></td>
+      </tr>
+      <tr>
+        <th>Fecha de Nacimiento</th>
+        <td><%= "#{@perrito.dia}/#{@perrito.mes}/#{@perrito.año}" %></td>
+      </tr>
+      <tr>
+        <th>Caracteristicas</th>
+        <td><%= @perrito.caracteristicas %></td>
+      </tr>
+      <tr>
+        <th>Condiciones</th>
+        <td><%= @perrito.condiciones %></td>
+      </tr>
+      <tr>
+        <th>Raza</th>
+        <td><%= @perrito.raza %></td>
+      </tr>
+      <tr>
+        <th>color</th>
+        <td><%= @perrito.color %></td>
+      </tr>
+      <tr>
+        <th>Tamaño</th>
+        <td><%= @perrito.tamaño %></td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <%= link_to "Agregar evento a la historia", crear_historia_path(@perrito, user_id: @user.id, tipo: 'ajeno'), class: "btn btn-secondary" %>
+  <h3>Detalles de la Historia Clínica:</h3>
+
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="vacunaCheckbox">
+        <label class="form-check-label" for="vacunaCheckbox">Mostrar solo la Libreta Sanitaria</label>
+    </div>
+
+  <% if @perrito.historia_clinicas.empty? %>
+    <p class="text-muted">Este perro no cuenta con historia clinica actualmente.</p>
+  <% else %>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Tipo de historia</th>
+          <th>Fecha de Atencion</th>
+          <% if @user.tipo_usuario == 'veterinario' %>
+            <th>Acciones</th>
+          <% end %>
+        </tr>
+      </thead>
+
+      
+
+      <tbody>
+      <% @perrito.historia_clinicas.each do |historia_clinica| %>
+        <tr class="<%= (!(historia_clinica.tipo == 'Vacuna Antirrábica' || historia_clinica.tipo == 'Vacuna Anti Enfermedades')) ? 'filasvacunas' : '' %>">
+            <td><%= historia_clinica.tipo %></td>
+            <td><%= "#{historia_clinica.dia}/#{historia_clinica.mes}/#{historia_clinica.año}" %></td>
+            </td>
+          </tr>
+      <% end %>
+    </tbody>
+    </table>
+  <% end %>
+ 
+  <%= link_to "Volver al perfil", user_path(@user), class: "btn btn-secondary" %>
+</div>
+
+
+<script>
+  document.addEventListener("turbo:load", function() {
+    const vacunaCheckbox = document.getElementById("vacunaCheckbox");
+
+    vacunaCheckbox.addEventListener("change", function() {
+      const mostrarVacunas = vacunaCheckbox.checked;
+      const filasVacunas = document.querySelectorAll(".filasvacunas");
+
+      filasVacunas.forEach(function(fila) {
+        fila.style.display = mostrarVacunas ? "none" : "";
+      });
+    });
+  });
+</script>

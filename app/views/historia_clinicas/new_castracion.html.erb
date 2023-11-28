@@ -22,8 +22,8 @@
 
     <%= form.hidden_field :id, value: @perrito.id %>
     <%= form.hidden_field :tipo, value: 'Castracion' %>
-
-    <p>El ID del perrito es: <%= @perrito.id %></p>
+    <%= form.hidden_field :quien, value: params[:tipo] %>
+    <%= form.hidden_field :user_id, value: params[:user_id] %>
 
     <div>
       <%= form.submit %>

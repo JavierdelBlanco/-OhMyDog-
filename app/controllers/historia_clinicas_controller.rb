@@ -18,31 +18,39 @@ class HistoriaClinicasController < ApplicationController
   def new_castracion
     @historia_clinica = HistoriaClinica.new
     @perrito = Perrito.find(params[:id])
-    #@user = User.find(params[:user_id])
+    @tipo = params[:tipo]
+    @user = User.find(params[:user_id])
   end
 
   def new_desparasitacion
     @historia_clinica = HistoriaClinica.new
     @perrito = Perrito.find(params[:id])
-    #@user = User.find(params[:user_id])
+    @tipo = params[:tipo]
+    @user = User.find(params[:user_id])
+    puts '########################'
+    puts 'USER ID NEW DESPARASITACION'
+    puts @user.id
   end
 
   def new_atencion_clinica
     @historia_clinica = HistoriaClinica.new
     @perrito = Perrito.find(params[:id])
-    #@user = User.find(params[:user_id])
+    @tipo = params[:tipo]
+    @user = User.find(params[:user_id])
   end
 
   def new_vacunae
     @historia_clinica = HistoriaClinica.new
     @perrito = Perrito.find(params[:id])
-    #@user = User.find(params[:user_id])
+    @tipo = params[:tipo]
+    @user = User.find(params[:user_id])
   end
 
   def new_vacunar
     @historia_clinica = HistoriaClinica.new
     @perrito = Perrito.find(params[:id])
-    #@user = User.find(params[:user_id])
+    @tipo = params[:tipo]
+    @user = User.find(params[:user_id])
   end
 
   # GET /historia_clinicas/1/edit
@@ -51,13 +59,32 @@ class HistoriaClinicasController < ApplicationController
 
   # POST /historia_clinicas or /historia_clinicas.json
   def create
+    puts '###################################'
+    puts 'ENTRE A CREATE_VACUNAE'
+    puts 'VALOR DE quien'
+    @quien = params[:historia_clinica][:quien]
+    puts @quien
+    if (@quien == 'ajeno')
+      @user = User.find(params[:historia_clinica][:user_id])
+    else
+      @user = current_user
+    end
+    puts '####################################'
+    puts 'USER ID EN CREATE'
+    puts @user.id
     perrito_id = params[:historia_clinica][:id]
     @perrito = Perrito.find(perrito_id)
-    parametros = historia_clinica_params.except(:id)
+    parametro1 = historia_clinica_params.except(:id)
+    parametro2 = parametro1.except(:quien)
+    parametros = parametro2.except(:user_id)
     @historia_clinica = @perrito.historia_clinicas.build(parametros)
     respond_to do |format|
       if @historia_clinica.save
-        format.html { redirect_to ver_perrito_path(@perrito, user: current_user), notice: 'Se registró la historia clínica con éxito.' }
+        if (@quien == 'ajeno')
+          format.html { redirect_to ver_perrito_ajeno_path(@perrito, user_id: @user.id), notice: 'Se registró la historia clínica con éxito.' }
+        else
+          format.html { redirect_to ver_perrito_path(@perrito, current_user), notice: 'Se registró la historia clínica con éxito.' }
+        end
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @historia_clinica.errors, status: :unprocessable_entity }
@@ -68,6 +95,14 @@ class HistoriaClinicasController < ApplicationController
   def create_vacunae
     puts '###################################'
     puts 'ENTRE A CREATE_VACUNAE'
+    puts 'VALOR DE quien'
+    @quien = params[:historia_clinica][:quien]
+    puts @quien
+    if (@quien == 'ajeno')
+      @user = User.find(params[:historia_clinica][:user_id])
+    else
+      @user = current_user
+    end
     perrito_id = params[:historia_clinica][:id]
     @perrito = Perrito.find(perrito_id)
     @historias = @perrito.historia_clinicas
@@ -76,12 +111,18 @@ class HistoriaClinicasController < ApplicationController
     if((fecha_historia_clinica - fecha_perrito).to_i > 4*30)
       vacunase_validas?(params[:historia_clinica])
       if (@puede)
-        parametros = historia_clinica_params.except(:id)
+        parametro1 = historia_clinica_params.except(:id)
+        parametro2 = parametro1.except(:quien)
+        parametros = parametro2.except(:user_id)
         @historia_clinica = @perrito.historia_clinicas.build(parametros)
     
         respond_to do |format|
           if @historia_clinica.save
-            format.html { redirect_to ver_perrito_path(@perrito, user: current_user), notice: 'Se registró la historia clínica con éxito.' }
+            if (@quien == 'ajeno')
+              format.html { redirect_to ver_perrito_ajeno_path(@perrito, user_id: @user.id), notice: 'Se registró la historia clínica con éxito.' }
+            else
+              format.html { redirect_to ver_perrito_path(@perrito, current_user), notice: 'Se registró la historia clínica con éxito.' }
+            end
           else
             format.html { render :new, status: :unprocessable_entity }
             format.json { render json: @historia_clinica.errors, status: :unprocessable_entity }
@@ -89,17 +130,23 @@ class HistoriaClinicasController < ApplicationController
         end
       else
         flash[:alert] = 'Fallo la carga de la vacunación: el perro se vacuno hace menos de 1 año'
-        redirect_to ver_perrito_path(@perrito, user: current_user)
+        redirect_to ver_perrito_path(@perrito, @user)
       end
     else
       flash[:alert] = 'Fallo la carga de la vacunación: el perro tiene menos de 4 meses'
-      redirect_to ver_perrito_path(@perrito, user: current_user)
+      redirect_to ver_perrito_path(@perrito, @user)
     end
   end
 
   def create_vacunar
     puts '###################################'
     puts 'ENTRE A CREATE_VACUNAR'
+    @quien = params[:historia_clinica][:quien]
+    if (@quien == 'ajeno')
+      @user = User.find(params[:historia_clinica][:user_id])
+    else
+      @user = current_user
+    end
     perrito_id = params[:historia_clinica][:id]
     @perrito = Perrito.find(perrito_id)
     @historias = @perrito.historia_clinicas
@@ -112,12 +159,18 @@ class HistoriaClinicasController < ApplicationController
       puts 'ENTRE AL IF DE ENTRE 2 Y 4 MESES'
       vacunasr_validas_2_a_4_meses?(params[:historia_clinica])
       if (@puede)
-        parametros = historia_clinica_params.except(:id)
+        parametro1 = historia_clinica_params.except(:id)
+        parametro2 = parametro1.except(:quien)
+        parametros = parametro2.except(:user_id)
         @historia_clinica = @perrito.historia_clinicas.build(parametros)
     
         respond_to do |format|
           if @historia_clinica.save
-            format.html { redirect_to ver_perrito_path(@perrito, user: current_user), notice: 'Se registró la historia clínica con éxito.' }
+            if (@quien == 'ajeno')
+              format.html { redirect_to ver_perrito_ajeno_path(@perrito, user_id: @user.id), notice: 'Se registró la historia clínica con éxito.' }
+            else
+              format.html { redirect_to ver_perrito_path(@perrito, current_user), notice: 'Se registró la historia clínica con éxito.' }
+            end
           else
             format.html { render :new, status: :unprocessable_entity }
             format.json { render json: @historia_clinica.errors, status: :unprocessable_entity }
@@ -125,7 +178,7 @@ class HistoriaClinicasController < ApplicationController
         end
       else
         flash[:alert] = 'Fallo la carga de la vacunación: el perro se vacunó hace menos de 21 dias'
-        redirect_to ver_perrito_path(@perrito, user: current_user)
+        redirect_to ver_perrito_path(@perrito, @user)
       end
     else
       #CASO MAYOR A 4 MESES (FALTA CHECKEAR SI SE DIO UNA VACUNA UN AÑO ANTES)
@@ -135,12 +188,18 @@ class HistoriaClinicasController < ApplicationController
         puts 'ENTRE AL IF MAYOR A 4 MESES'
         vacunas_validas?(params[:historia_clinica])
         if (@puede)
-          parametros = historia_clinica_params.except(:id)
+          parametro1 = historia_clinica_params.except(:id)
+          parametro2 = parametro1.except(:quien)
+          parametros = parametro2.except(:user_id)
           @historia_clinica = @perrito.historia_clinicas.build(parametros)
       
           respond_to do |format|
             if @historia_clinica.save
-              format.html { redirect_to ver_perrito_path(@perrito, user: current_user), notice: 'Se registró la historia clínica con éxito.' }
+              if (@quien == 'ajeno')
+                format.html { redirect_to ver_perrito_ajeno_path(@perrito, user_id: @user.id), notice: 'Se registró la historia clínica con éxito.' }
+              else
+                format.html { redirect_to ver_perrito_path(@perrito, current_user), notice: 'Se registró la historia clínica con éxito.' }
+              end
             else
               format.html { render :new, status: :unprocessable_entity }
               format.json { render json: @historia_clinica.errors, status: :unprocessable_entity }
@@ -148,11 +207,11 @@ class HistoriaClinicasController < ApplicationController
           end
         else
           flash[:alert] = 'Fallo la carga de la vacunación: el perro se vacunó hace menos de 1 año'
-          redirect_to ver_perrito_path(@perrito, user: current_user)
+          redirect_to ver_perrito_path(@perrito, @user)
         end
       else
         flash[:alert] = 'Fallo la carga de la vacunación: el perro posee menos de 2 meses de vida'
-        redirect_to ver_perrito_path(@perrito, user: current_user)
+        redirect_to ver_perrito_path(@perrito, @user)
       end
 
     end
@@ -190,7 +249,7 @@ class HistoriaClinicasController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def historia_clinica_params
-      params.require(:historia_clinica).permit(:id, :tipo, :dia, :mes, :año, :detalle, :tipoVacuna, :lote, :dosis, :producto, :sintomas, :diagnostico, :tratamiento)
+      params.require(:historia_clinica).permit(:id, :tipo, :dia, :mes, :año, :detalle, :tipoVacuna, :lote, :dosis, :producto, :sintomas, :diagnostico, :tratamiento, :quien, :user_id)
     end
 
     def vacunasr_validas_2_a_4_meses?(params_historia_clinica)

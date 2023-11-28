@@ -2,9 +2,9 @@
 
 
 <% if @castrado==false %>
-    <%= link_to "Registrar Castracion", crear_castracion_path(@perrito, current_user), class: "btn btn-secondary" %>
+    <%= link_to "Registrar Castracion", crear_castracion_path(@perrito, user_id: @user.id, tipo: @tipo), class: "btn btn-secondary" %>
 <% end %>
-<%= link_to "Registrar Vacuna Antirrabica", crear_vacunar_path(@perrito, current_user), class: "btn btn-secondary" %>
-<%= link_to "Registrar Vacuna Antienfermedades", crear_vacunae_path(@perrito, current_user), class: "btn btn-secondary" %>
-<%= link_to "Registrar Desparasitacion", crear_desparasitacion_path(@perrito), class: "btn btn-secondary" %>
-<%= link_to "Registrar Atención Clínica Ambulatoria", crear_atencion_clinica_path(@perrito, current_user), class: "btn btn-secondary" %>
+<%= link_to "Registrar Vacuna Antirrabica", crear_vacunar_path(@perrito, user_id: @user.id, tipo: @tipo), class: "btn btn-secondary" %>
+<%= link_to "Registrar Vacuna Antienfermedades", crear_vacunae_path(@perrito, user_id: @user.id, tipo: @tipo), class: "btn btn-secondary" %>
+<%= link_to "Registrar Desparasitacion", crear_desparasitacion_path(@perrito, user_id: @user.id, tipo: @tipo), class: "btn btn-secondary" %>
+<%= link_to "Registrar Atención Clínica Ambulatoria", crear_atencion_clinica_path(@perrito, user_id: @user.id, tipo: @tipo), class: "btn btn-secondary" %>
