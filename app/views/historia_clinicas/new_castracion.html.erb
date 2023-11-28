@@ -1,31 +1,31 @@
 <%= form_with(model: @historia_clinica) do |form| %>
-  
-    <div>
-      <%= form.label :dia, style: "display: block" %>
-      <%= form.number_field :dia %>
-    </div>
-  
-    <div>
-      <%= form.label :mes, style: "display: block" %>
-      <%= form.number_field :mes %>
-    </div>
-  
-    <div>
-      <%= form.label :año, style: "display: block" %>
-      <%= form.number_field :año %>
-    </div>
-  
-    <div>
-      <%= form.label :detalle, style: "display: block" %>
-      <%= form.text_area :detalle %>
-    </div>
 
-    <%= form.hidden_field :id, value: @perrito.id %>
-    <%= form.hidden_field :tipo, value: 'Castración' %>
-    <%= form.hidden_field :quien, value: params[:quien] %>
-    <%= form.hidden_field :user_id, value: params[:user_id] %>
+  <div class="mb-3">
+    <%= form.label :dia, class: "form-label" %>
+    <%= form.number_field :dia, class: "form-control" %>
+  </div>
 
-    <div>
-      <%= form.submit %>
-    </div>
-  <% end %>
+  <div class="mb-3">
+    <%= form.label :mes, class: "form-label" %>
+    <%= form.number_field :mes, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :año, class: "form-label" %>
+    <%= form.number_field :año, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :detalle, class: "form-label" %>
+    <%= form.text_area :detalle, class: "form-control" %>
+  </div>
+
+  <%= form.hidden_field :id, value: @perrito.id %>
+  <%= form.hidden_field :tipo, value: 'Castración' %>
+  <%= form.hidden_field :quien, value: params[:quien] %>
+  <%= form.hidden_field :user_id, value: params[:user_id] %>
+
+  <div class="mb-3">
+    <%= form.submit class: "btn btn-primary" %>
+  </div>
+<% end %>

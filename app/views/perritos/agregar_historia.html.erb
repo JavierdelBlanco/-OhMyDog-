@@ -13,5 +13,5 @@
 <% if params[:quien] == 'ajeno' %>
   <%= link_to "Volver atrás", ver_perrito_ajeno_path(@perrito, user_id: @user.id), class: "btn btn-secondary" %>
 <% else %>
-  <%= link_to "Volver atrás (mío)", ver_perrito_path(@perrito, user: current_user), class: "btn btn-secondary" %>
+  <%= link_to "Volver atrás", ver_perrito_path(@perrito, user: current_user), class: "btn btn-secondary" %>
 <% end %>
