@@ -6,10 +6,11 @@ class CreateTurnos < ActiveRecord::Migration[7.1]
       t.string :email_cliente
       t.string :nombres_perros
       t.string :tipo_turno
-      t.date :dia
+      t.date :fecha
+      t.string :franja_horaria
       t.time :horario
-      t.text :descripcion
-
+      t.text :detalle
+      t.string :estado
       t.timestamps
     end
   end

@@ -1,0 +1,308 @@
+<% if current_user.tipo_usuario == 'veterinario' %>
+
+<div class="container mt-4">
+    
+      <div class="col-md-6">
+        <h1>Solicitudes de Turno</h1>
+
+        <% if !@turnos.where(estado: 'pendiente').empty? %>
+        <div id="turnos">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Fecha</th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Franja Horaria</th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Tipo de Turno</th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Estado</th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Nombre y apellido </th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Perros </th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @turnos.where(estado: 'pendiente').each do |turno| %>
+                <tr>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.fecha.strftime('%d/%m/%y') %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.franja_horaria %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.tipo_turno %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.estado %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.nombre_cliente %> <%= turno.apellido_cliente %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.nombres_perros.gsub(/[\[\]\"]/, '').split(',').join(', ') %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    <button type="button" class= "btn btn-success" style= 'margin: 2px;' data-bs-toggle="modal" data-bs-target="#ModalGenerarTurno-<%= turno.id %>">
+                      Generar turno
+                    </button>
+                    
+                <!-- Modal Generar Turno-->
+                  <div class="modal fade" id="ModalGenerarTurno-<%= turno.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar turno</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <p>Ingresa la fecha, horario y descripcion (opcional) del turno: </p>
+                          <%= form_with url: generar_turno_path(id: turno.id), method: :post, id: 'formularioDatos' do |form| %>
+                            <div class='row g-3 needs-validation' style='width: 400px; margin: 5px; border: 1px solid #000; border-radius: 5px;'>
+                              <div class="col-md-6">
+                                <%= form.label :fecha, style: "display: block;" %>
+                                <div class="input-group has-validation">
+                                  <%= form.date_field :fecha, class: 'form-control' + (turno.errors[:fecha].any? ? ' is-invalid' : ''), required: true, min: Date.today.to_s, id: 'validationDia', value: turno.fecha %>
+                                  <div id="validationEmailFeedback" class="invalid-feedback" style="<%= turno.errors[:fecha].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
+                                    <%= turno.errors.messages_for(:fecha).join(', ') %>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="col-md-6">
+                                <%= form.label :horario, style: "display: block;" %>
+                                <div class="input-group has-validation">
+                                  <%= form.time_field :horario, class: 'form-control', required: true, min: '09:00', max: '19:00'%>
+                                </div>
+                              </div>
+
+                              <div class="col-md-12">
+                                <%= form.label :detalle, style: "display: block;" %>
+                                <div class="input-group has-validation">
+                                  <%= form.text_area :detalle, class: 'form-control' %>
+                                </div>
+                              </div>
+                            </div>
+                            <%= form.submit 'Confirmar', id: "confirmarBtn", class: 'btn btn-success', style:"margin: 2px" %>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Atras</button>
+                          <% end %>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <!-- ------------------------------------------------------------------------------------------------------------>
+              
+              <button type="button" class= "btn btn-danger" style= 'margin: 2px;' data-bs-toggle="modal" data-bs-target="#ModalRechazarTurno-<%= turno.id %>">
+                      Rechazar turno
+              </button>
+
+                <!-- Modal Rechazar Turno-->
+
+                <div class="modal fade" id="ModalRechazarTurno-<%= turno.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar solicitud de turno</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        Escriba el motivo de la cancelacion:
+                        <%= form_with url: rechazar_turno_path(id: turno.id), method: :post, id: 'formularioDatos' do |form| %>
+                          <div class='row g-3 needs-validation' style='width: 400px; margin: 5px; border: 1px solid #000; border-radius: 5px;'>
+                            <div class="col-md-12">
+                              <%= form.label :motivo, style: "display: block;" %>
+                              <div class="input-group has-validation">
+                                <%= form.text_area :detalle, class: 'form-control' %>
+                              </div>
+                            </div>
+                          </div>
+                          <%= form.submit 'Confirmar', id: "confirmarBtn", class: 'btn btn-success', style:"margin: 2px" %>
+                          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Atras</button>
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+        <!-- ---------------------------------------------------------------------------------->
+
+              </td>
+                </tr>
+
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <p>No hay solicitudes de turno pendientes</p>
+      <% end %>
+      </div>
+      
+      <div class="col-md-6">
+        <h1>Turnos</h1>
+
+        <% if !@turnos.where(estado: 'confirmado').empty? %>
+        <div id="turnos">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Fecha</th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Franja Horaria</th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Tipo de Turno</th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Estado</th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Nombre y apellido </th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Perros </th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @turnos.where(estado: 'confirmado').each do |turno| %>
+               <tr>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.fecha.strftime('%d/%m/%y') %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.franja_horaria %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.tipo_turno %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.estado %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.nombre_cliente %> <%= turno.apellido_cliente %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.nombres_perros.gsub(/[\[\]\"]/, '').split(',').join(', ') %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                  <button type="button" class= "btn btn-danger" style= 'margin: 2px;' data-bs-toggle="modal" data-bs-target="#ModalCancelarTurnoVeterinario-<%= turno.id %>">
+                    Cancelar turno
+                  </button>
+
+                  <!-- Modal Cancelar Turno Veterinario -->
+                  <div class="modal fade" id="ModalCancelarTurnoVeterinario-<%= turno.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar cancelacion de turno</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          ¿Desea cancelar el turno?
+                        </div>
+                        <div class="modal-footer">
+                          <%= button_to "Confirmar",turno, method: :delete,  class: "btn btn-success", style:'margin: 2px' %>
+                          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Atras</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              <tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+        <% else %>
+          <p>No hay turnos confirmados</p>
+        <% end %>
+
+<% else %>
+
+     <div class="container mt-4">
+
+      <div class="col-md-6">
+        <h1>Mis solicitudes de Turno</h1>
+
+        <% if !(@turnos.where(email_cliente: current_user.email, estado: 'pendiente').empty?) %>
+        <div id="turnos">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Fecha</th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Franja Horaria</th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Tipo de Turno</th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Estado</th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Nombre y apellido </th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Perros </th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @turnos.where(email_cliente: current_user.email, estado: 'pendiente').each do |turno| %>
+                <tr>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.fecha.strftime('%d/%m/%y') %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.franja_horaria %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.tipo_turno %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.estado %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.nombre_cliente %> <%= turno.apellido_cliente %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.nombres_perros.gsub(/[\[\]\"]/, '').split(',').join(', ') %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    <button type="button" class= "btn btn-danger" style= 'margin: 2px;' data-bs-toggle="modal" data-bs-target="#ModalCancelarSolicitud-<%= turno.id %>">
+                      Cancelar solicitud
+                    </button>
+
+                    <!-- Modal Cancelar solicitud de turnos-->
+                    <div class="modal fade" id="ModalCancelarSolicitud-<%= turno.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar cancelacion de turno</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            ¿Desea cancelar el turno?
+                          </div>
+                          <div class="modal-footer">
+                            <%= button_to "Confirmar",turno, method: :delete,  class: "btn btn-success", style:'margin: 2px' %>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Atras</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <p>No tenes solicitudes de turno pendientes</p>
+      <% end %>
+      <%= link_to "Solicitar Turno", new_turno_path, class: "btn btn-turqueza mb-3" %>
+      </div>
+      
+      <div class="col-md-6">
+        <h1>Mis Turnos</h1>
+
+        <% if !@turnos.where(email_cliente: current_user.email, estado: 'confirmado').empty? %>
+        <div id="turnos">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Fecha</th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Franja Horaria</th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Tipo de Turno</th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Estado</th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Nombre y apellido </th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Perros </th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @turnos.where(email_cliente: current_user.email, estado: 'confirmado').each do |turno| %>
+               <tr>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.fecha.strftime('%d/%m/%y') %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.franja_horaria %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.tipo_turno %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.estado %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.nombre_cliente %> <%= turno.apellido_cliente %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.nombres_perros.gsub(/[\[\]\"]/, '').split(',').join(', ') %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    <button type="button" class= "btn btn-danger" style= 'margin: 2px;' data-bs-toggle="modal" data-bs-target="#ModalCancelarTurnoCliente-<%= turno.id %>">
+                      Cancelar turno
+                    </button>
+
+                    <!-- Modal cancelar turno cliente-->
+                    <div class="modal fade" id="ModalCancelarTurnoCliente-<%= turno.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar cancelacion de turno</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            ¿Desea cancelar el turno?
+                          </div>
+                          <div class="modal-footer">
+                            <%= button_to "Confirmar",turno, method: :delete,  class: "btn btn-success", style:'margin: 2px' %>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Atras</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+        <% else %>
+          <p>No tenes turnos confirmados</p>
+        <% end %>
+
+  <% end %>

@@ -2,47 +2,47 @@ require "test_helper"
 
 class SolicitudTurnosControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @solicitud_turno = solicitud_turnos(:one)
+    @turno = turnos(:one)
   end
 
   test "should get index" do
-    get solicitud_turnos_url
+    get turnos_url
     assert_response :success
   end
 
   test "should get new" do
-    get new_solicitud_turno_url
+    get new_turno_url
     assert_response :success
   end
 
-  test "should create solicitud_turno" do
+  test "should create turno" do
     assert_difference("SolicitudTurno.count") do
-      post solicitud_turnos_url, params: { solicitud_turno: { apellido_cliente: @solicitud_turno.apellido_cliente, descripcion: @solicitud_turno.descripcion, dia: @solicitud_turno.dia, horario: @solicitud_turno.horario, nombre_cliente: @solicitud_turno.nombre_cliente, nombres_perros: @solicitud_turno.nombres_perros, tipo_turno: @solicitud_turno.tipo_turno } }
+      post turnos_url, params: { turno: { apellido_cliente: @turno.apellido_cliente, descripcion: @turno.descripcion, dia: @turno.dia, horario: @turno.horario, nombre_cliente: @turno.nombre_cliente, nombres_perros: @turno.nombres_perros, tipo_turno: @turno.tipo_turno } }
     end
 
-    assert_redirected_to solicitud_turno_url(SolicitudTurno.last)
+    assert_redirected_to turno_url(SolicitudTurno.last)
   end
 
-  test "should show solicitud_turno" do
-    get solicitud_turno_url(@solicitud_turno)
+  test "should show turno" do
+    get turno_url(@turno)
     assert_response :success
   end
 
   test "should get edit" do
-    get edit_solicitud_turno_url(@solicitud_turno)
+    get edit_turno_url(@turno)
     assert_response :success
   end
 
-  test "should update solicitud_turno" do
-    patch solicitud_turno_url(@solicitud_turno), params: { solicitud_turno: { apellido_cliente: @solicitud_turno.apellido_cliente, descripcion: @solicitud_turno.descripcion, dia: @solicitud_turno.dia, horario: @solicitud_turno.horario, nombre_cliente: @solicitud_turno.nombre_cliente, nombres_perros: @solicitud_turno.nombres_perros, tipo_turno: @solicitud_turno.tipo_turno } }
-    assert_redirected_to solicitud_turno_url(@solicitud_turno)
+  test "should update turno" do
+    patch turno_url(@turno), params: { turno: { apellido_cliente: @turno.apellido_cliente, descripcion: @turno.descripcion, dia: @turno.dia, horario: @turno.horario, nombre_cliente: @turno.nombre_cliente, nombres_perros: @turno.nombres_perros, tipo_turno: @turno.tipo_turno } }
+    assert_redirected_to turno_url(@turno)
   end
 
-  test "should destroy solicitud_turno" do
+  test "should destroy turno" do
     assert_difference("SolicitudTurno.count", -1) do
-      delete solicitud_turno_url(@solicitud_turno)
+      delete turno_url(@turno)
     end
 
-    assert_redirected_to solicitud_turnos_url
+    assert_redirected_to turnos_url
   end
 end

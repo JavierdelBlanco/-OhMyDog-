@@ -10,7 +10,7 @@
         </li>
          <% if user_signed_in? %>
           <li class="nav-item">
-          <%= link_to('Turnos', gestion_turnos_path, class:"nav-link #{'active' if current_page?(gestion_turnos_path)}") %>
+          <%= link_to('Turnos', turnos_path, class:"nav-link #{'active' if current_page?(turnos_path)}") %>
         </li>
         <% end %>
         <% if user_signed_in? and current_user.tipo_usuario == 'veterinario' %>
