@@ -60,7 +60,7 @@ class HistoriaClinicasController < ApplicationController
   # POST /historia_clinicas or /historia_clinicas.json
   def create
     puts '###################################'
-    puts 'ENTRE A CREATE_VACUNAE'
+    puts 'ENTRE A CREATE SOLO'
     puts 'VALOR DE quien'
     @quien = params[:historia_clinica][:quien]
     puts @quien
@@ -83,7 +83,7 @@ class HistoriaClinicasController < ApplicationController
         if (@quien == 'ajeno')
           format.html { redirect_to ver_perrito_ajeno_path(@perrito, user_id: @user.id), notice: 'Se registró la historia clínica con éxito.' }
         else
-          format.html { redirect_to ver_perrito_path(@perrito, current_user), notice: 'Se registró la historia clínica con éxito.' }
+          format.html { redirect_to ver_perrito_path(@perrito, user: current_user), notice: 'Se registró la historia clínica con éxito.' }
         end
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -121,7 +121,7 @@ class HistoriaClinicasController < ApplicationController
             if (@quien == 'ajeno')
               format.html { redirect_to ver_perrito_ajeno_path(@perrito, user_id: @user.id), notice: 'Se registró la historia clínica con éxito.' }
             else
-              format.html { redirect_to ver_perrito_path(@perrito, current_user), notice: 'Se registró la historia clínica con éxito.' }
+              format.html { redirect_to ver_perrito_path(@perrito, user: current_user), notice: 'Se registró la historia clínica con éxito.' }
             end
           else
             format.html { render :new, status: :unprocessable_entity }
@@ -169,7 +169,7 @@ class HistoriaClinicasController < ApplicationController
             if (@quien == 'ajeno')
               format.html { redirect_to ver_perrito_ajeno_path(@perrito, user_id: @user.id), notice: 'Se registró la historia clínica con éxito.' }
             else
-              format.html { redirect_to ver_perrito_path(@perrito, current_user), notice: 'Se registró la historia clínica con éxito.' }
+              format.html { redirect_to ver_perrito_path(@perrito, user: current_user), notice: 'Se registró la historia clínica con éxito.' }
             end
           else
             format.html { render :new, status: :unprocessable_entity }
@@ -198,7 +198,7 @@ class HistoriaClinicasController < ApplicationController
               if (@quien == 'ajeno')
                 format.html { redirect_to ver_perrito_ajeno_path(@perrito, user_id: @user.id), notice: 'Se registró la historia clínica con éxito.' }
               else
-                format.html { redirect_to ver_perrito_path(@perrito, current_user), notice: 'Se registró la historia clínica con éxito.' }
+                format.html { redirect_to ver_perrito_path(@perrito, user: current_user), notice: 'Se registró la historia clínica con éxito.' }
               end
             else
               format.html { render :new, status: :unprocessable_entity }
@@ -240,6 +240,37 @@ class HistoriaClinicasController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def ver_castracion
+    @historia_clinica = HistoriaClinica.find(params[:historia])
+    @perrito = Perrito.find(params[:perrito_id])
+    @user = User.find(params[:user_id])
+  end
+
+  def ver_desparasitacion
+    @historia_clinica = HistoriaClinica.find(params[:historia])
+    @perrito = Perrito.find(params[:perrito_id])
+    @user = User.find(params[:user_id])
+  end
+
+  def ver_atencion
+    @historia_clinica = HistoriaClinica.find(params[:historia])
+    @perrito = Perrito.find(params[:perrito_id])
+    @user = User.find(params[:user_id])
+  end
+
+  def ver_vacunae
+    @historia_clinica = HistoriaClinica.find(params[:historia])
+    @perrito = Perrito.find(params[:perrito_id])
+    @user = User.find(params[:user_id])
+  end
+
+  def ver_vacunar
+    @historia_clinica = HistoriaClinica.find(params[:historia])
+    @perrito = Perrito.find(params[:perrito_id])
+    @user = User.find(params[:user_id])
+  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

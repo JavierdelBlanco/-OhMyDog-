@@ -26,7 +26,7 @@
     </div>
   
     <div>
-      <%= form.label :dosis, style: "display: block" %>
+      <%= label_tag 'historia_clinica[dosis]', 'Dosis (en mililitros)', style: "display: block" %>
       <%= form.number_field :dosis %>
     </div>
   
@@ -38,7 +38,7 @@
     <%= form.hidden_field :id, value: @perrito.id %>
     <%= form.hidden_field :tipo, value: 'Vacuna Antirrábica' %>
     <%= form.hidden_field :tipoVacuna, value: 'vacunar' %>
-    <%= form.hidden_field :quien, value: params[:tipo] %>
+    <%= form.hidden_field :quien, value: params[:quien] %>
     <%= form.hidden_field :user_id, value: params[:user_id] %>
 
     <div>

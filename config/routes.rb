@@ -68,6 +68,11 @@ Rails.application.routes.draw do
   get 'crear_vacunar/:id', to: 'historia_clinicas#new_vacunar', as: 'crear_vacunar'
   get 'crear_desparasitacion/:id', to: 'historia_clinicas#new_desparasitacion', as: 'crear_desparasitacion'
   get 'crear_atencion_clinica/:id', to: 'historia_clinicas#new_atencion_clinica', as: 'crear_atencion_clinica'
+  get 'ver_castracion/:id', to: 'historia_clinicas#ver_castracion', as: 'ver_castracion'
+  get 'ver_desparasitacion/:id', to: 'historia_clinicas#ver_desparasitacion', as: 'ver_desparasitacion'
+  get 'ver_vacunar/:id', to: 'historia_clinicas#ver_vacunar', as: 'ver_vacunar'
+  get 'ver_vacunae/:id', to: 'historia_clinicas#ver_vacunae', as: 'ver_vacunae'
+  get 'ver_atencion/:id', to: 'historia_clinicas#ver_atencion', as: 'ver_atencion'
   resources :historia_clinicas do
     post 'create_vacunar', on: :collection
     post 'create_vacunae', on: :collection

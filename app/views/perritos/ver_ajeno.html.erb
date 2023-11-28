@@ -23,7 +23,7 @@
         <td><%= @perrito.raza %></td>
       </tr>
       <tr>
-        <th>color</th>
+        <th>Color</th>
         <td><%= @perrito.color %></td>
       </tr>
       <tr>
@@ -34,25 +34,27 @@
   </table>
 
 
-  <%= link_to "Agregar evento a la historia", crear_historia_path(@perrito, user_id: @user.id, tipo: 'ajeno'), class: "btn btn-secondary" %>
+  <% if current_user.tipo_usuario == 'veterinario' %>
+    <%= link_to "Agregar evento a la historia", crear_historia_path(@perrito, user_id: @user.id, quien: 'ajeno'), class: "btn btn-secondary" %>
+  <% end %>
+
   <h3>Detalles de la Historia Clínica:</h3>
 
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="vacunaCheckbox">
-        <label class="form-check-label" for="vacunaCheckbox">Mostrar solo la Libreta Sanitaria</label>
-    </div>
+
 
   <% if @perrito.historia_clinicas.empty? %>
     <p class="text-muted">Este perro no cuenta con historia clinica actualmente.</p>
   <% else %>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="vacunaCheckbox">
+      <label class="form-check-label" for="vacunaCheckbox">Mostrar solo la Libreta Sanitaria</label>
+    </div>
     <table class="table table-striped">
       <thead>
         <tr>
           <th>Tipo de historia</th>
           <th>Fecha de Atencion</th>
-          <% if @user.tipo_usuario == 'veterinario' %>
-            <th>Acciones</th>
-          <% end %>
+          <th>Acciones</th>
         </tr>
       </thead>
 
@@ -63,6 +65,22 @@
         <tr class="<%= (!(historia_clinica.tipo == 'Vacuna Antirrábica' || historia_clinica.tipo == 'Vacuna Anti Enfermedades')) ? 'filasvacunas' : '' %>">
             <td><%= historia_clinica.tipo %></td>
             <td><%= "#{historia_clinica.dia}/#{historia_clinica.mes}/#{historia_clinica.año}" %></td>
+            <td>
+              <% if historia_clinica.tipo == 'Castración' %>
+              <%= link_to "Ver Historia", ver_castracion_path(user_id: @user.id, quien: 'ajeno', historia: historia_clinica, perrito_id: @perrito.id), class: "btn btn-secondary" %>
+              <% end %>
+              <% if historia_clinica.tipo == 'Desparasitación' %>
+                <%= link_to "Ver Historia", ver_desparasitacion_path(user_id: @user.id, quien: 'ajeno', historia: historia_clinica, perrito_id: @perrito.id), class: "btn btn-secondary" %>
+              <% end %>
+              <% if historia_clinica.tipo == 'Vacuna Antirrábica' %>
+                <%= link_to "Ver Historia", ver_vacunar_path(user_id: @user.id, quien: 'ajeno', historia: historia_clinica, perrito_id: @perrito.id), class: "btn btn-secondary" %>
+              <% end %>
+              <% if historia_clinica.tipo == 'Vacuna Anti Enfermedades' %>
+                <%= link_to "Ver Historia", ver_vacunae_path(user_id: @user.id, quien: 'ajeno', historia: historia_clinica, perrito_id: @perrito.id), class: "btn btn-secondary" %>
+              <% end %>
+              <% if historia_clinica.tipo == 'Atención Clínica Ambulatoria' %>
+                <%= link_to "Ver Historia", ver_atencion_path(user_id: @user.id, quien: 'ajeno', historia: historia_clinica, perrito_id: @perrito.id), class: "btn btn-secondary" %>
+              <% end %>
             </td>
           </tr>
       <% end %>
