@@ -1,0 +1,116 @@
+<%= form_with(model: vet_de_guardium) do |form| %>
+
+  <div class='row g-3 needs-validation', style='width: 500px; margin: 5px; border: 1px solid #000; border-radius: 5px;'>
+
+  <div class="col-md-6">
+  <%= form.label :dia, style: "display: block;" %>
+  <div class="input-group has-validation">
+    <%= form.date_field :dia, class: 'form-control' + (vet_de_guardium.errors[:dia].any? ? ' is-invalid' : ''), required: true, id: 'validationName', min: (Date.current + 1.month).beginning_of_month, max: (Date.current + 1.month).end_of_month  %>
+    <div id="validationFotoFeedback" class="invalid-feedback" style="<%= vet_de_guardium.errors[:dia].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
+      <%= vet_de_guardium.errors.messages_for(:dia).join(', ') %>
+    </div>
+  </div>
+</div>
+
+
+  <div class="col-md-6">
+      <%= form.label :direccion, style: "display: block;" %>
+      <div class="input-group has-validation">
+        <%= form.text_field :direccion, class: 'form-control' + (vet_de_guardium.errors[:direccion].any? ? ' is-invalid' : ''), required: true, id: 'validationName' %>
+          <div id="validationFotoFeedback" class="invalid-feedback" style="<%= vet_de_guardium.errors[:direccion].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
+            <%= vet_de_guardium.errors.messages_for(:direccion).join(', ') %>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+      <%= form.label :telefono, style: "display: block;" %>
+      <div class="input-group has-validation">
+        <%= form.text_field :telefono, class: 'form-control' + (vet_de_guardium.errors[:telefono].any? ? ' is-invalid' : ''), required: true, id: 'validationName' %>
+          <div id="validationFotoFeedback" class="invalid-feedback" style="<%= vet_de_guardium.errors[:telefono].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
+            <%= vet_de_guardium.errors.messages_for(:telefono).join(', ') %>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+      <%= form.label :mail, style: "display: block;" %>
+      <div class="input-group has-validation">
+        <%= form.text_field :mail, class: 'form-control' + (vet_de_guardium.errors[:mail].any? ? ' is-invalid' : ''), required: true, id: 'validationName' %>
+          <div id="validationFotoFeedback" class="invalid-feedback" style="<%= vet_de_guardium.errors[:mail].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
+            <%= vet_de_guardium.errors.messages_for(:mail).join(', ') %>
+          </div>
+        </div>
+      </div>
+
+  <div class="col-md-12">
+      <%= form.label :foto, style: "display: block;" %>
+      <div class="input-group has-validation">
+        <%= form.file_field :foto, class: 'form-control' + (vet_de_guardium.errors[:foto].any? ? ' is-invalid' : ''),  required: (request.path == '/vet_de_guardia/new'), id: 'validationFoto', accept: 'image/*' %>
+        <div id="validationFotoFeedback" class="invalid-feedback" style="<%= vet_de_guardium.errors[:foto].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
+          <%= vet_de_guardium.errors.messages_for(:foto).join(', ') %>
+       </div>
+      </div>
+      <img id="preview" src="#" style="display: none; margin:2px; max-width: 200px; max-height: 200px;" />
+    </div>
+
+
+    <div>
+    <% if request.path == '/vet_de_guardia/new' %>
+      <button type="button" class="btn btn-success" style='margin-block: 10px;' data-bs-toggle="modal" data-bs-target="#ModalPublicar-<%= vet_de_guardium.id %>">
+        Publicar
+      </button>
+
+
+      <!-- Modal Publicar-->
+      <div class="modal fade" id="ModalPublicar-<%= vet_de_guardium.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar publicacion</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+              <div class="modal-body">
+                Confirma la publicacion de esta veterinaria de guardia ?
+              </div>
+            <div class="modal-footer">
+              <%= form.submit 'Confirmar',  class: "btn btn-turqueza", style:'margin: 2px' %>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <% else %>
+      <button type="button" class="btn btn-success" style='margin-block: 10px;' data-bs-toggle="modal" data-bs-target="#ModalEditar-<%= vet_de_guardium.id %>">
+              Guardar cambios
+      </button>
+
+
+      <!-- Modal Editar-->
+      <div class="modal fade" id="ModalEditar-<%= vet_de_guardium.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar edicion</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+              <div class="modal-body">
+                Desea guardar los cambios efectuados a esta veterinaria de guardia ?
+              </div>
+            <div class="modal-footer">
+              <%= form.submit 'Confirmar',  class: "btn btn-turqueza", style:'margin: 2px' %>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    <% end%>
+    <%= link_to "Atras", vet_de_guardia_path , class: "btn btn-turqueza", style:'margin-block: 10px;'%>
+  </div>  
+  </div>
+
+
+<% end %>

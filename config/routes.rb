@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  get 'calendar', to: 'calendar#index', as: 'calendar'
+  resources :vet_de_guardia
+  
   resources :perros_en_adopcions
 
   root 'home#index'

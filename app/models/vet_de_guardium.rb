@@ -1,0 +1,2 @@
+class VetDeGuardium < ApplicationRecord
+end

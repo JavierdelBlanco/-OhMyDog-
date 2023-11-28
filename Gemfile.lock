@@ -302,6 +302,7 @@ DEPENDENCIES
   fullcalendar-rails
   image_processing (~> 1.2)
   jbuilder
+  jquery-rails
   jsbundling-rails
   kaminari
   mailtrap

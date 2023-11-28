@@ -1,10 +1,10 @@
-class CreateVeterinariasDeGuardia < ActiveRecord::Migration[7.1]
+class CreateVetDeGuardia < ActiveRecord::Migration[7.1]
   def change
-    create_table :veterinarias_de_guardia do |t|
+    create_table :vet_de_guardia do |t|
+      t.binary :foto
       t.date :dia
       t.integer :telefono
       t.string :mail
-      t.binary :foto
       t.string :direccion
 
       t.timestamps

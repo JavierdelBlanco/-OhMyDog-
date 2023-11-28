@@ -12138,3 +12138,7 @@ bootstrap/dist/js/bootstrap.esm.js:
     *)
 */
 //# sourceMappingURL=/assets/application.js.map
+
+//= require jquery
+//= require jquery_ujs
+//= require bootstrap

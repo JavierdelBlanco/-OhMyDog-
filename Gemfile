@@ -80,3 +80,6 @@ gem 'rails-i18n'
 
 # Gemfile
 gem 'fullcalendar-rails'
+
+# Gemfile
+gem 'jquery-rails'
