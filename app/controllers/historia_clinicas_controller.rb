@@ -74,10 +74,12 @@ class HistoriaClinicasController < ApplicationController
     puts @user.id
     perrito_id = params[:historia_clinica][:id]
     @perrito = Perrito.find(perrito_id)
-    parametro1 = historia_clinica_params.except(:id)
-    parametro2 = parametro1.except(:quien)
-    parametros = parametro2.except(:user_id)
+    parametros = historia_clinica_params.except(:id, :quien, :user_id, :fecha)
     @historia_clinica = @perrito.historia_clinicas.build(parametros)
+    @fecha = Date.parse(params[:historia_clinica][:fecha])
+    @historia_clinica.dia = @fecha.day
+    @historia_clinica.mes = @fecha.month
+    @historia_clinica.año = @fecha.year
     respond_to do |format|
       if @historia_clinica.save
         if (@quien == 'ajeno')
@@ -111,10 +113,12 @@ class HistoriaClinicasController < ApplicationController
     if((fecha_historia_clinica - fecha_perrito).to_i > 4*30)
       vacunase_validas?(params[:historia_clinica])
       if (@puede)
-        parametro1 = historia_clinica_params.except(:id)
-        parametro2 = parametro1.except(:quien)
-        parametros = parametro2.except(:user_id)
+        parametros = historia_clinica_params.except(:id, :quien, :user_id, :fecha)
         @historia_clinica = @perrito.historia_clinicas.build(parametros)
+        @fecha = Date.parse(params[:historia_clinica][:fecha])
+        @historia_clinica.dia = @fecha.day
+        @historia_clinica.mes = @fecha.month
+        @historia_clinca.año = @fecha.year
     
         respond_to do |format|
           if @historia_clinica.save
@@ -159,10 +163,12 @@ class HistoriaClinicasController < ApplicationController
       puts 'ENTRE AL IF DE ENTRE 2 Y 4 MESES'
       vacunasr_validas_2_a_4_meses?(params[:historia_clinica])
       if (@puede)
-        parametro1 = historia_clinica_params.except(:id)
-        parametro2 = parametro1.except(:quien)
-        parametros = parametro2.except(:user_id)
+        parametros = historia_clinica_params.except(:id, :quien, :user_id, :fecha)
         @historia_clinica = @perrito.historia_clinicas.build(parametros)
+        @fecha = Date.parse(params[:historia_clinica][:fecha])
+        @historia_clinica.dia = @fecha.day
+        @historia_clinica.mes = @fecha.month
+        @historia_clinca.año = @fecha.year
     
         respond_to do |format|
           if @historia_clinica.save
@@ -188,10 +194,12 @@ class HistoriaClinicasController < ApplicationController
         puts 'ENTRE AL IF MAYOR A 4 MESES'
         vacunas_validas?(params[:historia_clinica])
         if (@puede)
-          parametro1 = historia_clinica_params.except(:id)
-          parametro2 = parametro1.except(:quien)
-          parametros = parametro2.except(:user_id)
+          parametros = historia_clinica_params.except(:id, :quien, :user_id, :fecha)
           @historia_clinica = @perrito.historia_clinicas.build(parametros)
+          @fecha = Date.parse(params[:historia_clinica][:fecha])
+          @historia_clinica.dia = @fecha.day
+          @historia_clinica.mes = @fecha.month
+          @historia_clinca.año = @fecha.year
       
           respond_to do |format|
             if @historia_clinica.save
@@ -280,7 +288,7 @@ class HistoriaClinicasController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def historia_clinica_params
-      params.require(:historia_clinica).permit(:id, :tipo, :dia, :mes, :año, :detalle, :tipoVacuna, :lote, :dosis, :producto, :sintomas, :diagnostico, :tratamiento, :quien, :user_id)
+      params.require(:historia_clinica).permit(:id, :tipo, :dia, :mes, :año, :detalle, :tipoVacuna, :lote, :dosis, :producto, :sintomas, :diagnostico, :tratamiento, :quien, :user_id, :fecha)
     end
 
     def vacunasr_validas_2_a_4_meses?(params_historia_clinica)

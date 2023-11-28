@@ -1,18 +1,10 @@
 <%= form_with(model: @historia_clinica, url: create_vacunar_historia_clinicas_path) do |form| %>
 
-  <div class="mb-3">
-    <%= form.label :dia, class: "form-label" %>
-    <%= form.number_field :dia, class: "form-control" %>
-  </div>
-
-  <div class="mb-3">
-    <%= form.label :mes, class: "form-label" %>
-    <%= form.number_field :mes, class: "form-control" %>
-  </div>
-
-  <div class="mb-3">
-    <%= form.label :año, class: "form-label" %>
-    <%= form.number_field :año, class: "form-control" %>
+  <div class="col-md-5">
+  <%= form.label :fecha_de_atencion, style: "display: block;" %>
+    <div class="input-group has-validation">
+      <%= form.date_field :fecha, class: 'form-control', required: true, max: Date.today.to_s, style: 'appearance: none;' %>
+    </div>
   </div>
 
   <div class="mb-3">

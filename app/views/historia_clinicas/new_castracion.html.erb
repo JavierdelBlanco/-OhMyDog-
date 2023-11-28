@@ -1,23 +1,17 @@
 <%= form_with(model: @historia_clinica) do |form| %>
+  <div class='row g-3 needs-validation' style='width: 500px; margin: 5px; border: 1px solid #000; border-radius: 5px;'>
 
-  <div class="mb-3">
-    <%= form.label :dia, class: "form-label" %>
-    <%= form.number_field :dia, class: "form-control" %>
+  <div class="col-md-5">
+  <%= form.label :fecha_de_atencion, style: "display: block;" %>
+    <div class="input-group has-validation">
+      <%= form.date_field :fecha, class: 'form-control', required: true, max: Date.today.to_s, style: 'appearance: none;' %>
+    </div>
   </div>
 
-  <div class="mb-3">
-    <%= form.label :mes, class: "form-label" %>
-    <%= form.number_field :mes, class: "form-control" %>
-  </div>
 
-  <div class="mb-3">
-    <%= form.label :año, class: "form-label" %>
-    <%= form.number_field :año, class: "form-control" %>
-  </div>
-
-  <div class="mb-3">
+  <div class="mb-2">
     <%= form.label :detalle, class: "form-label" %>
-    <%= form.text_area :detalle, class: "form-control" %>
+    <%= form.text_area :detalle, class: "form-control", required: true %>
   </div>
 
   <%= form.hidden_field :id, value: @perrito.id %>
@@ -27,5 +21,6 @@
 
   <div class="mb-3">
     <%= form.submit class: "btn btn-primary" %>
+  </div>
   </div>
 <% end %>
