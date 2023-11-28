@@ -78,8 +78,5 @@ gem 'kaminari'
 gem 'bootstrap5-kaminari-views'
 gem 'rails-i18n'
 
-# Gemfile
-gem 'fullcalendar-rails'
+gem 'whenever', require: false
 
-# Gemfile
-gem 'jquery-rails'

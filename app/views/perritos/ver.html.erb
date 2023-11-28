@@ -1,0 +1,69 @@
+<div class="container mt-5">
+<h2 style="margin-block: 20px;">Información de <%= @perrito.nombre %></h2>
+  <table class="table table-bordered">
+    <tbody>
+      <tr>
+        <th>Nombre</th>
+        <td><%= @perrito.nombre %></td>
+      </tr>
+      <tr>
+        <th>Fecha de Nacimiento</th>
+        <td><%= "#{@perrito.dia}/#{@perrito.mes}/#{@perrito.año}" %></td>
+      </tr>
+      <tr>
+        <th>Caracteristicas</th>
+        <td><%= @perrito.caracteristicas %></td>
+      </tr>
+      <tr>
+        <th>Condiciones</th>
+        <td><%= @perrito.condiciones %></td>
+      </tr>
+      <tr>
+        <th>Raza</th>
+        <td><%= @perrito.raza %></td>
+      </tr>
+      <tr>
+        <th>color</th>
+        <td><%= @perrito.color %></td>
+      </tr>
+      <tr>
+        <th>Tamaño</th>
+        <td><%= @perrito.tamaño %></td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <%= link_to "Agregar evento a la historia", crear_historia_path(@perrito, current_user), class: "btn btn-secondary" %>
+  <h3>Detalles de la Historia Clínica:</h3>
+
+  <% if @perrito.historia_clinicas.empty? %>
+    <p class="text-muted">Este perro no cuenta con historia clinica actualmente.</p>
+  <% else %>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Tipo de historia</th>
+          <th>Fecha de Atencion</th>
+          <% if current_user.tipo_usuario == 'veterinario' %>
+            <th>Acciones</th>
+          <% end %>
+        </tr>
+      </thead>
+
+      
+
+      <tbody>
+      <% @perrito.historia_clinicas.each do |historia_clinica| %>
+        <tr>
+            <td><%= historia_clinica.tipo %></td>
+            <td><%= "#{historia_clinica.dia}/#{historia_clinica.mes}/#{historia_clinica.año}" %></td>
+            </td>
+          </tr>
+      <% end %>
+    </tbody>
+    </table>
+  <% end %>
+ 
+  <%= link_to "Volver al perfil", ver_perfil_path(current_user), class: "btn btn-secondary" %>
+</div>

@@ -10,7 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema[7.1].define(version: 2023_11_27_140048) do
+
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -62,6 +64,40 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_27_140048) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "delayed_jobs", force: :cascade do |t|
+    t.integer "priority", default: 0, null: false
+    t.integer "attempts", default: 0, null: false
+    t.text "handler", null: false
+    t.text "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string "locked_by"
+    t.string "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+  end
+
+  create_table "historia_clinicas", force: :cascade do |t|
+    t.integer "perrito_id", null: false
+    t.string "tipo"
+    t.integer "dia"
+    t.integer "mes"
+    t.integer "año"
+    t.text "detalle"
+    t.string "tipoVacuna"
+    t.string "lote"
+    t.integer "dosis"
+    t.string "producto"
+    t.text "sintomas"
+    t.text "diagnostico"
+    t.text "tratamiento"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["perrito_id"], name: "index_historia_clinicas_on_perrito_id"
+  end
+
   create_table "perritos", force: :cascade do |t|
     t.string "nombre"
     t.integer "dia"
@@ -104,10 +140,10 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_27_140048) do
     t.string "nombre_dueno"
     t.string "apellido_dueno"
     t.string "direccion_dueno"
+    t.integer "numero_dueno"
     t.string "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "numero_dueno"
     t.string "raza"
     t.integer "edad_aproximada"
     t.string "tamano"
@@ -127,6 +163,21 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_27_140048) do
     t.integer "edad_aproximada"
     t.string "tamano"
     t.string "lugar_zona_donde_se_encontro"
+  end
+
+  create_table "turnos", force: :cascade do |t|
+    t.string "nombre_cliente"
+    t.string "apellido_cliente"
+    t.string "email_cliente"
+    t.string "nombres_perros"
+    t.string "tipo_turno"
+    t.date "fecha"
+    t.string "franja_horaria"
+    t.time "horario"
+    t.text "detalle"
+    t.string "estado"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -159,5 +210,6 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_27_140048) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "historia_clinicas", "perritos"
   add_foreign_key "perritos", "users"
 end

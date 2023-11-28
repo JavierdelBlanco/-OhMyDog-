@@ -1,0 +1,11 @@
+<h1>Hola <%= @turno.nombre_cliente %> <%= @turno.apellido_cliente %>,</h1>
+<p>¡Nos comunicamos para informarte que hay turno solictido en la vetrinaria ¡Oh my god! fue otorgado!</p>
+<br>
+<p>Te adjuntamos la informacion del mismo:</p>
+<p> Tipo de turno: <%= @turno.tipo_turno %> <p/>
+<p> Fecha: <%= @turno.fecha.strftime('%d/%m/%y') %> <p/>
+<p> Horario: <%= @turno.horario.strftime('%H:%Mhs') %> <p/>
+<p> Detalle: <%= @turno.detalle %> <p/>
+<br>
+<p> No te olvides de cancelarlo con dos dias de anticipacion si no pensas asistir.<p/>
+<p>Saludos, Equipo de ¡Oh My Dog!<p/>

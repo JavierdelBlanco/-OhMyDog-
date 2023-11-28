@@ -1,0 +1,31 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  perrito: one
+  tipo: MyString
+  dia: 1
+  mes: 1
+  año: 1
+  detalle: MyText
+  tipoVacuna: MyString
+  lote: MyString
+  dosis: 1
+  producto: MyString
+  sintomas: MyText
+  diagnostico: MyText
+  tratamiento: MyText
+
+two:
+  perrito: two
+  tipo: MyString
+  dia: 1
+  mes: 1
+  año: 1
+  detalle: MyText
+  tipoVacuna: MyString
+  lote: MyString
+  dosis: 1
+  producto: MyString
+  sintomas: MyText
+  diagnostico: MyText
+  tratamiento: MyText

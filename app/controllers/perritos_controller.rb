@@ -39,6 +39,11 @@ class PerritosController < ApplicationController
     parametros = perrito_params.except(:tipo)
     @perrito = @user.perritos.build(parametros)
 
+    # Crear la historia clínica asociada sin asignar asociaciones específicas
+    @historia_clinica = HistoriaClinica.new
+    # Asignar la historia clínica al perrito
+    @perrito.historia_clinica = @historia_clinica
+
     respond_to do |format|
       if @perrito.save
         if(@tipo=='mio')
@@ -115,6 +120,23 @@ class PerritosController < ApplicationController
         format.html { redirect_to user_path(@user), notice: "Se eliminó exitosamente el perro." }
         format.json { head :no_content }
       end
+    end
+  end
+
+  def ver
+    @perrito = Perrito.find(params[:id])
+    @user = User.find(params[:user])
+    @historia_clinicas = HistoriaClinica.all
+  end
+
+  def agregar_historia
+    @perrito = Perrito.find(params[:id])
+    if @perrito.tiene_historia_clinica_de_tipo?('castracion')
+      puts '##########################'
+      puts @perrito.tiene_historia_clinica_de_tipo?('castracion')
+      @castrado=true
+    else
+      @castrado=false
     end
   end
 

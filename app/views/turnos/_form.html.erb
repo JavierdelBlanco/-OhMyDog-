@@ -1,0 +1,116 @@
+<%= form_with(model: turno) do |form| %>
+
+<div class='row g-3 needs-validation' style='width: 500px; margin: 5px; border: 1px solid #000; border-radius: 5px;'>
+
+<%= form.hidden_field :nombre_cliente, value: current_user.nombre %>
+<%= form.hidden_field :apellido_cliente, value: current_user.apellido %>
+<%= form.hidden_field :email_cliente, value: current_user.email %>
+<%= form.hidden_field :estado, value: 'pendiente' %>
+
+<div class="col-md-12">
+  <%= form.label :nombres_perros, 'Nombres de los perros que deseas atender', style: 'display: block;' %>
+  <div class="input-group has-validation <%= 'has-error' if turno.errors[:nombres_perros].any? %>">
+    <% perros_disponibles = current_user.perritos.reject { |perro| perro.fallecido } %>
+    <%= form.collection_check_boxes :nombres_perros, perros_disponibles, :nombre, :nombre do |cb| %>
+      <div class="form-check" style="display: flex; align-items: center;">
+        <%= cb.check_box(class: 'form-check-input', style: 'margin-right: 8px; margin-bottom: 6px;') %>
+        <label class="form-check-label" style="vertical-align: middle;">
+          <%= cb.object.nombre.capitalize %>
+        </label>
+      </div>
+    <% end %>
+    
+    <% if turno.errors[:nombres_perros].any? %>
+      <div id="validationRolFeedback" class="invalid-feedback">
+        <%= turno.errors.messages_for(:nombres_perros).join(', ') %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
+<div class="col-md-12">
+  <%= form.label  :tipo_de_turno, style: "display: block;" %>
+  <div class="input-group has-validation">
+     <%= form.select :tipo_turno, options_for_select([['Castración', 'castracion'],['Vacunación', 'vacunacion'],['Atención clínica-ambulatoria', 'clinica-ambulatoria'],['Desparasitación', 'desparasitacion']],  turno.tipo_turno), { prompt: 'Seleccione...' }, class: 'form-select', id: 'validationServer04', required: true, 'aria-describedby': 'validationServer04Feedback' %>
+    <% if turno.errors[:tipo_turno].any? %>
+      <div id="validationRolFeedback" class="invalid-feedback">
+        <%= turno.errors.full_messages_for(:tipo_turno).join(', ') %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="col-md-6">
+  <%= form.label :fecha_deseada, style: "display: block;" %>
+  <div class="input-group has-validation">
+    <%= form.date_field :fecha, class: 'form-control' + (turno.errors[:fecha].any? ? ' is-invalid' : ''), required: true, min: Date.today.to_s, id: 'validationDia' %>
+    <div id="validationEmailFeedback" class="invalid-feedback" style="<%= turno.errors[:fecha].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
+      <%= turno.errors.messages_for(:fecha).join(', ') %>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-6">
+  <%= form.label  :franja_horaria, style: "display: block;" %>
+  <div class="input-group has-validation">
+     <%= form.select :franja_horaria, options_for_select([['Mañana', 'mañana'],['Tarde', 'tarde']],  turno.franja_horaria), { prompt: 'Seleccione...' }, class: 'form-select', id: 'validationServer05', required: true, 'aria-describedby': 'validationServer04Feedback' %>
+    <% if turno.errors[:franja_horaria].any? %>
+      <div id="validationRolFeedback" class="invalid-feedback">
+        <%= turno.errors.full_messages_for(:franja_horaria).join(', ') %>
+      </div>
+    <% end %>
+  </div>
+</div>
+<div class="col-md-12 mb-2" >
+  <div>
+    <button type="button" class="btn btn-success" style='margin-top: 10px;' data-bs-toggle="modal" data-bs-target="#ModalSolicitarTurno-<%= turno.id %>">
+      Enviar Solicitud
+    </button>
+
+      <!-- Modal Solicitar Turno-->
+        <div class="modal fade" id="ModalSolicitarTurno-<%= turno.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar solicitud de turno</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+                <div class="modal-body">
+                  ¿Desea generar una solicitud de turno con los datos ingresados ?
+                </div>
+              <div class="modal-footer">
+                <%= form.submit 'Confirmar',  class: "btn btn-success", style:'margin: 2px' %>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Atras</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <%= link_to "Atras", turnos_path, class: 'btn btn-primary', style: 'margin-top: 10px;' %>
+      </div>
+  </div>
+</div>
+<% end %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('input[type="time"]').addEventListener('click', function() {
+      if (this.value === '') {
+        this.value = '09:00';
+      }
+    });
+  });
+</script>
+
+<style>
+  /* Estilo para checkboxes con errores */
+.has-error .form-check-input[type="checkbox"] {
+  border-color: red; /* Cambia el color del borde */
+}
+
+/* Estilo para el mensaje de error */
+.invalid-feedback {
+  color: red; /* Cambia el color del texto de error */
+  display: block; /* Muestra el mensaje de error */
+}
+</style>

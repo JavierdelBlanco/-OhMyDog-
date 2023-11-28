@@ -10,6 +10,7 @@ class CreatePerrosEncontrados < ActiveRecord::Migration[7.1]
       t.string :nombre_dueno
       t.string :apellido_dueno
       t.string :direccion_dueno
+      t.integer :numero_dueno
       t.string :token
       t.timestamps
     end
