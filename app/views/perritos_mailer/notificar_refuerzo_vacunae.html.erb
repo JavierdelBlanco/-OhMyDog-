@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recordatorio de Refuerzo de Vacuna para tu Perro</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    header {
+      background-color: #4CAF50;
+      color: white;
+      text-align: center;
+      padding: 1em;
+    }
+
+    section {
+      padding: 1em 0;
+    }
+
+    footer {
+      background-color: #f1f1f1;
+      padding: 1em;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Recordatorio de Refuerzo de Vacuna Anti Enfermedades para <%= @nombre_perro %></h1>
+    </header>
+
+    <section>
+      <p>Hola,</p>
+      
+      <p>Este es un recordatorio amigable para informarte que es hora de programar el refuerzo de la vacuna antienfermedades para tu querido perro, <%= @nombre_perro %>.</p>
+      
+      <p>La salud de tu mascota es importante, y mantener al día sus vacunas es crucial para prevenir enfermedades y garantizar su bienestar.</p>
+      
+      <p>Por favor, ponte en contacto con tu veterinario para programar una cita y asegurarte de que <%= @nombre_perro %> esté protegido contra enfermedades potencialmente peligrosas.</p>
+      
+      <p>Gracias por cuidar de tu peludo amigo.</p>
+    </section>
+
+    <footer>
+      <p>¡Gracias por confiar en nosotros para el cuidado de tu mascota!</p>
+    </footer>
+  </div>
+</body>
+</html>
