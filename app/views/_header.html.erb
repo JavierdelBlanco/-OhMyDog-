@@ -31,9 +31,12 @@
   <li class="nav-item">
     <%= link_to('Perros en adopcion', perros_en_adopcions_path, class:"nav-link #{'active' if current_page?(perros_en_adopcions_path)}") %>
   </li>
-<li class="nav-item">
 
+<li class="nav-item">
           <%= link_to('Cuidadores y paseadores', cuidador_paseadors_path, class:"nav-link #{'active' if current_page?(cuidador_paseadors_path)}") %>
+        </li>
+        <li class="nav-item">
+          <%= link_to('Veterinarias de guardia', vet_de_guardia_path, class:"nav-link #{'active' if current_page?(vet_de_guardia_path)}") %>
         </li>
       </ul>
     </div>

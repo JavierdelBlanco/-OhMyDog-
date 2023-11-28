@@ -79,3 +79,4 @@ gem 'bootstrap5-kaminari-views'
 gem 'rails-i18n'
 
 gem 'whenever', require: false
+

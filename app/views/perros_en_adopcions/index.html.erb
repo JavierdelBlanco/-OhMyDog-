@@ -37,7 +37,9 @@
    
     <div class="<%= (user_signed_in? && current_user.email == perros.mail) ? '' : 'no_mis_perros' %> card d-flex <%= perros.status ? 'activo' : 'no-activo' %>" style="max-width: 350px; max-height: 650px; min-width: 350px; min-height: 500px; margin: 10px">
      
+      <!--
       <%= image_tag(perros.foto, class:'card-img-top', style:'max-height: 200px; min-height: 200px; max-width: 100%; object-fit: cover;  object-position: top; ') %>
+      -->
       <div class="card-body">
         <p class="card-text", style=''> <strong> Nombre: </strong> <%= perros.nombre %> </p>
         <p id=ci class="card-text" style="max-height: 100px; overflow: hidden;"> <strong> Descripcion: </strong> <%= perros.descripcion %> </p>
@@ -168,7 +170,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    Desea eliminar la publicacion de este perro perdido de forma permanente ?
+                    Desea eliminar la publicacion de este perro en adopcion de forma permanente ?
                   </div>
                   <div class="modal-footer">
                     <%= link_to "Confirmar", perros, data: { turbo_method: :delete } ,  class: "btn btn-turqueza", style:'margin: 2px' %>
