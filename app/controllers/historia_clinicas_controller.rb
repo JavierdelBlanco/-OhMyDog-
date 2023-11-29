@@ -60,7 +60,7 @@ class HistoriaClinicasController < ApplicationController
   # POST /historia_clinicas or /historia_clinicas.json
   def create
     puts '###################################'
-    puts 'ENTRE A CREATE_VACUNAE'
+    puts 'ENTRE A CREATE SOLO'
     puts 'VALOR DE quien'
     @quien = params[:historia_clinica][:quien]
     puts @quien
@@ -74,16 +74,18 @@ class HistoriaClinicasController < ApplicationController
     puts @user.id
     perrito_id = params[:historia_clinica][:id]
     @perrito = Perrito.find(perrito_id)
-    parametro1 = historia_clinica_params.except(:id)
-    parametro2 = parametro1.except(:quien)
-    parametros = parametro2.except(:user_id)
+    parametros = historia_clinica_params.except(:id, :quien, :user_id, :fecha)
     @historia_clinica = @perrito.historia_clinicas.build(parametros)
+    @fecha = Date.parse(params[:historia_clinica][:fecha])
+    @historia_clinica.dia = @fecha.day
+    @historia_clinica.mes = @fecha.month
+    @historia_clinica.año = @fecha.year
     respond_to do |format|
       if @historia_clinica.save
         if (@quien == 'ajeno')
           format.html { redirect_to ver_perrito_ajeno_path(@perrito, user_id: @user.id), notice: 'Se registró la historia clínica con éxito.' }
         else
-          format.html { redirect_to ver_perrito_path(@perrito, current_user), notice: 'Se registró la historia clínica con éxito.' }
+          format.html { redirect_to ver_perrito_path(@perrito, user: current_user), notice: 'Se registró la historia clínica con éxito.' }
         end
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -103,25 +105,31 @@ class HistoriaClinicasController < ApplicationController
     else
       @user = current_user
     end
+    @fecha = Date.parse(params[:historia_clinica][:fecha])
+    @dia = @fecha.day
+    @mes = @fecha.month
+    @año = @fecha.year
     perrito_id = params[:historia_clinica][:id]
     @perrito = Perrito.find(perrito_id)
     @historias = @perrito.historia_clinicas
     fecha_perrito = Date.new(@perrito.año, @perrito.mes, @perrito.dia)
-    fecha_historia_clinica = Date.new(params[:historia_clinica][:año].to_i, params[:historia_clinica][:mes].to_i, params[:historia_clinica][:dia].to_i)
+    fecha_historia_clinica = Date.new(@año.to_i, @mes.to_i, @dia.to_i)
     if((fecha_historia_clinica - fecha_perrito).to_i > 4*30)
       vacunase_validas?(params[:historia_clinica])
       if (@puede)
-        parametro1 = historia_clinica_params.except(:id)
-        parametro2 = parametro1.except(:quien)
-        parametros = parametro2.except(:user_id)
+        parametros = historia_clinica_params.except(:id, :quien, :user_id, :fecha)
         @historia_clinica = @perrito.historia_clinicas.build(parametros)
+        @fecha = Date.parse(params[:historia_clinica][:fecha])
+        @historia_clinica.dia = @fecha.day
+        @historia_clinica.mes = @fecha.month
+        @historia_clinica.año = @fecha.year
     
         respond_to do |format|
           if @historia_clinica.save
             if (@quien == 'ajeno')
               format.html { redirect_to ver_perrito_ajeno_path(@perrito, user_id: @user.id), notice: 'Se registró la historia clínica con éxito.' }
             else
-              format.html { redirect_to ver_perrito_path(@perrito, current_user), notice: 'Se registró la historia clínica con éxito.' }
+              format.html { redirect_to ver_perrito_path(@perrito, user: current_user), notice: 'Se registró la historia clínica con éxito.' }
             end
           else
             format.html { render :new, status: :unprocessable_entity }
@@ -147,11 +155,15 @@ class HistoriaClinicasController < ApplicationController
     else
       @user = current_user
     end
+    @fecha = Date.parse(params[:historia_clinica][:fecha])
+    @dia = @fecha.day
+    @mes = @fecha.month
+    @año = @fecha.year
     perrito_id = params[:historia_clinica][:id]
     @perrito = Perrito.find(perrito_id)
     @historias = @perrito.historia_clinicas
     fecha_perrito = Date.new(@perrito.año, @perrito.mes, @perrito.dia)
-    fecha_historia_clinica = Date.new(params[:historia_clinica][:año].to_i, params[:historia_clinica][:mes].to_i, params[:historia_clinica][:dia].to_i)
+    fecha_historia_clinica = Date.new(@año.to_i, @mes.to_i, @dia.to_i)
     #CASO ENTRE 2 Y 4 MESES (FALTA CHECKEAR SI SE DIO UNA VACUNA 21 DIAS ANTES)
     if ((fecha_historia_clinica - fecha_perrito).to_i > 2 * 30 && (fecha_historia_clinica - fecha_perrito).to_i < 4 * 30)
       #Checkeo si se dio una vacuna hace menos de 21 dias
@@ -159,17 +171,19 @@ class HistoriaClinicasController < ApplicationController
       puts 'ENTRE AL IF DE ENTRE 2 Y 4 MESES'
       vacunasr_validas_2_a_4_meses?(params[:historia_clinica])
       if (@puede)
-        parametro1 = historia_clinica_params.except(:id)
-        parametro2 = parametro1.except(:quien)
-        parametros = parametro2.except(:user_id)
+        parametros = historia_clinica_params.except(:id, :quien, :user_id, :fecha)
         @historia_clinica = @perrito.historia_clinicas.build(parametros)
+        @fecha = Date.parse(params[:historia_clinica][:fecha])
+        @historia_clinica.dia = @fecha.day
+        @historia_clinica.mes = @fecha.month
+        @historia_clinica.año = @fecha.year
     
         respond_to do |format|
           if @historia_clinica.save
             if (@quien == 'ajeno')
               format.html { redirect_to ver_perrito_ajeno_path(@perrito, user_id: @user.id), notice: 'Se registró la historia clínica con éxito.' }
             else
-              format.html { redirect_to ver_perrito_path(@perrito, current_user), notice: 'Se registró la historia clínica con éxito.' }
+              format.html { redirect_to ver_perrito_path(@perrito, user: current_user), notice: 'Se registró la historia clínica con éxito.' }
             end
           else
             format.html { render :new, status: :unprocessable_entity }
@@ -188,17 +202,19 @@ class HistoriaClinicasController < ApplicationController
         puts 'ENTRE AL IF MAYOR A 4 MESES'
         vacunas_validas?(params[:historia_clinica])
         if (@puede)
-          parametro1 = historia_clinica_params.except(:id)
-          parametro2 = parametro1.except(:quien)
-          parametros = parametro2.except(:user_id)
+          parametros = historia_clinica_params.except(:id, :quien, :user_id, :fecha)
           @historia_clinica = @perrito.historia_clinicas.build(parametros)
+          @fecha = Date.parse(params[:historia_clinica][:fecha])
+          @historia_clinica.dia = @fecha.day
+          @historia_clinica.mes = @fecha.month
+          @historia_clinica.año = @fecha.year
       
           respond_to do |format|
             if @historia_clinica.save
               if (@quien == 'ajeno')
                 format.html { redirect_to ver_perrito_ajeno_path(@perrito, user_id: @user.id), notice: 'Se registró la historia clínica con éxito.' }
               else
-                format.html { redirect_to ver_perrito_path(@perrito, current_user), notice: 'Se registró la historia clínica con éxito.' }
+                format.html { redirect_to ver_perrito_path(@perrito, user: current_user), notice: 'Se registró la historia clínica con éxito.' }
               end
             else
               format.html { render :new, status: :unprocessable_entity }
@@ -241,6 +257,37 @@ class HistoriaClinicasController < ApplicationController
     end
   end
 
+  def ver_castracion
+    @historia_clinica = HistoriaClinica.find(params[:historia])
+    @perrito = Perrito.find(params[:perrito_id])
+    @user = User.find(params[:user_id])
+  end
+
+  def ver_desparasitacion
+    @historia_clinica = HistoriaClinica.find(params[:historia])
+    @perrito = Perrito.find(params[:perrito_id])
+    @user = User.find(params[:user_id])
+  end
+
+  def ver_atencion
+    @historia_clinica = HistoriaClinica.find(params[:historia])
+    @perrito = Perrito.find(params[:perrito_id])
+    @user = User.find(params[:user_id])
+  end
+
+  def ver_vacunae
+    @historia_clinica = HistoriaClinica.find(params[:historia])
+    @perrito = Perrito.find(params[:perrito_id])
+    @user = User.find(params[:user_id])
+  end
+
+  def ver_vacunar
+    @historia_clinica = HistoriaClinica.find(params[:historia])
+    @perrito = Perrito.find(params[:perrito_id])
+    @user = User.find(params[:user_id])
+  end
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_historia_clinica
@@ -249,11 +296,11 @@ class HistoriaClinicasController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def historia_clinica_params
-      params.require(:historia_clinica).permit(:id, :tipo, :dia, :mes, :año, :detalle, :tipoVacuna, :lote, :dosis, :producto, :sintomas, :diagnostico, :tratamiento, :quien, :user_id)
+      params.require(:historia_clinica).permit(:id, :tipo, :dia, :mes, :año, :detalle, :tipoVacuna, :lote, :dosis, :producto, :sintomas, :diagnostico, :tratamiento, :quien, :user_id, :fecha)
     end
 
     def vacunasr_validas_2_a_4_meses?(params_historia_clinica)
-      fecha_historia_clinica = Date.new(params_historia_clinica[:año].to_i, params_historia_clinica[:mes].to_i, params_historia_clinica[:dia].to_i)
+      fecha_historia_clinica = Date.new(@año.to_i, @mes.to_i, @dia.to_i)
       # Obtener todas las vacunas del tipo 'vacunar' del perrito
       vacunas = @perrito.historia_clinicas.where(tipoVacuna: 'vacunar')
       @puede = true
@@ -276,7 +323,7 @@ class HistoriaClinicasController < ApplicationController
     end
 
     def vacunas_validas?(params_historia_clinica)
-      fecha_historia_clinica = Date.new(params_historia_clinica[:año].to_i, params_historia_clinica[:mes].to_i, params_historia_clinica[:dia].to_i)
+      fecha_historia_clinica = Date.new(@año.to_i, @mes.to_i, @dia.to_i)
       # Obtener todas las vacunas del tipo 'vacunar' del perrito
       vacunas = @perrito.historia_clinicas.where(tipoVacuna: 'vacunar')
       @puede = true
@@ -293,7 +340,7 @@ class HistoriaClinicasController < ApplicationController
     end
 
     def vacunase_validas?(params_historia_clinica)
-      fecha_historia_clinica = Date.new(params_historia_clinica[:año].to_i, params_historia_clinica[:mes].to_i, params_historia_clinica[:dia].to_i)
+      fecha_historia_clinica = Date.new(@año.to_i, @mes.to_i, @dia.to_i)
       # Obtener todas las vacunas del tipo 'vacunae' del perrito
       vacunas = @perrito.historia_clinicas.where(tipoVacuna: 'vacunae')
       @puede = true

@@ -131,7 +131,7 @@ class PerritosController < ApplicationController
   end
 
   def agregar_historia
-    @tipo = params[:tipo]
+    @quien = params[:quien]
     @user = User.find(params[:user_id])
     @perrito = Perrito.find(params[:id])
     if @perrito.historia_clinicas.exists?(tipo: 'Castracion')

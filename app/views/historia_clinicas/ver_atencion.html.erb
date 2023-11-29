@@ -1,0 +1,37 @@
+<div class="container mt-5">
+<h2 style="margin-block: 20px;">Información de la Atención Clínica</h2>
+  <table class="table table-bordered">
+    <tbody>
+      <tr>
+        <th>Tipo</th>
+        <td><%= @historia_clinica.tipo %></td>
+      </tr>
+      <tr>
+        <th>Fecha de Atención</th>
+        <td><%= "#{@historia_clinica.dia}/#{@historia_clinica.mes}/#{@historia_clinica.año}" %></td>
+      </tr>
+      <tr>
+        <th>Cuadro Sintomatológico</th>
+        <td><%= @historia_clinica.sintomas %></td>
+      </tr>
+      <tr>
+        <th>Diagnóstico</th>
+        <td><%= @historia_clinica.diagnostico %></td>
+      </tr>
+      <tr>
+        <th>Tratamiento</th>
+        <td><%= @historia_clinica.tratamiento %></td>
+      </tr>
+      <tr>
+        <th>Detalles</th>
+        <td><%= @historia_clinica.detalle %></td>
+      </tr>
+    </tbody>
+  </table>
+
+
+<% if params[:quien] == 'ajeno' %>
+  <%= link_to "Volver atrás", ver_perrito_ajeno_path(@perrito, user_id: @user.id), class: "btn btn-secondary" %>
+<% else %>
+  <%= link_to "Volver atrás", ver_perrito_path(@perrito, user: current_user), class: "btn btn-secondary" %>
+<% end %>

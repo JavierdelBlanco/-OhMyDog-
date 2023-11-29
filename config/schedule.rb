@@ -19,6 +19,7 @@
 
 # Learn more: http://github.com/javan/whenever
 
+
 set :environment, 'development'
 set :output, './log/cron.log'
 
@@ -30,3 +31,8 @@ end
 every 1.minutes do
     runner "Turno.delete_expired_turns"
   end
+
+every 1.days, at '00:05' do
+    runner "Perrito.enviar_vacunae"
+end
+
