@@ -1,47 +1,39 @@
 <%= form_with(model: @historia_clinica, url: create_vacunar_historia_clinicas_path) do |form| %>
 
-    <div>
-      <%= form.label :dia, style: "display: block" %>
-      <%= form.number_field :dia %>
+  <div class="col-md-5">
+  <%= form.label :fecha_de_atencion, style: "display: block;" %>
+    <div class="input-group has-validation">
+      <%= form.date_field :fecha, class: 'form-control', required: true, max: Date.today.to_s, style: 'appearance: none;' %>
     </div>
-  
-    <div>
-      <%= form.label :mes, style: "display: block" %>
-      <%= form.number_field :mes %>
-    </div>
-  
-    <div>
-      <%= form.label :año, style: "display: block" %>
-      <%= form.number_field :año %>
-    </div>
-  
-    <div>
-      <%= form.label :marca, style: "display: block" %>
-      <%= form.text_field :producto %>
-    </div>
+  </div>
 
-    <div>
-      <%= form.label :lote, style: "display: block" %>
-      <%= form.text_field :lote %>
-    </div>
-  
-    <div>
-      <%= form.label :dosis, style: "display: block" %>
-      <%= form.number_field :dosis %>
-    </div>
-  
-    <div>
-      <%= form.label :detalle, style: "display: block" %>
-      <%= form.text_area :detalle %>
-    </div>
-  
-    <%= form.hidden_field :id, value: @perrito.id %>
-    <%= form.hidden_field :tipo, value: 'Vacuna Antirrábica' %>
-    <%= form.hidden_field :tipoVacuna, value: 'vacunar' %>
-    <%= form.hidden_field :quien, value: params[:tipo] %>
-    <%= form.hidden_field :user_id, value: params[:user_id] %>
+  <div class="mb-3">
+    <%= form.label :marca, class: "form-label" %>
+    <%= form.text_field :producto, class: "form-control" %>
+  </div>
 
-    <div>
-      <%= form.submit %>
-    </div>
-  <% end %>
+  <div class="mb-3">
+    <%= form.label :lote, class: "form-label" %>
+    <%= form.text_field :lote, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= label_tag 'historia_clinica[dosis]', 'Dosis (en mililitros)', class: "form-label" %>
+    <%= form.number_field :dosis, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :detalle, class: "form-label" %>
+    <%= form.text_area :detalle, class: "form-control" %>
+  </div>
+
+  <%= form.hidden_field :id, value: @perrito.id %>
+  <%= form.hidden_field :tipo, value: 'Vacuna Antirrábica' %>
+  <%= form.hidden_field :tipoVacuna, value: 'vacunar' %>
+  <%= form.hidden_field :quien, value: params[:quien] %>
+  <%= form.hidden_field :user_id, value: params[:user_id] %>
+
+  <div class="mb-3">
+    <%= form.submit class: "btn btn-primary" %>
+  </div>
+<% end %>

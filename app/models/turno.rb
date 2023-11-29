@@ -15,14 +15,25 @@ class Turno < ApplicationRecord
   end
 
   def self.send_reminder_emails
-    puts "Sending reminder emails..."
-    turnos_two_days_before = where(fecha: 2.days.from_now.beginning_of_day..2.days.from_now.end_of_day)
+    turnos_two_days_before = where(estado: 'confirmado',fecha: 2.days.from_now.beginning_of_day..2.days.from_now.end_of_day)
     turnos_two_days_before.each do |turno|
-      puts "turno #{turno.id}"
       TurnosMailer.recordatorio_turno(turno).deliver_now
     end
   end
 
-
+  def self.delete_expired_turns
+    current_datetime = Time.zone.now
+    turnos = all
+    three_hours_in_seconds = 3 * 60 * 60 # 3 horas en segundos
+    turnos_confirmados = where(estado: 'confirmado')
+    expired_turnos = turnos_confirmados.select do |turno|
+      # Construir fecha y hora combinada sin segundos
+      fecha_hora_combinada = Time.zone.local(turno.fecha.year, turno.fecha.month, turno.fecha.day, turno.horario.hour, turno.horario.min, 0)
+      fecha_hora_combinada_truncated = fecha_hora_combinada.change(sec: 0) # Eliminar los segundos
+      current_datetime_truncated = current_datetime.change(sec: 0)  - three_hours_in_seconds# Eliminar los segundos de la fecha actual
+      fecha_hora_combinada_truncated <= current_datetime_truncated
+    end
+    expired_turnos.each(&:destroy)
+  end
 
 end

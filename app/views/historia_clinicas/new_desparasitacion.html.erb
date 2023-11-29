@@ -1,47 +1,38 @@
 <%= form_with(model: @historia_clinica) do |form| %>
-  
-    <div>
-      <%= form.label :dia, style: "display: block" %>
-      <%= form.number_field :dia %>
-    </div>
-  
-    <div>
-      <%= form.label :mes, style: "display: block" %>
-      <%= form.number_field :mes %>
-    </div>
-  
-    <div>
-      <%= form.label :año, style: "display: block" %>
-      <%= form.number_field :año %>
-    </div>
-  
-    <div>
-      <%= form.label :producto, style: "display: block" %>
-      <%= form.text_field :producto %>
-    </div>
 
-    <div>
-      <%= form.label :lote, style: "display: block" %>
-      <%= form.text_field :lote %>
+  <div class="col-md-5">
+  <%= form.label :fecha_de_atencion, style: "display: block;" %>
+    <div class="input-group has-validation">
+      <%= form.date_field :fecha, class: 'form-control', required: true, max: Date.today.to_s, style: 'appearance: none;' %>
     </div>
-  
-    <div>
-      <%= form.label :dosis, style: "display: block" %>
-      <%= form.number_field :dosis %>
-    </div>
-  
-    <div>
-        <%= form.label :detalle, style: "display: block" %>
-        <%= form.text_area :detalle %>
-    </div>
+  </div>
 
-    <%= form.hidden_field :id, value: @perrito.id %>
-    <%= form.hidden_field :tipo, value: 'Desparasitación' %>
-    <%= form.hidden_field :quien, value: params[:tipo] %>
-    <%= form.hidden_field :user_id, value: params[:user_id] %>
+  <div class="mb-3">
+    <%= form.label :producto, class: "form-label" %>
+    <%= form.text_field :producto, class: "form-control" %>
+  </div>
 
+  <div class="mb-3">
+    <%= form.label :lote, class: "form-label" %>
+    <%= form.text_field :lote, class: "form-control" %>
+  </div>
 
-    <div>
-      <%= form.submit %>
-    </div>
-  <% end %>
+  <div class="mb-3">
+    <%= form.label 'historia_clinica[dosis]', 'Dosis (en mililitros)', class: "form-label" %>
+    <%= form.number_field :dosis, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :detalle, class: "form-label" %>
+    <%= form.text_area :detalle, class: "form-control" %>
+  </div>
+
+  <%= form.hidden_field :id, value: @perrito.id %>
+  <%= form.hidden_field :tipo, value: 'Desparasitación' %>
+  <%= form.hidden_field :quien, value: params[:quien] %>
+  <%= form.hidden_field :user_id, value: params[:user_id] %>
+
+  <div class="mb-3">
+    <%= form.submit class: "btn btn-primary" %>
+  </div>
+<% end %>
