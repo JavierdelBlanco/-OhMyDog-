@@ -138,10 +138,10 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_28_015647) do
     t.string "nombre_dueno"
     t.string "apellido_dueno"
     t.string "direccion_dueno"
+    t.integer "numero_dueno"
     t.string "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "numero_dueno"
     t.string "raza"
     t.integer "edad_aproximada"
     t.string "tamano"

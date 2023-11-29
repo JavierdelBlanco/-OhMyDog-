@@ -40,7 +40,7 @@
 
   <div class="field">
     <%= f.label :tipo_usuario %><br />
-    <%= f.select :tipo_usuario, options_for_select([['Cliente', 'cliente'], ['Cliente Premium', 'cliente-premium'], ['Veterinario', 'veterinario']]), {}, autofocus: true, autocomplete: "tipo_usuario", required: true %>
+    <%= f.select :tipo_usuario, options_for_select([['Cliente', 'cliente'], ['Veterinario', 'veterinario']]), {}, autofocus: true, autocomplete: "tipo_usuario", required: true %>
   </div>
 
   <div class="field">
@@ -51,6 +51,7 @@
   <h2>Perro</h2>
 
   <%= f.fields_for :perrito do |p| %>
+    <%= p.hidden_field :fallecido, value: false %>
     <div>
       <%= p.label :nombre, style: "display: block" %>
       <%= p.text_field :nombre, required: true %>

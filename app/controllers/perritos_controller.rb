@@ -134,7 +134,7 @@ class PerritosController < ApplicationController
     @quien = params[:quien]
     @user = User.find(params[:user_id])
     @perrito = Perrito.find(params[:id])
-    if @perrito.historia_clinicas.exists?(tipo: 'Castracion')
+    if @perrito.historia_clinicas.exists?(tipo: 'Castración')
       @castrado = true
     else
       @castrado = false

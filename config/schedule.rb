@@ -24,7 +24,7 @@ set :environment, 'development'
 set :output, './log/cron.log'
 
 
-every 1.days, at: '00:05' do
+every 1.days, at: '09:30' do
     runner "Turno.send_reminder_emails"
 end
 
@@ -32,7 +32,11 @@ every 1.minutes do
     runner "Turno.delete_expired_turns"
   end
 
-every 1.days, at '00:05' do
+every 1.days, at: '00:05' do
     runner "Perrito.enviar_vacunae"
 end
 
+
+every 1.days, at: '11:09' do
+    runner "Perrito.enviar_vacunar"
+end

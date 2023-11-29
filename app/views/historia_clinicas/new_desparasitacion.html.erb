@@ -33,6 +33,32 @@
   <%= form.hidden_field :user_id, value: params[:user_id] %>
 
   <div class="mb-3">
-    <%= form.submit class: "btn btn-primary" %>
+    <button type="button" class="btn btn-success" style='margin-block: 10px;' data-bs-toggle="modal" data-bs-target="#ModalRegistrar-<%= @perrito.id %>">
+              Guardar
+      </button>
+
+      <!-- Modal Publicar-->
+        <div class="modal fade" id="ModalRegistrar-<%= @perrito.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar Registracion</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+                <div class="modal-body">
+                  Confirma la registracion en la historia clinica ?
+                </div>
+              <div class="modal-footer">
+                <%= form.submit 'Confirmar',  class: "btn btn-success", style:'margin: 2px' %>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Atras</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    <% if params[:quien] == 'ajeno' %>
+        <%= link_to "Atras", ver_perrito_ajeno_path(@perrito, user_id: @user.id) , class: "btn btn-danger", style:'margin-block: 10px;'%>
+    <% else %>
+        <%= link_to "Atras", ver_perrito_path(@perrito, user: current_user) , class: "btn btn-danger", style:'margin-block: 10px;'%>
+    <% end %>
   </div>
 <% end %>

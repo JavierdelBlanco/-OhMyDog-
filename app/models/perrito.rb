@@ -54,7 +54,7 @@ class Perrito < ApplicationRecord
     end
   end
 
-  def self.enviar_vacunae
+  def self.enviar_vacunar
     puts 'Ejecutando runner'
     fecha_actual = Time.zone.now
     dia = fecha_actual.day
@@ -94,7 +94,7 @@ class Perrito < ApplicationRecord
             end
           end
         end
-            
+
       end
     end
   end

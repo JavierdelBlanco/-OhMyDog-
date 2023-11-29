@@ -58,9 +58,7 @@
         <th>Nombre del perro</th>
         <th>Raza</th>
         <th>Fecha de Nacimiento</th>
-        <% if current_user.tipo_usuario == 'veterinario' %>
-          <th>Acciones</th>
-        <% end %>
+        <th>Acciones</th>
       </tr>
     </thead>
 
@@ -77,10 +75,10 @@
             <% if current_user.tipo_usuario == 'veterinario' %>
               <%= link_to "Editar", edit_perrito_path(perrito, tipo: 'mio'), class: "btn btn-sm btn-secondary" %>
               <%# link_to "Eliminar", perrito, data: { turbo_method: :delete }, class: "btn btn-sm btn-danger" %>
-              <% if perrito.fallecido == false %>
-                <%= link_to "Marcar como fallecido", marcar_fallecido_path(perrito, tipo: 'mio', user: current_user), class: "btn btn-sm btn-secondary" %>
-              <% end %>
-              <%= link_to "Ver perro", ver_perrito_path(perrito, user: current_user), class: "btn btn-sm btn-secondary" %>
+            <% end %>
+            <%= link_to "Ver perro", ver_perrito_path(perrito, user: current_user), class: "btn btn-sm btn-secondary" %>
+            <% if perrito.fallecido == false %>
+              <%= link_to "Marcar como fallecido", marcar_fallecido_path(perrito, tipo: 'mio', user: current_user), class: "btn btn-sm btn-secondary" %>
             <% end %>
           </td>
         </tr>
