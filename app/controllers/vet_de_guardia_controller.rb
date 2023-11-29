@@ -3,21 +3,43 @@ class VetDeGuardiaController < ApplicationController
 
   # GET /vet_de_guardia or /vet_de_guardia.json
   def index
-    #@veterinarias = VetDeGuardium.all
-    #@veterinarias = VetDeGuardium.where(dia: Time.current.beginning_of_month..Time.current.end_of_month)
-    @veterinarias = VetDeGuardium.where(dia: Time.current.beginning_of_month.next_month..Time.current.end_of_month.next_month)
-
+    showNextMonth = params[:show_next_month].present?
+    
+    current_month_range = Time.current.beginning_of_month..Time.current.end_of_month
+    @veterinarias = VetDeGuardium.where(dia: current_month_range)
+    puts "Rango de fechas: #{current_month_range}"
     @events = @veterinarias.map do |veterinaria|
       {
-        dia: veterinaria.dia.day,
+        dia: veterinaria.dia,
         telefono: veterinaria.telefono,
         mail: veterinaria.mail,
         direccion: veterinaria.direccion,
         id: veterinaria.id # Agregamos el ID de la veterinaria
       }
     end
-
+  
+    puts "Eventos #{I18n.l(Time.current, format: '%B').upcase}: #{@events.inspect}"
+    
+    next_month_range = Time.current.beginning_of_month.next_month..Time.current.end_of_month.next_month.end_of_month
+    @veterinarias_next_month = VetDeGuardium.where(dia: next_month_range)
+    puts "Rango de fechas: #{next_month_range}"
+  
+    @events_next_month = @veterinarias_next_month.map do |veterinaria|
+      {
+        dia: veterinaria.dia,
+        telefono: veterinaria.telefono,
+        mail: veterinaria.mail,
+        direccion: veterinaria.direccion,
+        id: veterinaria.id # Agregamos el ID de la veterinaria
+      }
+    end
+  
+    puts "Eventos #{I18n.l(Time.current.next_month, format: '%B').upcase}: #{@events_next_month.inspect}"
+  
+    render locals: { show_next_month: showNextMonth, current_month_name: I18n.l(Time.current, format: '%B'), next_month_name: I18n.l(Time.current.next_month, format: '%B') }
   end
+  
+  
 
   # GET /vet_de_guardia/1 or /vet_de_guardia/1.json
   def show
@@ -36,9 +58,11 @@ class VetDeGuardiaController < ApplicationController
   def create
     @vet_de_guardium = VetDeGuardium.new(vet_de_guardium_params)
 
+    @vet_de_guardium.action_type = 'create'
+
     respond_to do |format|
       if @vet_de_guardium.save
-        format.html { redirect_to vet_de_guardia_path, notice: "Vet de guardium was successfully created." }
+        format.html { redirect_to vet_de_guardia_path, notice: "Se ha agregado la veterinaria de guardia exitosamente." }
         format.json { render :show, status: :created, location: @vet_de_guardium }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -51,7 +75,7 @@ class VetDeGuardiaController < ApplicationController
   def update
     respond_to do |format|
       if @vet_de_guardium.update(vet_de_guardium_params)
-        format.html { redirect_to vet_de_guardia_path, notice: "Vet de guardium was successfully updated." }
+        format.html { redirect_to vet_de_guardia_path, notice: "Se ha actualizado la veterinaria de guardia exitosamente." }
         format.json { render :show, status: :ok, location: @vet_de_guardium }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -68,7 +92,7 @@ class VetDeGuardiaController < ApplicationController
     @vet_de_guardium.destroy!
 
     respond_to do |format|
-      format.html { redirect_to vet_de_guardia_url, notice: "Vet de guardium was successfully destroyed." }
+      format.html { redirect_to vet_de_guardia_url, notice: "Se ha eliminado la veterinaria de guardia exitosamente." }
       format.json { head :no_content }
     end
   end

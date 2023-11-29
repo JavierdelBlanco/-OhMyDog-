@@ -32,119 +32,181 @@
     .con-margen-inferior {
       margin-bottom: 10px; /* Ajusta el valor según sea necesario */
     }
+    .flex-container {
+  display: flex;
+  flex-direction: row; /* Alinea los elementos en una fila */
+  justify-content: space-between; /* Espacia los elementos a lo largo del contenedor */
+}
+.button-container {
+  margin-right: 20px; /* Ajusta el valor según sea necesario */
+}
 </style>
 
-  <h1>Calendario de Veterinarias</h1>
-<!-- """ -->
-  <% if user_signed_in? && current_user.tipo_usuario == 'veterinario' %>
-    <a href="<%= new_vet_de_guardium_path %>" class="btn btn-turqueza con-margen-inferior">Publicar un perro en adopcion</a>
-  <% end %>
+  <h1>Calendario de Veterinarias </h1>
 
-  <a href="<%= new_vet_de_guardium_path %>" class="btn btn-turqueza con-margen-inferior">Publicar un perro en adopcion</a>
+<div id="contenedor_botones_mensaje" class="flex-container">
+  <!-- """ -->
+  <% if user_signed_in? && current_user.tipo_usuario == 'veterinario' %>
+  <div class="button-container">
+    <a href="<%= new_vet_de_guardium_path %>" class="btn btn-turqueza con-margen-inferior">Agregar una veterinaria de guardia</a>
+    <button id="nextMonthButton" class="btn btn-turqueza con-margen-inferior">Ver Calendario del Mes Siguiente</button>
+  </div>
+<% end %>
+
+<div id="mensaje_de_audencia" class="row"></div>
+
+</div>
 
   <!-- Fila para los nombres de los días -->
-  <div class="row">
-    <div class="col day-of-week">Lunes</div>
-    <div class="col day-of-week">Martes</div>
-    <div class="col day-of-week">Miércoles</div>
-    <div class="col day-of-week">Jueves</div>
-    <div class="col day-of-week">Viernes</div>
-    <div class="col day-of-week">Sábado</div>
-    <div class="col day-of-week">Domingo</div>
-  </div>
+  <div id="daysOfWeek" class="row"></div>
+
 
   <!-- Calendario -->
   <div id="calendar" class="row"></div>
 
-  <div id="vet_de_guardia">
-  <% @veterinarias.each do |veterinarias| %>
-    <%= render veterinarias %>
-    <p>
-      <%= link_to "Show this vet de guardium", veterinarias %>
-    </p>
-  <% end %>
-</div>
+  <br>
 
 <script>
   document.addEventListener('turbo:load', function () {
-  const calendarElement = document.getElementById('calendar');
-  calendarElement.innerHTML = '';
+    let showNextMonth = false; // Variable de estado
 
-  const currentDate = new Date();
-  const currentMonth = currentDate.getMonth() + 1;
-  const currentYear = currentDate.getFullYear();
+    // Función para obtener el nombre del mes en español
+    function getMonthName(monthIndex) {
+      const months = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+      ];
+      return months[monthIndex % 12];
+    }
 
-  const daysInPrevMonth = new Date(currentYear, currentMonth, 0).getDate();
-  const firstDay = new Date(currentYear, currentMonth, 1).getDay();
-  const adjustedFirstDay = (firstDay === 0) ? 7 : firstDay;
-  const daysInPrevMonthToShow = adjustedFirstDay - 1;
-  const firstDateToShow = new Date(currentYear, currentMonth, 1 - daysInPrevMonthToShow);
+    function renderCalendar(events, showNextMonth) {
 
-  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+      const calendarElement = document.getElementById('calendar');
+      calendarElement.innerHTML = '';
 
-  for (let i = 0; i < daysInPrevMonthToShow; i++) {
-    const emptyDay = document.createElement('div');
-    emptyDay.classList.add('col', 'day', 'empty-day', 'text-muted');
-    calendarElement.appendChild(emptyDay);
-  }
+      const daysOfWeekElement = document.getElementById('daysOfWeek');
+      daysOfWeekElement.innerHTML = '';
 
-  for (let day = 1; day <= daysInMonth; day++) {
-    const dayElement = document.createElement('div');
-    dayElement.classList.add('col', 'day');
+      const mensajeAudenciaElement = document.getElementById('mensaje_de_audencia');
 
-    const eventosDelDia = <%= raw @events.to_json %>.filter(evento => evento.dia === day);
-    if (eventosDelDia.length > 0) {
-      dayElement.classList.add('has-events');
+      const currentDate = new Date();
+      const currentMonth = showNextMonth ? currentDate.getMonth() + 1 : currentDate.getMonth();
+      const currentYear = currentDate.getFullYear();
 
-      const eventInfo = eventosDelDia.map(evento => `
-        <strong>Dir:</strong> ${evento.direccion}<br>
-        <strong>Mail:</strong> ${evento.mail}<br>
-        <strong>Tel:</strong> ${evento.telefono}
-      `).join('<br>');
+      const daysInPrevMonth = showNextMonth ? 0 : new Date(currentYear, currentMonth, 0).getDate();
+      const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+      const adjustedFirstDay = (firstDay === 0) ? 7 : firstDay;
+      const daysInPrevMonthToShow = adjustedFirstDay - 1;
+      const firstDateToShow = new Date(currentYear, currentMonth, 1 - daysInPrevMonthToShow);
 
-      const buttons = <%= !user_signed_in? ? true : false %>;
-      if (buttons) {
-        const editPath = '<%= edit_vet_de_guardium_path('vet_id') %>';
-        dayElement.innerHTML = `
-          <span class="day-number">${day}</span><br>${eventInfo}
-          <br>
-          <a href="#" class="btn btn-secondary edit-button" style='margin: 2px' data-edit-path="${editPath.replace('vet_id', eventosDelDia[0].id)}" data-id="${eventosDelDia[0].id}">Editar</a>`;
-        
-        // Crear el modal eliminar
-        // Eliminado para cumplir con la solicitud
-      } else {
-        dayElement.innerHTML = `<span class="day-number">${day}</span><br>${eventInfo}`;
+      const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+      const daysOfWeek = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+
+      if (!events || events.length === 0) {
+            mensajeAudenciaElement.innerText = 'No hay veterinarias de guardia cargadas por el momento.';
+            mensajeAudenciaElement.classList.add('col', 'text-center', 'mt-3', 'mb-3', 'text-muted');
+        } else {
+            // Si hay eventos, asegúrate de que el mensaje esté vacío y no tenga la clase de texto inactivo
+            mensajeAudenciaElement.innerText = '';
+            mensajeAudenciaElement.classList.remove('text-muted');
+        }
+      
+      for (let i = 0; i < daysOfWeek.length; i++) {
+        const dayOfWeekElement = document.createElement('div');
+        dayOfWeekElement.classList.add('col', 'day-of-week');
+        dayOfWeekElement.innerText = daysOfWeek[i];
+        daysOfWeekElement.appendChild(dayOfWeekElement);
       }
-    } else {
-      dayElement.innerHTML = `<span class="day-number">${day}</span>`;
+
+      for (let i = 0; i < daysInPrevMonthToShow; i++) {
+        const emptyDay = document.createElement('div');
+        emptyDay.classList.add('col', 'day', 'empty-day', 'text-muted');
+        calendarElement.appendChild(emptyDay);
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dayElement = document.createElement('div');
+        dayElement.classList.add('col', 'day');
+
+        const eventosDelDia = events.filter(evento => {
+          return new Date(evento.dia + 'T00:00:00Z').getUTCDate() === day;
+        });
+
+        if (eventosDelDia.length > 0) {
+          dayElement.classList.add('has-events');
+          const eventInfo = eventosDelDia.map(evento => `
+            <strong>Dir:</strong> ${evento.direccion}<br>
+            <strong>Mail:</strong> ${evento.mail}<br>
+            <strong>Tel:</strong> ${evento.telefono}
+          `).join('<br>');
+
+          const buttons = <%= user_signed_in? && current_user.tipo_usuario == 'veterinario' ? true : false %>;
+          if (buttons) {
+            const editPath = '<%= edit_vet_de_guardium_path('vet_id') %>';
+            dayElement.innerHTML = `
+              <span class="day-number">${day}</span><br>${eventInfo}
+              <br>
+              <a href="#" class="btn btn-secondary edit-button" style='margin: 2px' data-edit-path="${editPath.replace('vet_id', eventosDelDia[0].id)}" data-id="${eventosDelDia[0].id}">Editar</a>`;
+          } else {
+            dayElement.innerHTML = `<span class="day-number">${day}</span><br>${eventInfo}`;
+          }
+        } else {
+          dayElement.innerHTML = `<span class="day-number">${day}</span>`;
+        }
+
+        if (day < currentDate.getDate()) {
+          dayElement.classList.add('past-day');
+        } else if (day === currentDate.getDate() && !showNextMonth) {
+          dayElement.classList.add('current-day');
+        } else {
+          if (showNextMonth) {
+            dayElement.classList.add('past-day');
+          } else {
+            dayElement.classList.add('future-day');
+          }
+        }
+
+        calendarElement.appendChild(dayElement);
+      }
+      
+      // Agregamos un evento de clic para manejar la navegación al editar
+      calendarElement.addEventListener('click', function (event) {
+        const editButton = event.target.closest('.edit-button');
+        if (editButton) {
+          const editPath = editButton.getAttribute('data-edit-path');
+          Turbo.visit(editPath, { action: 'replace' });
+
+          // Detenemos la propagación del evento para evitar conflictos
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      });
+
+      // Obtiene el nombre del mes actual y el mes siguiente
+      const currentMonthName = getMonthName(currentMonth);
+      const nextMonthName = getMonthName(currentMonth);
+
+      // Actualiza el contenido del h1 con el nombre correcto del mes
+      const h1Element = document.querySelector('h1');
+      h1Element.innerText = `Calendario de Veterinarias: ${showNextMonth ? nextMonthName : currentMonthName}`;
     }
 
-    if (day < currentDate.getDate()) {
-      dayElement.classList.add('past-day');
-    } else if (day === currentDate.getDate()) {
-      dayElement.classList.add('current-day');
-    } else {
-      dayElement.classList.add('future-day');
-    }
+    // Llama a la función inicial para renderizar el calendario del mes actual
+    renderCalendar(<%= raw @events.to_json %>, <%= show_next_month %>);
 
-    calendarElement.appendChild(dayElement);
-  }
-
-  // Agregamos un evento de clic para manejar la navegación al editar
-  calendarElement.addEventListener('click', function (event) {
-    const editButton = event.target.closest('.edit-button');
-    if (editButton) {
-      const editPath = editButton.getAttribute('data-edit-path');
-      Turbo.visit(editPath, { action: 'replace' });
-
-      // Detenemos la propagación del evento para evitar conflictos
-      event.preventDefault();
-      event.stopPropagation();
-    }
+    // Agrega un evento de clic al botón para alternar entre el mes actual y el siguiente
+    const nextMonthButton = document.getElementById('nextMonthButton');
+    nextMonthButton.addEventListener('click', function () {
+      showNextMonth = !showNextMonth;
+      const events = showNextMonth ? <%= raw @events_next_month.to_json %> : <%= raw @events.to_json %>;
+      renderCalendar(events, showNextMonth); // Vuelve a renderizar el calendario al cambiar el estado
+      nextMonthButton.innerText = showNextMonth ? 'Ver Calendario del Mes Actual' : 'Ver Calendario del Mes Siguiente';
+    });
   });
-});
-
 </script>
+
+
 
 
 

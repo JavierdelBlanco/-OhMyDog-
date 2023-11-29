@@ -61,6 +61,7 @@ class PerrosEnAdopcionsController < ApplicationController
         format.html { redirect_to perros_en_adopcions_path, notice: "El perro se ha publicado exitosamente!" }
         format.json { render :show, status: :created, location: @perros_en_adopcion }
       else
+        puts @perros_en_adopcion.errors.full_messages
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @perros_en_adopcion.errors, status: :unprocessable_entity }
       end
