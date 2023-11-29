@@ -36,10 +36,7 @@
   <% @perros.each do |perros| %>
    
     <div class="<%= (user_signed_in? && current_user.email == perros.mail) ? '' : 'no_mis_perros' %> card d-flex <%= perros.status ? 'activo' : 'no-activo' %>" style="max-width: 350px; max-height: 650px; min-width: 350px; min-height: 500px; margin: 10px">
-     
-      <!--
-      <%= image_tag(perros.foto, class:'card-img-top', style:'max-height: 200px; min-height: 200px; max-width: 100%; object-fit: cover;  object-position: top; ') %>
-      -->
+    
       <div class="card-body">
         <p class="card-text", style=''> <strong> Nombre: </strong> <%= perros.nombre %> </p>
         <p id=ci class="card-text" style="max-height: 100px; overflow: hidden;"> <strong> Descripcion: </strong> <%= perros.descripcion %> </p>
