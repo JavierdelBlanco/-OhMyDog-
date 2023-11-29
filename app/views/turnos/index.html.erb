@@ -132,7 +132,7 @@
             <thead>
               <tr>
                 <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Fecha</th>
-                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Franja Horaria</th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Horario</th>
                 <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Tipo de Turno</th>
                 <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Estado</th>
                 <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Nombre y apellido </th>
@@ -144,15 +144,17 @@
               <% @turnos.where(estado: 'confirmado').each do |turno| %>
                <tr>
                   <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.fecha.strftime('%d/%m/%y') %></td>
-                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.franja_horaria %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.horario.strftime('%H:%Mhs') %></td>
                   <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.tipo_turno %></td>
                   <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.estado %></td>
                   <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.nombre_cliente %> <%= turno.apellido_cliente %></td>
                   <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.nombres_perros.gsub(/[\[\]\"]/, '').split(',').join(', ') %></td>
                   <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                  <button type="button" class= "btn btn-danger" style= 'margin: 2px;' data-bs-toggle="modal" data-bs-target="#ModalCancelarTurnoVeterinario-<%= turno.id %>">
-                    Cancelar turno
-                  </button>
+                  <% if (turno.fecha - Date.today).to_i >= 2 %>
+                      <button type="button" class= "btn btn-danger" style= 'margin: 2px;' data-bs-toggle="modal" data-bs-target="#ModalCancelarTurnoVeterinario-<%= turno.id %>">
+                        Cancelar turno
+                      </button>
+                    <% end %>
 
                   <!-- Modal Cancelar Turno Veterinario -->
                   <div class="modal fade" id="ModalCancelarTurnoVeterinario-<%= turno.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -255,7 +257,7 @@
             <thead>
               <tr>
                 <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Fecha</th>
-                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Franja Horaria</th>
+                <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Horario</th>
                 <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Tipo de Turno</th>
                 <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Estado</th>
                 <th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Nombre y apellido </th>
@@ -267,15 +269,17 @@
               <% @turnos.where(email_cliente: current_user.email, estado: 'confirmado').each do |turno| %>
                <tr>
                   <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.fecha.strftime('%d/%m/%y') %></td>
-                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.franja_horaria %></td>
+                  <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.horario.strftime('%H:%Mhs') %></td>
                   <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.tipo_turno %></td>
                   <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.estado %></td>
                   <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.nombre_cliente %> <%= turno.apellido_cliente %></td>
                   <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.nombres_perros.gsub(/[\[\]\"]/, '').split(',').join(', ') %></td>
                   <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                    <button type="button" class= "btn btn-danger" style= 'margin: 2px;' data-bs-toggle="modal" data-bs-target="#ModalCancelarTurnoCliente-<%= turno.id %>">
-                      Cancelar turno
-                    </button>
+                    <% if (turno.fecha - Date.today).to_i >= 2 %>
+                      <button type="button" class= "btn btn-danger" style= 'margin: 2px;' data-bs-toggle="modal" data-bs-target="#ModalCancelarTurnoCliente-<%= turno.id %>">
+                        Cancelar turno
+                      </button>
+                    <% end %>
 
                     <!-- Modal cancelar turno cliente-->
                     <div class="modal fade" id="ModalCancelarTurnoCliente-<%= turno.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
