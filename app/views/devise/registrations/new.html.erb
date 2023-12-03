@@ -139,6 +139,10 @@
       <%= p.text_field :raza, required: true %>
     </div>
     <div>
+      <%= p.label :sexo, style: "display: block" %>
+      <%= p.select :sexo, options_for_select([['Macho','macho'],[ 'Hembra', 'hembra']]), { prompt: 'Seleccione...' }, required: true %>
+    </div>
+    <div>
       <%= p.label :color, style: "display: block" %>
       <%= p.text_field :color, required: true %>
     </div>

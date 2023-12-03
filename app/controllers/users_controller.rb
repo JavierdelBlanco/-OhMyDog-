@@ -104,7 +104,7 @@ class UsersController < ApplicationController
   private
 
   def perrito_params
-    params.require(@perrito).permit(:nombre, :dia, :mes, :año, :caracteristicas, :condiciones, :raza, :color, :tamaño, :fallecido)
+    params.require(@perrito).permit(:nombre, :dia, :mes, :año, :caracteristicas, :condiciones, :raza, :sexo, :color, :tamaño, :fallecido)
   end
 
   def set_perrito

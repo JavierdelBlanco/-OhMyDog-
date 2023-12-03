@@ -63,8 +63,6 @@ class PerritosController < ApplicationController
     respond_to do |format|
       parametros = perrito_params.except(:tipo)
       if @perrito.update(parametros)
-        puts '##############################################'
-        puts tipo
         if(tipo=='mio')
           format.html { redirect_to ver_perfil_path(current_user), notice: "Se creó un perro exitosamente." }
           format.json { render :show, status: :ok, location: @perrito }
@@ -82,9 +80,6 @@ class PerritosController < ApplicationController
   def marcar_fallecido
     @user = User.find(params[:user])
     tipo = params[:tipo]
-    puts '#########################################'
-    puts tipo
-    puts '#########################################'
     @perrito = @user.perritos.find_by(id: params[:id])
     if (@perrito.update(fallecido: true))
       if(tipo=='mio')
@@ -97,13 +92,6 @@ class PerritosController < ApplicationController
 
   # DELETE /perritos/1 or /perritos/1.json
   def destroy
-   # user_id = params[:user_id]
-    #@user = User.find(user_id)
-    #tipo = params[:tipo]
-    #puts '########################################'
-    #puts user_id
-    #puts tipo
-    #puts '########################################'
     @perrito = Perrito.find(params[:id])
     @user = @perrito.user
     @perrito.destroy
@@ -150,6 +138,6 @@ class PerritosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def perrito_params
-      params.require(:perrito).permit(:nombre, :dia, :mes, :año, :caracteristicas, :condiciones, :raza, :color, :tamaño, :user_id, :fallecido, :tipo)
+      params.require(:perrito).permit(:nombre, :dia, :mes, :año, :caracteristicas, :condiciones, :raza, :sexo, :color, :tamaño, :user_id, :fallecido, :tipo)
     end
 end

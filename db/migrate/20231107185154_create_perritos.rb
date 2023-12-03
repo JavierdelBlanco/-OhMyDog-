@@ -8,6 +8,7 @@ class CreatePerritos < ActiveRecord::Migration[7.1]
       t.text :caracteristicas
       t.text :condiciones
       t.string :raza
+      t.string :sexo
       t.string :color
       t.string :tamaño
       t.boolean :fallecido

@@ -36,6 +36,18 @@
   </div>
 </div>
 
+<div class="col-md-6">
+      <%= form.label :sexo, style: "display: block;" %>
+      <div class="input-group has-validation">
+        <%= form.select :sexo, options_for_select([['Macho','macho'], ['Hembra','hembra']], perrito.sexo), { prompt: 'Seleccione...' }, class: 'form-select', id: 'validationServer04', required: true, 'aria-describedby': 'validationServer04Feedback' %>
+          <% if perrito.errors[:sexo].any? %>
+            <div id="validationRolFeedback" class="invalid-feedback">
+            <%= perrito.errors.full_messages_for(:sexo).join(', ') %>
+            </div>
+          <% end %>
+        </div>
+    </div>
+
     <div class="col-md-6">
   <%= form.label :caracteristicas, style: "display: block;" %>
   <div class="input-group has-validation">

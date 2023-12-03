@@ -104,6 +104,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_28_015647) do
     t.text "caracteristicas"
     t.text "condiciones"
     t.string "raza"
+    t.string "sexo"
     t.string "color"
     t.string "tamaño"
     t.boolean "fallecido"

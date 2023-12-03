@@ -5,6 +5,7 @@ class Perrito < ApplicationRecord
   validates :raza, presence: true
   validates :color, presence: true
   validates :tamaño, presence: true
+  validates :sexo, presence: true
 
   has_many :historia_clinicas, dependent: :destroy
   belongs_to :user

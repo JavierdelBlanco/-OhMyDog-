@@ -28,6 +28,6 @@ class Users::RegistroController < ApplicationController
     private
 
     def user_params
-      params.require(:user).permit(:nombre, :apellido, :email, :direccion, :nro, :telefono, :tipo_usuario, :perrito => [:nombre, :dia, :mes, :año, :caracteristicas, :condiciones, :raza, :color, :tamaño, :fallecido]) # Tus atributos de User
+      params.require(:user).permit(:nombre, :apellido, :email, :direccion, :nro, :telefono, :tipo_usuario, :perrito => [:nombre, :dia, :mes, :año, :caracteristicas, :condiciones, :raza, :sexo, :color, :tamaño, :fallecido]) # Tus atributos de User
     end
   end
