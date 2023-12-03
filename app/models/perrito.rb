@@ -21,7 +21,7 @@ class Perrito < ApplicationRecord
   end
 
   def self.enviar_vacunae
-    puts 'Ejecutando runner'
+    puts 'Ejecutando runner vacunae'
     fecha_actual = Time.zone.now
     dia = fecha_actual.day
     mes = fecha_actual.month
@@ -29,7 +29,11 @@ class Perrito < ApplicationRecord
     fecha = Date.new(año, mes, dia)
 
     perros = all
-    perros.any? do |perro|
+    puts "Cantidad de perros"
+    puts perros.count
+    perros.each do |perro|
+      puts 'Nombre del perro'
+      puts perro.nombre
       fecha_perro = Date.new(perro.año, perro.mes, perro.dia)
       historias = perro.historia_clinicas
       vacunas = historias.where(tipoVacuna: 'vacunae')
@@ -43,9 +47,9 @@ class Perrito < ApplicationRecord
         puts (fecha - vacuna_fecha).to_i
         if ((fecha - vacuna_fecha).to_i == 365)
           user_id = perro.user.id
-          puts 'ID DEL PERRO'
+          puts 'ID DEL USUARIO'
           puts user_id
-          PerritosMailer.notificar_refuerzo_vacunae(user_id).deliver_now
+          PerritosMailer.notificar_refuerzo_vacunae(user_id, perro.nombre).deliver_now
           puts 'Hay una vacuna antienfermedades para enviar mail'
         else
           puts 'Llegue por lo menos a comprobar esto'
@@ -55,7 +59,7 @@ class Perrito < ApplicationRecord
   end
 
   def self.enviar_vacunar
-    puts 'Ejecutando runner'
+    puts 'Ejecutando runner vacunar'
     fecha_actual = Time.zone.now
     dia = fecha_actual.day
     mes = fecha_actual.month
@@ -63,7 +67,11 @@ class Perrito < ApplicationRecord
     fecha = Date.new(año, mes, dia)
 
     perros = all
-    perros.any? do |perro|
+    puts "Cantidad de perros"
+    puts perros.count
+    perros.each do |perro|
+      puts 'Nombre del perro'
+      puts perro.nombre
       fecha_perro = Date.new(perro.año, perro.mes, perro.dia)
       historias = perro.historia_clinicas
       vacunas = historias.where(tipoVacuna: 'vacunar')

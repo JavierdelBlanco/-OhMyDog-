@@ -17,7 +17,7 @@
     }
 
     header {
-      background-color: #4CAF50;
+      background-color: #af4c4c;
       color: white;
       text-align: center;
       padding: 1em;
@@ -37,19 +37,18 @@
 <body>
   <div class="container">
     <header>
-      <h1>Recordatorio de Refuerzo de Vacuna Antirrábica</h1>
+      <h1>Recordatorio de Refuerzo de Vacuna Antirrábica para <%= @nombre_perro %></h1>
     </header>
 
     <section>
       <p>Hola,</p>
       
-      <p>Este es un recordatorio amigable para informarte que es hora de programar el refuerzo de la vacuna antirrábica para tu querido perro, <%= @nombre_perro %>.</p>
+      <p>Este es un recordatorio para informarte que es hora de programar un turno el refuerzo de la vacuna antirrábica para tu querido perro, <%= @nombre_perro %>.</p>
       
       <p>La salud de tu mascota es importante, y mantener al día sus vacunas es crucial para prevenir enfermedades y garantizar su bienestar.</p>
       
-      <p>Por favor, ponte en contacto con tu veterinario para programar una cita y asegurarte de que <%= @nombre_perro %> esté protegido contra enfermedades potencialmente peligrosas.</p>
-      
-      <p>Gracias por cuidar de tu peludo amigo.</p>
+      <p>Te invitamos a sacar un turno mediante nuestra pagina y asegurar de que <%= @nombre_perro %> esté protegido contra enfermedades potencialmente peligrosas.</p>
+    
     </section>
 
     <footer>
