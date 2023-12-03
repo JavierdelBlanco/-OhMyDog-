@@ -89,13 +89,15 @@
 </div>
 
 <div class="col-md-6">
-  <%= form.label :tamaño, style: "display: block;" %>
-  <div class="input-group has-validation">
-    <%= form.text_field :tamaño, class: 'form-control', required: true, id: 'validationTamaño' %>
-    <div id="validationTamañoFeedback" class="invalid-feedback">
-      <%= perrito.errors.full_messages_for(:tamaño).join(', ') %>
-    </div>
-  </div>
+      <%= form.label :tamaño, style: "display: block;" %>
+      <div class="input-group has-validation">
+        <%= form.select :tamaño, options_for_select(['Pequeño', 'Mediano', 'Grande'], perrito.tamaño), { prompt: 'Seleccione...' }, class: 'form-select', id: 'validationServer04', required: true, 'aria-describedby': 'validationServer04Feedback' %>
+          <% if perrito.errors[:tamaño].any? %>
+            <div id="validationRolFeedback" class="invalid-feedback">
+            <%= perrito.errors.full_messages_for(:rol).join(', ') %>
+            </div>
+          <% end %>
+        </div>
 </div>
 
 <div class="col-md-6">
