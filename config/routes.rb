@@ -141,5 +141,11 @@ get '/perros_encontrados/edit_no_registrado', to: 'perros_encontrados#edit_no_re
   post '/enviar_correo_contactar_registrado', to: 'perros_en_adopcions#enviar_correo_contactar_registrado'
   post '/enviar_correo_contactar_no_registrado', to: 'perros_en_adopcions#enviar_correo_contactar_no_registrado'
 
+  resources :perros_que_buscan_parejas do
+    post 'postular', on: :member
+    post 'retirar', on: :member
+  end
+  
+
 
 end

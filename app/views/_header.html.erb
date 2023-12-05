@@ -32,10 +32,11 @@
     <%= link_to('Perros en adopcion', perros_en_adopcions_path, class:"nav-link #{'active' if current_page?(perros_en_adopcions_path)}") %>
   </li>
 
-  <li class="nav-item">
-    <%= link_to('Busqueda de pareja', perros_que_buscan_parejas_path, class:"nav-link #{'active' if current_page?(perros_que_buscan_parejas_path)}") %>
-  </li>
-
+  <% if user_signed_in? %>
+    <li class="nav-item">
+      <%= link_to('Busqueda de pareja', perros_que_buscan_parejas_path, class:"nav-link #{'active' if current_page?(perros_que_buscan_parejas_path)}") %>
+    </li>
+  <% end %>
 <li class="nav-item">
           <%= link_to('Cuidadores y paseadores', cuidador_paseadors_path, class:"nav-link #{'active' if current_page?(cuidador_paseadors_path)}") %>
         </li>

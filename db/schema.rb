@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_05_050039) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_05_180745) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -180,6 +180,9 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_05_050039) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "postulado"
+    t.binary "foto"
+    t.string "descripcion"
+    t.date "fecha_celo_inicio"
     t.index ["user_id"], name: "index_perros_que_buscan_parejas_on_user_id"
   end
 

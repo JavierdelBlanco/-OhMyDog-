@@ -4,7 +4,7 @@ class PerrosQueBuscanParejasController < ApplicationController
 
   # GET /perros_que_buscan_parejas or /perros_que_buscan_parejas.json
   def index
-    @perros_que_buscan_parejas = PerrosQueBuscanPareja.where(user_id: current_user.id, fallecido: false)
+    @perros_que_buscan_parejas = PerrosQueBuscanPareja.where(user_id: current_user.id, fallecido: false).order(postulado: :desc)
   end
 
   # GET /perros_que_buscan_parejas/1 or /perros_que_buscan_parejas/1.json
@@ -39,7 +39,7 @@ class PerrosQueBuscanParejasController < ApplicationController
   def update
     respond_to do |format|
       if @perros_que_buscan_pareja.update(perros_que_buscan_pareja_params)
-        format.html { redirect_to perros_que_buscan_pareja_url(@perros_que_buscan_pareja), notice: "Perros que buscan pareja was successfully updated." }
+        format.html { redirect_to perros_que_buscan_parejas_path, notice: "Perros que buscan pareja was successfully updated." }
         format.json { render :show, status: :ok, location: @perros_que_buscan_pareja }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -66,6 +66,29 @@ class PerrosQueBuscanParejasController < ApplicationController
     edad.positive? ? edad : 0
   end
 
+  def postular
+    @perro = PerrosQueBuscanPareja.find(params[:id])
+
+    # Actualizar los datos del perro con los ingresados en el formulario
+    @perro.update(perros_que_buscan_pareja_params)
+
+    # Cambiar el estado de postulado a true
+    @perro.update(postulado: true)
+
+    # Redirigir a la página de detalles del perro
+    redirect_to perros_que_buscan_parejas_path, notice: "Perro postulado correctamente."
+  end
+
+  def retirar
+    @perro = PerrosQueBuscanPareja.find(params[:id])
+
+    # Cambiar el estado de postulado a true
+    @perro.update(postulado: false)
+
+    # Redirigir a la página de detalles del perro
+    redirect_to perros_que_buscan_parejas_path, notice: "Perro retirado correctamente."
+  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -75,6 +98,6 @@ class PerrosQueBuscanParejasController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def perros_que_buscan_pareja_params
-      params.require(:perros_que_buscan_pareja).permit(:nombre, :fecha_de_nacimiento, :raza, :sexo, :caracteristicas, :condiciones, :tamano, :color)
+      params.require(:perros_que_buscan_pareja).permit(:nombre, :fecha_de_nacimiento, :raza, :sexo, :caracteristicas, :condiciones, :tamano, :color, :foto, :descripcion, :fecha_celo_inicio)
     end
 end

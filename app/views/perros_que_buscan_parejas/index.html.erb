@@ -10,7 +10,7 @@
   }
 </style>
 
-<h1>Perros en adopcion</h1>
+<h1>Busqueda de pareja canina</h1>
 
 <% if @perros_que_buscan_parejas.empty? %>
   <div class="no_mis_perros">
@@ -38,9 +38,9 @@
       <% if !perros.postulado %>
 
         <div class='d-flex justify-content-center' style='flex-direction: column; align-items: center;'>
-          <button type="button"  class = "btn btn-turqueza" style = 'margin-bottom: 3px' data-bs-toggle="modal" data-bs-target="#Modal-<%= perros.id %>" >Postular</button>
+          <button type="button"  class = "btn btn-turqueza" style = 'margin-bottom: 3px' data-bs-toggle="modal" data-bs-target="#Modal_postular-<%= perros.id %>" >Postular</button>
 
-          <div class="modal fade" id="Modal-<%= perros.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal fade" id="Modal_postular-<%= perros.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -49,9 +49,28 @@
                 </div>
                 <div class="modal-body">
                   <p>Desea postular a <%= perros.nombre %> para buscarle pareja?</p>
-                  <%= form_with url: '#' , method: :post, id: 'formularioDatos' do |form| %>
-                  <%= form.submit 'Postular', id: "confirmarBtn", class: 'btn btn-turqueza', style:"margin: 2px" %>
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+                  <%= form_with model: @perros_que_buscan_parejas, url: postular_perros_que_buscan_pareja_path(perros.id) , method: :post, id: 'formularioDatos' do |form| %>
+
+                    <div class="mb-3">
+                      <%= form.label :descripcion, 'Descripcion:' %>
+                      <%= form.text_area :descripcion, class: 'form-control', required: true %>
+                    </div>
+
+                    <div class="mb-3">
+                      <%= form.label :foto, 'Foto:' %>
+                      <%= form.file_field :foto, class: 'form-control', required: true %>
+                    </div>
+
+                    <% if perros.sexo == "hembra" %>
+                      <div class="mb-3">
+                        <%= form.label :fecha_inicio_celo, 'Fecha de inicio del celo:' %>
+                        <%= form.date_field :fecha_celo_inicio, class: 'form-control', required: true, min: Date.current.to_s %>
+                      </div>
+                    <% end %>
+
+
+                    <%= form.submit 'Postular', id: "confirmarBtn", class: 'btn btn-turqueza', style:"margin: 2px" %>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
                   <% end %>
                 </div>
               </div>
@@ -59,7 +78,31 @@
           </div>
 
         </div>
+      <% else %>
+        <div class='d-flex justify-content-center' style='flex-direction: column; align-items: center;'>
+          <button type="button"  class = "btn btn-turqueza" style = 'margin-bottom: 3px' data-bs-toggle="modal" data-bs-target="#Modal_retirar-<%= perros.id %>" >Retirar</button>
 
+          <div class="modal fade" id="Modal_retirar-<%= perros.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Postular para la busqueda de pareja</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <p>Desea retirar a <%= perros.nombre %> para dejar de buscarle pareja?</p>
+                  <%= form_with model: @perros_que_buscan_parejas, url: retirar_perros_que_buscan_pareja_path(perros.id) , method: :post, id: 'formularioDatos' do |form| %>
+                    <%= form.submit 'Retirar', id: "confirmarBtn", class: 'btn btn-turqueza', style:"margin: 2px" %>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- agregar botones (3) faltantes -->
+
+        </div>
       <% end %>
     </div>
 
