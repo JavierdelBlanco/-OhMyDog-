@@ -15,6 +15,8 @@ Rails.application.routes.draw do
   get  'turnos', to: 'turnos#index'
   post 'turnos/generar', to: 'turnos#generar', as: 'generar_turno'
   post 'turnos/rechazar', to: 'turnos#rechazar', as: 'rechazar_turno'
+  post 'turnos/cancelar-v', to: 'turnos#cancelar_veterinario', as: 'cancelar_turno_veterinario'
+  post 'turnos/cancelar-c', to: 'turnos#cancelar_cliente', as: 'cancelar_turno_cliente'
   delete 'turnos', to: 'turnos#destroy'
 
   root 'home#index'

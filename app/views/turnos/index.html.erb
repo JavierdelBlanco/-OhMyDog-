@@ -92,7 +92,7 @@
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
-                        Escriba el motivo de la cancelacion:
+                        Escriba el motivo de la cancelacion de la solicitud:
                         <%= form_with url: rechazar_turno_path(id: turno.id), method: :post, id: 'formularioDatos' do |form| %>
                           <div class='row g-3 needs-validation' style='width: 400px; margin: 5px; border: 1px solid #000; border-radius: 5px;'>
                             <div class="col-md-12">
@@ -126,7 +126,7 @@
       <div class="col-md-6">
         <h1>Turnos</h1>
 
-        <% if !@turnos.where(estado: 'confirmado').empty? %>
+        <% if !@turnos.where(estado: ['confirmado', 'cancelado']).empty? %>
         <div id="turnos">
           <table class="table table-bordered table-striped">
             <thead>
@@ -141,7 +141,7 @@
               </tr>
             </thead>
             <tbody>
-              <% @turnos.where(estado: 'confirmado').each do |turno| %>
+              <% @turnos.where(estado: ['confirmado', 'cancelado']).each do |turno| %>
                <tr>
                   <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.fecha.strftime('%d/%m/%y') %></td>
                   <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.horario.strftime('%H:%Mhs') %></td>
@@ -150,7 +150,7 @@
                   <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.nombre_cliente %> <%= turno.apellido_cliente %></td>
                   <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.nombres_perros.gsub(/[\[\]\"]/, '').split(',').join(', ') %></td>
                   <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                  <% if (turno.fecha - Date.today).to_i >= 2 %>
+                  <% if !(turno.estado == 'cancelado') && !((turno.fecha - Date.today).to_i <= 2) %>
                       <button type="button" class= "btn btn-danger" style= 'margin: 2px;' data-bs-toggle="modal" data-bs-target="#ModalCancelarTurnoVeterinario-<%= turno.id %>">
                         Cancelar turno
                       </button>
@@ -165,11 +165,19 @@
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                          ¿Desea cancelar el turno?
-                        </div>
-                        <div class="modal-footer">
-                          <%= button_to "Confirmar",turno, method: :delete,  class: "btn btn-success", style:'margin: 2px' %>
-                          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Atras</button>
+                          Escriba el motivo de la cancelacion del turno:
+                          <%= form_with url: cancelar_turno_veterinario_path(id: turno.id), method: :post, id: 'formularioDatos' do |form| %>
+                            <div class='row g-3 needs-validation' style='width: 400px; margin: 5px; border: 1px solid #000; border-radius: 5px;'>
+                              <div class="col-md-12">
+                                <%= form.label :motivo, style: "display: block;" %>
+                                <div class="input-group has-validation">
+                                  <%= form.text_area :detalle, class: 'form-control' %>
+                                </div>
+                              </div>
+                            </div>
+                            <%= form.submit 'Confirmar', id: "confirmarBtn", class: 'btn btn-success', style:"margin: 2px" %>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Atras</button>
+                          <% end %>
                         </div>
                       </div>
                     </div>
@@ -251,7 +259,7 @@
       <div class="col-md-6">
         <h1>Mis Turnos</h1>
 
-        <% if !@turnos.where(email_cliente: current_user.email, estado: 'confirmado').empty? %>
+        <% if !@turnos.where(email_cliente: current_user.email, estado: ['confirmado', 'cancelado']).empty? %>
         <div id="turnos">
           <table class="table table-bordered table-striped">
             <thead>
@@ -266,7 +274,7 @@
               </tr>
             </thead>
             <tbody>
-              <% @turnos.where(email_cliente: current_user.email, estado: 'confirmado').each do |turno| %>
+              <% @turnos.where(email_cliente: current_user.email, estado: ['confirmado', 'cancelado']).each do |turno| %>
                <tr>
                   <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.fecha.strftime('%d/%m/%y') %></td>
                   <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.horario.strftime('%H:%Mhs') %></td>
@@ -275,7 +283,7 @@
                   <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.nombre_cliente %> <%= turno.apellido_cliente %></td>
                   <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= turno.nombres_perros.gsub(/[\[\]\"]/, '').split(',').join(', ') %></td>
                   <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                    <% if (turno.fecha - Date.today).to_i >= 2 %>
+                    <% if !(turno.estado == 'cancelado') && !((turno.fecha - Date.today).to_i <= 2)  %>
                       <button type="button" class= "btn btn-danger" style= 'margin: 2px;' data-bs-toggle="modal" data-bs-target="#ModalCancelarTurnoCliente-<%= turno.id %>">
                         Cancelar turno
                       </button>
@@ -293,7 +301,7 @@
                             ¿Desea cancelar el turno?
                           </div>
                           <div class="modal-footer">
-                            <%= button_to "Confirmar",turno, method: :delete,  class: "btn btn-success", style:'margin: 2px' %>
+                            <%= button_to "Confirmar",cancelar_turno_cliente_path(id: turno.id), method: :post,  class: "btn btn-success", style:'margin: 2px' %>
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Atras</button>
                           </div>
                         </div>

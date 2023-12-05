@@ -11,6 +11,11 @@ class TurnosMailer < ApplicationMailer
     mail(to: @turno['email_cliente'], subject: 'Lo sentimos, Tu turno en la veterinaria ¡Oh my dog! ha sido rechazado')
   end
 
+  def notificar_turno_cancelado(turno_attributes)
+    @turno = turno_attributes
+    mail(to: @turno['email_cliente'], subject: 'Lo sentimos, Tu turno en la veterinaria ¡Oh my dog! ha sido cancelado')
+  end
+
   def recordatorio_turno(turno)
     @turno = turno
     mail(to: turno.email_cliente, subject: 'Recordatorio de turno en la veterinaria ¡Oh my dog!')

@@ -29,8 +29,8 @@ every 1.days, at: '09:30' do
 end
 
 every 1.minutes do
-    runner "Turno.delete_expired_turns"
-  end
+    runner "Turno.delete_canceled_turns"
+end
 
   every 1.days, at: '09.36' do
     runner "Perrito.enviar_vacunar"

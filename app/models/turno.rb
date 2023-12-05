@@ -9,7 +9,7 @@ class Turno < ApplicationRecord
   end
 
   def una_solicitud_por_dia_y_email
-    if Turno.exists?(fecha: fecha, email_cliente: email_cliente) && estado != 'confirmado'
+    if Turno.where(estado: 'pendiente',fecha: fecha, email_cliente: email_cliente).where.not(id: self.id).exists?
       errors.add(:fecha, "Ya tienes una solicitud de turno para ese día")
     end
   end
@@ -35,5 +35,11 @@ class Turno < ApplicationRecord
     end
     expired_turnos.each(&:destroy)
   end
+
+  def self.delete_canceled_turns
+    turnos_cancelados = where(estado: 'cancelado')
+    turnos_cancelados.each(&:destroy)
+  end
+
 
 end
