@@ -41,9 +41,14 @@ class CampaniaDonacionsController < ApplicationController
 
   # PATCH/PUT /campania_donacions/1 or /campania_donacions/1.json
   def update
+    @fecha = Date.parse(params[:campania_donacion][:fecha])
+    params = campania_donacion_params.except(:fecha)
+    @campania_donacion.dia_limite = @fecha.day
+    @campania_donacion.mes_limite = @fecha.month
+    @campania_donacion.anio_limite = @fecha.year
     respond_to do |format|
-      if @campania_donacion.update(campania_donacion_params)
-        format.html { redirect_to campania_donacion_url(@campania_donacion), notice: "Campania donacion was successfully updated." }
+      if @campania_donacion.update(params)
+        format.html { redirect_to ver_campanias_path, notice: "Se actualizó la campaña exitosamente." }
         format.json { render :show, status: :ok, location: @campania_donacion }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -57,7 +62,7 @@ class CampaniaDonacionsController < ApplicationController
     @campania_donacion.destroy!
 
     respond_to do |format|
-      format.html { redirect_to campania_donacions_url, notice: "Campania donacion was successfully destroyed." }
+      format.html { redirect_to ver_campanias_path, notice: "Se eliminó la campaña." }
       format.json { head :no_content }
     end
   end
@@ -68,6 +73,11 @@ class CampaniaDonacionsController < ApplicationController
 
   def cargar
     @campania_donacion = CampaniaDonacion.new
+  end
+
+  def editar
+    @campania_donacion = CampaniaDonacion.find(params[:id])
+    @fecha = Date.new(@campania_donacion.anio_limite, @campania_donacion.mes_limite, @campania_donacion.dia_limite)
   end
 
   private

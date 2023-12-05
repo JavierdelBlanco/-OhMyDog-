@@ -32,6 +32,13 @@
               <div class="progress">
                 <div class="progress-bar" role="progressbar" style="width: <%= (campania.monto_actual.to_f / campania.monto_total.to_f) * 100 %>%" aria-valuenow="<%= campania.monto_actual %>" aria-valuemin="0" aria-valuemax="<%= campania.monto_total %>"></div>
               </div>
+              <% if current_user.tipo_usuario == 'veterinario' %>
+                <p></p>
+                <% if campania.monto_actual == 0 %>
+                  <%= link_to "Eliminar", campania, data: { turbo_method: :delete }, class: "btn btn-danger" %>
+                <% end %>
+                <%= link_to "Editar", editar_campania_path(campania), class: "btn btn-primary" %>
+              <% end %>  
             </div>
           </div>
         </div>
