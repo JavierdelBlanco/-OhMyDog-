@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :campania_donacions
+  resources :campania
 
   resources :vet_de_guardia
   resources :historia_clinicas
@@ -90,6 +92,13 @@ Rails.application.routes.draw do
 
   #Envio de mail de joaco
   post '/random_password_email', to: 'user_mailer#random_password_email'
+
+  #Campañas de donacion
+  get 'ver_campanias', to: 'campania_donacions#ver', as: 'ver_campanias'
+  get 'cargar_campania', to: 'campania_donacions#cargar', as: 'cargar_campania'
+  resources :campanias do
+    post 'crear_campania', on: :collection
+  end
 
 
   resources :cuidador_paseadors, path: 'cuidadores-y-paseadores'

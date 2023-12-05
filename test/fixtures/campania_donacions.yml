@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nombre: MyString
+  motivo: MyString
+  beneficiario: MyString
+  monto_total: 1.5
+  monto_actual: 1.5
+  dia_limite: 1
+  mes_limite: 1
+  anio_limite: 1
+  imagen: MyString
+
+two:
+  nombre: MyString
+  motivo: MyString
+  beneficiario: MyString
+  monto_total: 1.5
+  monto_actual: 1.5
+  dia_limite: 1
+  mes_limite: 1
+  anio_limite: 1
+  imagen: MyString
