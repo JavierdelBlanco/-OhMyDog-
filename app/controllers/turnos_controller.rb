@@ -97,6 +97,44 @@ class TurnosController < ApplicationController
     end
   end
 
+  def cancelar_veterinario
+    @turno = Turno.find(params[:id])
+    @turno.detalle = params[:detalle]
+    @turno.estado = 'cancelado'
+
+    turno_attributes = @turno.as_json
+
+
+    respond_to do |format|
+      if @turno.save
+        TurnosMailer.notificar_turno_cancelado(turno_attributes).deliver_later
+        format.html { redirect_to turnos_path, flash: { notice: "Turno cancelado con éxito." } }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to root_path, flash: { error: "Hubo un problema al cancelar el turno." } }
+        format.json { render json: { error: "Hubo un problema al cancelar el turno." }, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def cancelar_cliente
+    @turno = Turno.find(params[:id])
+    @turno.estado = 'cancelado'
+
+    turno_attributes = @turno.as_json
+
+
+    respond_to do |format|
+      if @turno.save
+        format.html { redirect_to turnos_path, flash: { notice: "Turno cancelado con éxito." } }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to root_path, flash: { error: "Hubo un problema al cancelar el turno." } }
+        format.json { render json: { error: "Hubo un problema al cancelar el turno." }, status: :unprocessable_entity }
+      end
+    end
+  end
+
 
 
   private

@@ -1,4 +1,7 @@
 class Perrito < ApplicationRecord
+
+  after_create :copiar_a_perros_que_buscan_parejas
+
   validates :nombre, presence: true
   validates :caracteristicas, presence: true
   validates :condiciones, presence: true
@@ -106,6 +109,28 @@ class Perrito < ApplicationRecord
 
       end
     end
+  end
+
+  private
+
+  def copiar_a_perros_que_buscan_parejas
+    PerrosQueBuscanPareja.create!(
+      nombre: nombre,
+      dia: dia,
+      mes: mes,
+      año: año,
+      caracteristicas: caracteristicas,
+      condiciones: condiciones,
+      raza: raza,
+      sexo: sexo,
+      color: color,
+      tamaño: tamaño,
+      fallecido: fallecido,
+      user_id: user_id,
+      created_at: created_at,
+      updated_at: updated_at,
+      postulado: false # O el valor que desees para esta columna
+    )
   end
 
 

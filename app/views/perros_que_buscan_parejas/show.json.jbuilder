@@ -1,0 +1,1 @@
+json.partial! "perros_que_buscan_parejas/perros_que_buscan_pareja", perros_que_buscan_pareja: @perros_que_buscan_pareja

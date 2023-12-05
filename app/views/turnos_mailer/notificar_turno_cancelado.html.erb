@@ -1,0 +1,12 @@
+<h1>Hola <%= @turno['nombre_cliente'] %> <%= @turno['apellido_cliente'] %>,</h1>
+  <p>Nos comunicamos para informarte que desgraciadamente tu turno solicitado en la veterinaria ¡Oh my dog! ha sido cancelado.</p>
+  
+  <p>Te adjuntamos la información del mismo:</p>
+  <p>Tipo de turno: <%= @turno['tipo_turno'] %></p>
+  <p>Fecha:  <%= DateTime.parse(@turno['fecha']).strftime('%d/%m/%y') %> </p>
+  <p>Horario: <%= DateTime.parse(@turno['horario']).strftime('%H:%Mhs') %></p>
+  <p>Motivo de la cancelacion: <%= @turno['detalle'] %> <p/>
+  <p>Te invitamos a que intentes generar un turno nuevamente.</p>
+  
+  <p>Saludos,</p>
+  <p>Equipo de ¡Oh My Dog!</p>
