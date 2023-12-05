@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_28_015647) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_05_050039) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -104,13 +104,13 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_28_015647) do
     t.text "caracteristicas"
     t.text "condiciones"
     t.string "raza"
-    t.string "sexo"
     t.string "color"
     t.string "tamaño"
     t.boolean "fallecido"
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "sexo"
     t.index ["user_id"], name: "index_perritos_on_user_id"
   end
 
@@ -139,10 +139,10 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_28_015647) do
     t.string "nombre_dueno"
     t.string "apellido_dueno"
     t.string "direccion_dueno"
-    t.integer "numero_dueno"
     t.string "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "numero_dueno"
     t.string "raza"
     t.integer "edad_aproximada"
     t.string "tamano"
@@ -162,6 +162,25 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_28_015647) do
     t.integer "edad_aproximada"
     t.string "tamano"
     t.string "lugar_zona_donde_se_encontro"
+  end
+
+  create_table "perros_que_buscan_parejas", force: :cascade do |t|
+    t.string "nombre"
+    t.integer "dia"
+    t.integer "mes"
+    t.integer "año"
+    t.text "caracteristicas"
+    t.text "condiciones"
+    t.string "raza"
+    t.string "sexo"
+    t.string "color"
+    t.string "tamaño"
+    t.boolean "fallecido"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "postulado"
+    t.index ["user_id"], name: "index_perros_que_buscan_parejas_on_user_id"
   end
 
   create_table "turnos", force: :cascade do |t|

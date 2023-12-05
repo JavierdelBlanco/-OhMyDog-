@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nombre: MyString
+  fecha_de_nacimiento: 2023-12-04
+  raza: MyString
+  sexo: MyString
+  caracteristicas: MyString
+  condiciones: 1
+  tamano: MyString
+  color: MyString
+
+two:
+  nombre: MyString
+  fecha_de_nacimiento: 2023-12-04
+  raza: MyString
+  sexo: MyString
+  caracteristicas: MyString
+  condiciones: 1
+  tamano: MyString
+  color: MyString

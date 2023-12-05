@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   resources :vacuna_es
   resources :castracions
   resources :historia_cs
+  resources :perros_que_buscan_parejas
+
 
   resources :perros_en_adopcions
 

@@ -148,7 +148,7 @@
     </div>
     <div>
       <%= p.label :tamaño, style: "display: block" %>
-      <%= p.text_field :tamaño, required: true %>
+      <%= p.select :tamaño, options_for_select(['Pequeño', 'Mediano', 'Grande']), { prompt: 'Seleccione...' }, required: true %>
     </div>
   <% end %>
 
