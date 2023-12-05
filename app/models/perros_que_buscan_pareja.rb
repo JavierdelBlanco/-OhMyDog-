@@ -1,0 +1,2 @@
+class PerrosQueBuscanPareja < ApplicationRecord
+end

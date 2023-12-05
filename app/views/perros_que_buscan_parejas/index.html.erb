@@ -1,0 +1,69 @@
+<style>
+  /* Encontrado */
+  .activo {
+    background-color: #FFF8E6;
+  }
+
+  /* Se busca */
+  .no-activo {
+    background-color: #e5f7fa;
+  }
+</style>
+
+<h1>Perros en adopcion</h1>
+
+<% if @perros_que_buscan_parejas.empty? %>
+  <div class="no_mis_perros">
+    <p>No hay publicaciones de perros en adopcion buscando dueño actualmente.</p>
+  </div>
+<% end %>
+
+<div class= 'd-flex flex-wrap'>
+
+  <% @perros_que_buscan_parejas.each do |perros| %>
+   
+    <div class="card d-flex <%= perros.postulado ? 'activo' : 'no-activo' %>" style="max-width: 350px; max-height: 650px; min-width: 350px; min-height: 500px; margin: 10px">
+    
+      <div class="card-body">
+        <p class="card-text", style=''> <strong> Nombre: </strong> <%= perros.nombre %> </p>
+        <p class="card-text", style=''> <strong> Edad: </strong> <%= calcular_edad(perros.dia, perros.mes, perros.año) %> años </p>
+        <p class="card-text", style=''> <strong> Raza: </strong> <%= perros.raza %> </p>
+        <p class="card-text", style=''> <strong> Sexo: </strong> <%= perros.sexo %> </p>
+        <p class="card-text", style=''> <strong> Caracteristicas: </strong> <%= perros.caracteristicas %> </p>
+        <p class="card-text", style=''> <strong> Condiciones: </strong> <%= perros.condiciones %> </p>
+        <p class="card-text", style=''> <strong> color: </strong> <%= perros.color %> </p>
+        <p class="card-text", style=''> <strong> Tamaño: </strong> <%= perros.tamaño %> </p>
+      </div>
+
+      <% if !perros.postulado %>
+
+        <div class='d-flex justify-content-center' style='flex-direction: column; align-items: center;'>
+          <button type="button"  class = "btn btn-turqueza" style = 'margin-bottom: 3px' data-bs-toggle="modal" data-bs-target="#Modal-<%= perros.id %>" >Postular</button>
+
+          <div class="modal fade" id="Modal-<%= perros.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Postular para la busqueda de pareja</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <p>Desea postular a <%= perros.nombre %> para buscarle pareja?</p>
+                  <%= form_with url: '#' , method: :post, id: 'formularioDatos' do |form| %>
+                  <%= form.submit 'Postular', id: "confirmarBtn", class: 'btn btn-turqueza', style:"margin: 2px" %>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      <% end %>
+    </div>
+
+
+  <% end %>
+
+</div>
