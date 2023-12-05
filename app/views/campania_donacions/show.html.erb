@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @campania_donacion %>
+
+<div>
+  <%= link_to "Edit this campania donacion", edit_campania_donacion_path(@campania_donacion) %> |
+  <%= link_to "Back to campania donacions", campania_donacions_path %>
+
+  <%= button_to "Destroy this campania donacion", @campania_donacion, method: :delete %>
+</div>

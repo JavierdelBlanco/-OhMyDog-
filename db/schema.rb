@@ -10,7 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema[7.1].define(version: 2023_12_05_050039) do
+
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -47,6 +49,33 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_05_050039) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "campania", force: :cascade do |t|
+    t.string "motivo"
+    t.string "beneficiario"
+    t.float "monto_total"
+    t.float "monto_actual"
+    t.integer "dia_limite"
+    t.integer "mes_limite"
+    t.integer "anio_limite"
+    t.string "imagen"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "campania_donacions", force: :cascade do |t|
+    t.string "nombre"
+    t.string "motivo"
+    t.string "beneficiario"
+    t.float "monto_total"
+    t.float "monto_actual"
+    t.integer "dia_limite"
+    t.integer "mes_limite"
+    t.integer "anio_limite"
+    t.string "imagen"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "cuidador_paseadors", force: :cascade do |t|
@@ -104,13 +133,13 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_05_050039) do
     t.text "caracteristicas"
     t.text "condiciones"
     t.string "raza"
+    t.string "sexo"
     t.string "color"
     t.string "tamaño"
     t.boolean "fallecido"
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "sexo"
     t.index ["user_id"], name: "index_perritos_on_user_id"
   end
 
@@ -139,10 +168,10 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_05_050039) do
     t.string "nombre_dueno"
     t.string "apellido_dueno"
     t.string "direccion_dueno"
+    t.integer "numero_dueno"
     t.string "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "numero_dueno"
     t.string "raza"
     t.integer "edad_aproximada"
     t.string "tamano"
