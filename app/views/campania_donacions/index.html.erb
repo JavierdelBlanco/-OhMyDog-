@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Campania donacions</h1>
+
+<div id="campania_donacions">
+  <% @campania_donacions.each do |campania_donacion| %>
+    <%= render campania_donacion %>
+    <p>
+      <%= link_to "Show this campania donacion", campania_donacion %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New campania donacion", new_campania_donacion_path %>

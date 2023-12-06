@@ -1,0 +1,46 @@
+<%= form_with(model: @campania_donacion, multipart: true, class: 'needs-validation') do |form| %>
+
+  <div class='row g-3 needs-validation' style='width: 500px; margin: 5px; border: 1px solid #000; border-radius: 5px;'>
+
+    <div class="mb-2">
+      <%= form.label :nombre, style: "display: block" %>
+      <%= form.text_field :nombre %>
+    </div>
+
+    <div class="mb-2">
+      <%= form.label :motivo, style: "display: block" %>
+      <%= form.text_field :motivo %>
+    </div>
+  
+    <div class="mb-2">
+      <%= form.label :beneficiario, style: "display: block" %>
+      <%= form.text_field :beneficiario %>
+    </div>
+  
+    <div class="mb-2">
+      <%= form.label :monto_objetivo, style: "display: block" %>
+      <%= form.text_field :monto_total %>
+    </div>
+  
+    <div class="col-md-5">
+    <%= form.label :fecha_limite, style: "display: block;" %>
+    <div class="input-group has-validation">
+      <%= form.date_field :fecha, class: 'form-control', required: true, min: Date.today.to_s, style: 'appearance: none;' %>
+    </div>
+    </div>
+  
+    <div class="mb-2">
+    <label for="campaña_imagen" class="form-label">Imagen</label>
+    <div class="input-group">
+      <%= form.file_field :imagen, id: 'campaña_imagen', class: 'form-control', aria_describedby: 'inputGroupFileAddon04', 'aria-label': 'Upload' %>
+    </div>
+  </div>
+
+    <%= form.hidden_field :monto_actual, value: 15000 %>
+  
+    <div class="mb-2">
+      <%= form.submit %>
+    </div>
+</div>
+
+<% end %>

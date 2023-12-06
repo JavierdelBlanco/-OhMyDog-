@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :campania_donacions
+  resources :campania
 
   resources :vet_de_guardia
   resources :historia_clinicas
@@ -9,7 +11,6 @@ Rails.application.routes.draw do
   resources :castracions
   resources :historia_cs
   resources :perros_que_buscan_parejas
-
 
   resources :perros_en_adopcions
 
@@ -95,6 +96,13 @@ Rails.application.routes.draw do
   #Envio de mail de joaco
   post '/random_password_email', to: 'user_mailer#random_password_email'
 
+  #Campañas de donacion
+  get 'ver_campanias', to: 'campania_donacions#ver', as: 'ver_campanias'
+  get 'cargar_campania', to: 'campania_donacions#cargar', as: 'cargar_campania'
+  resources :campanias do
+    post 'crear_campania', on: :collection
+  end
+
 
   resources :cuidador_paseadors, path: 'cuidadores-y-paseadores'
   resources :perros_perdidos, path: 'se-busca'
@@ -144,8 +152,11 @@ get '/perros_encontrados/edit_no_registrado', to: 'perros_encontrados#edit_no_re
   resources :perros_que_buscan_parejas do
     post 'postular', on: :member
     post 'retirar', on: :member
+    get 'buscar_pareja', on: :member
+    post 'me_gusta', on: :member
+    post 'no_me_gusta', on: :member
+    post 'ya_no_me_gusta', on: :member
   end
-  
 
 
 end

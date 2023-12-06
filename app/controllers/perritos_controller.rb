@@ -138,6 +138,6 @@ class PerritosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def perrito_params
-      params.require(:perrito).permit(:nombre, :dia, :mes, :año, :caracteristicas, :condiciones, :raza, :sexo, :color, :tamaño, :user_id, :fallecido, :tipo)
+      params.require(:perrito).permit(:nombre, :dia, :mes, :año, :caracteristicas, :condiciones, :raza, :sexo, :color, :tamaño, :user_id, :fallecido, :tipo, :foto, :descripcion, :postulado, :fecha_celo_inicio)
     end
 end
