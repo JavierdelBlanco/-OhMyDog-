@@ -1,0 +1,2 @@
+class DislikedDog < ApplicationRecord
+end

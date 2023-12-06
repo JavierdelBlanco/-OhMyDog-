@@ -1,0 +1,2 @@
+class LikedDog < ApplicationRecord
+end
