@@ -130,7 +130,7 @@ class PerrosQueBuscanParejasController < ApplicationController
     @user_dog = Perrito.find(params[:user_dog_id])
 
     puts "Redirecting to: #{buscar_pareja_perros_que_buscan_pareja_path(@user_dog)}"
-    redirect_to buscar_pareja_perros_que_buscan_pareja_path(@user_dog), notice: '¡Te gusta este perro!'
+    redirect_to buscar_pareja_perros_que_buscan_pareja_path(@user_dog), notice: '¡Le diste Me gusta a !'
   end
   
   def ya_no_me_gusta
@@ -142,15 +142,21 @@ class PerrosQueBuscanParejasController < ApplicationController
     liked_dog.destroy if liked_dog.present?
     
     @user_dog = Perrito.find(params[:user_dog_id])
-    redirect_to buscar_pareja_perros_que_buscan_pareja_path(@user_dog), notice: "¡Ya no te gusta este perro!"
+    redirect_to buscar_pareja_perros_que_buscan_pareja_path(@user_dog), notice: "¡Ya no te gusta !"
   end
   
-  
-
   def no_me_gusta
+    # Obtén los parámetros del formulario
+    user_dog_id = params[:user_dog_id]
+    perro_id = params[:perro_id]
+
+    DislikedDog.create(perro_id: user_dog_id, disliked_dog_id: perro_id)
+
+    # Redirige o realiza cualquier acción adicional que necesites
     @user_dog = Perrito.find(params[:user_dog_id])
-    puts "Debug: #{@user_dog.inspect}"
-    redirect_to buscar_pareja_perros_que_buscan_pareja_path(@user_dog), notice: "No funcióno"
+
+    puts "Redirecting to: #{buscar_pareja_perros_que_buscan_pareja_path(@user_dog)}"
+    redirect_to buscar_pareja_perros_que_buscan_pareja_path(@user_dog), notice: '¡Le diste No me gusta a !'
   end
   
   
