@@ -82,6 +82,12 @@ class PerrosQueBuscanParejasController < ApplicationController
   def retirar
     @perro = Perrito.find(params[:id])
 
+    # Eliminar registros de liked_dogs
+    LikedDog.where("perro_id = ? OR liked_dog_id = ?", @perro.id, @perro.id).destroy_all
+
+    # Eliminar registros de disliked_dogs
+    DislikedDog.where("perro_id = ? OR disliked_dog_id = ?", @perro.id, @perro.id).destroy_all
+
     # Cambiar el estado de postulado a true
     @perro.update(postulado: false)
 
