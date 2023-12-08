@@ -83,7 +83,9 @@ class PerrosQueBuscanParejasController < ApplicationController
     @perro = Perrito.find(params[:id])
 
     # Eliminar registros de liked_dogs
-    LikedDog.where("perro_id = ? OR liked_dog_id = ?", @perro.id, @perro.id).destroy_all
+    # LikedDog.where("perro_id = ? OR liked_dog_id = ?", @perro.id, @perro.id).destroy_all
+    # Eliminar solo los ME GUSTA del PERRO
+     LikedDog.where("perro_id = ?", @perro.id).destroy_all
 
     # Eliminar registros de disliked_dogs
     # DislikedDog.where("perro_id = ? OR disliked_dog_id = ?", @perro.id, @perro.id).destroy_all
@@ -103,8 +105,9 @@ class PerrosQueBuscanParejasController < ApplicationController
   
     opposite_sex = @user_dog.sexo == 'macho' ? 'hembra' : 'macho'
   
-    perros_gustados_ids = LikedDog.where(perro_id: @user_dog.id).pluck(:liked_dog_id)
+    # perros_gustados_ids = LikedDog.where(perro_id: @user_dog.id).pluck(:liked_dog_id)
     perros_disgustados_ids = DislikedDog.where(perro_id: @user_dog.id).pluck(:disliked_dog_id)
+    perros_que_me_dieron_no_me_gusta = DislikedDog.where(disliked_dog_id: @user_dog.id).pluck(:perro_id)
 
   
     user_dog_raza = @user_dog.raza
@@ -114,11 +117,11 @@ class PerrosQueBuscanParejasController < ApplicationController
       .where.not(user_id: @user_dog.user_id)
       .where(sexo: opposite_sex, fallecido: false, postulado: true)
       .where.not(id: perros_disgustados_ids)
-      .or(Perrito.where(id: perros_gustados_ids))
+      .where.not(id: perros_que_me_dieron_no_me_gusta)
       .order(
         Arel.sql("CASE WHEN raza = '#{user_dog_raza}' THEN 0 ELSE 1 END"),
-        Arel.sql("CASE WHEN tamaño = '#{user_dog_tamano}' THEN 0 ELSE 1 END")
-      )
+        Arel.sql("CASE WHEN tamaño = '#{user_dog_tamano}' THEN 0 ELSE 1 END"))
+
   end
 
   def me_gusta
@@ -129,16 +132,27 @@ class PerrosQueBuscanParejasController < ApplicationController
     puts "user_dog_id: #{user_dog_id}"
     puts "perro_id: #{perro_id}"
 
-    # Crea un nuevo registro en la tabla liked_dogs
-    LikedDog.create(perro_id: user_dog_id, liked_dog_id: perro_id)
+    # Verifica si el perro no está en la lista de DislikedDogs
+    unless DislikedDog.exists?(perro_id: perro_id, disliked_dog_id: user_dog_id)
+      # Si el perro no esta en la tabla de disliked dogs, lo agrega a la tabla liked dogs
+      LikedDog.create(perro_id: user_dog_id, liked_dog_id: perro_id)
+      puts "¡Perro añadido a la lista de liked dogs!"
+      # Redirige o realiza cualquier acción adicional que necesites
+      @user_dog = Perrito.find(params[:user_dog_id])
 
-    # Redirige o realiza cualquier acción adicional que necesites
-    @user_dog = Perrito.find(params[:user_dog_id])
+      perro_gustado = Perrito.find(perro_id)
 
-    perro_gustado = Perrito.find(perro_id)
+      puts "Redirecting to: #{buscar_pareja_perros_que_buscan_pareja_path(@user_dog)}"
+      redirect_to buscar_pareja_perros_que_buscan_pareja_path(@user_dog), notice: "¡Le diste Me gusta a #{perro_gustado.nombre}!"
+    else
+      puts "Este perro te ha dado no me gusta."
+      @user_dog = Perrito.find(params[:user_dog_id])
 
-    puts "Redirecting to: #{buscar_pareja_perros_que_buscan_pareja_path(@user_dog)}"
-    redirect_to buscar_pareja_perros_que_buscan_pareja_path(@user_dog), notice: "¡Le diste Me gusta a #{perro_gustado.nombre}!"
+      perro_gustado = Perrito.find(perro_id)
+
+      puts "Redirecting to: #{buscar_pareja_perros_que_buscan_pareja_path(@user_dog)}"
+      redirect_to buscar_pareja_perros_que_buscan_pareja_path(@user_dog), notice: "Lo sentimos, pero #{perro_gustado.nombre} te ha dado No me gusta."
+    end
   end
   
   def ya_no_me_gusta

@@ -38,13 +38,13 @@
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Postular para la busqueda de pareja</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Retirar Me gusta de un perro</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
                     <p>Retirar Me gusta de <%= perros.nombre %> ?</p>
                     <%= form_with model: @perros_que_buscan_parejas, url: ya_no_me_gusta_perros_que_buscan_pareja_path(user_dog_id: @user_dog.id, perro_id: perros.id) , method: :post, id: 'formularioDatos' do |form| %>
-                      <%= form.submit 'Postular', id: "confirmarBtn", class: 'btn btn-turqueza', style:"margin: 2px" %>
+                      <%= form.submit 'Retirar', id: "confirmarBtn", class: 'btn btn-turqueza', style:"margin: 2px" %>
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
                     <% end %>
                   </div>
