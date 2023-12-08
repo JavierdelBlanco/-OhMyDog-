@@ -14,11 +14,10 @@
 
 <% if @perros_del_usuario.empty? %>
   <div class="no_mis_perros">
-    <p>No hay publicaciones de perros en adopcion buscando dueño actualmente.</p>
+    <p>No tienes perros registrados en la veterinaria.</p>
   </div>
-<% end %>
-
-<div class= 'd-flex flex-wrap'>
+<% else %>
+  <div class= 'd-flex flex-wrap'>
 
   <% @perros_del_usuario.each do |perros| %>
    
@@ -109,6 +108,7 @@
 
           <%= link_to 'Buscar pareja', buscar_pareja_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza', style: 'margin-bottom: 3px' %>
           <%= link_to 'Ver mis No me gusta', ver_mis_no_me_gusta_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza', style: 'margin-bottom: 3px' %>
+          <%= link_to 'Ver quien me dio Me gusta', ver_perros_que_me_dieron_me_gusta_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza', style: 'margin-bottom: 3px' %>
 
         </div>
       <% end %>
@@ -117,4 +117,5 @@
 
   <% end %>
 
-</div>
+  </div>
+<% end %>

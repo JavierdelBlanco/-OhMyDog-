@@ -4,9 +4,8 @@
   <div class="no_mis_perros">
     <p>No hay perros buscando pareja actualmente.</p>
   </div>
-<% end %>
-
-<div class= 'd-flex flex-wrap'>
+<% else %>
+  <div class= 'd-flex flex-wrap'>
 
   <% @all_dogs.each do |perros| %>
    
@@ -75,7 +74,7 @@
                       <li>Se te enviara un mail con la informacion de contacto del dueño/a de <%= perros.nombre %></li>
                       <li>Se le enviara un mail con tu informacion de contacto al dueño/a de <%= perros.nombre %></li>
                     </ul>
-                    <%= form_with model: @perros_que_buscan_parejas, url: me_gusta_perros_que_buscan_pareja_path(user_dog_id: @user_dog.id, perro_id: perros.id) , method: :post, id: 'formularioDatos' do |form| %>
+                    <%= form_with model: @perros_que_buscan_parejas, url: me_gusta_perros_que_buscan_pareja_path(user_dog_id: @user_dog.id, perro_id: perros.id, from_buscar_pareja: true) , method: :post, id: 'formularioDatos' do |form| %>
                       <%= form.submit 'Me gusta', id: "confirmarBtn", class: 'btn btn-turqueza', style:"margin: 2px" %>
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
                     <% end %>
@@ -100,7 +99,7 @@
                       <li><%= perros.nombre %> no aparezca en tu lista de busqueda de pareja para <%= @user_dog.nombre %></li>
                       <li><%= @user_dog.nombre %> no aparezca en la lista de busqueda de pareja para <%= perros.nombre %></li>
                     </ul>
-                    <%= form_with model: @perros_que_buscan_parejas, url: no_me_gusta_perros_que_buscan_pareja_path(user_dog_id: @user_dog.id, perro_id: perros.id) , method: :post, id: 'formularioDatos' do |form| %>
+                    <%= form_with model: @perros_que_buscan_parejas, url: no_me_gusta_perros_que_buscan_pareja_path(user_dog_id: @user_dog.id, perro_id: perros.id, from_buscar_pareja: true) , method: :post, id: 'formularioDatos' do |form| %>
                       <%= form.submit 'No me gusta', id: "confirmarBtn", class: 'btn btn-turqueza', style:"margin: 2px" %>
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
                     <% end %>
@@ -115,4 +114,5 @@
     </div>
   <% end %>
 
-</div>
+  </div>
+<% end %>
