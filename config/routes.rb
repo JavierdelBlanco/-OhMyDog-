@@ -12,7 +12,6 @@ Rails.application.routes.draw do
   resources :historia_cs
   resources :perros_que_buscan_parejas
 
-
   resources :perros_en_adopcions
 
   resources :turnos
@@ -149,6 +148,18 @@ get '/perros_encontrados/edit_no_registrado', to: 'perros_encontrados#edit_no_re
   post '/enviar_correo_perros_encontrados_contactar', to: 'perros_encontrados#enviar_correo_perros_encontrados_contactar'
   post '/enviar_correo_contactar_registrado', to: 'perros_en_adopcions#enviar_correo_contactar_registrado'
   post '/enviar_correo_contactar_no_registrado', to: 'perros_en_adopcions#enviar_correo_contactar_no_registrado'
+
+  resources :perros_que_buscan_parejas do
+    post 'postular', on: :member
+    post 'retirar', on: :member
+    get 'buscar_pareja', on: :member
+    post 'me_gusta', on: :member
+    post 'no_me_gusta', on: :member
+    post 'ya_no_me_gusta', on: :member
+    get 'ver_mis_no_me_gusta', on: :member
+    post 'retirar_no_me_gusta', on: :member
+    get 'ver_perros_que_me_dieron_me_gusta', on: :member
+  end
 
 
 end

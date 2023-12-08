@@ -10,17 +10,16 @@
   }
 </style>
 
-<h1>Perros en adopcion</h1>
+<h1>Busqueda de pareja canina</h1>
 
-<% if @perros_que_buscan_parejas.empty? %>
+<% if @perros_del_usuario.empty? %>
   <div class="no_mis_perros">
-    <p>No hay publicaciones de perros en adopcion buscando dueño actualmente.</p>
+    <p>No tienes perros registrados en la veterinaria.</p>
   </div>
-<% end %>
+<% else %>
+  <div class= 'd-flex flex-wrap'>
 
-<div class= 'd-flex flex-wrap'>
-
-  <% @perros_que_buscan_parejas.each do |perros| %>
+  <% @perros_del_usuario.each do |perros| %>
    
     <div class="card d-flex <%= perros.postulado ? 'activo' : 'no-activo' %>" style="max-width: 350px; max-height: 650px; min-width: 350px; min-height: 500px; margin: 10px">
     
@@ -38,20 +37,39 @@
       <% if !perros.postulado %>
 
         <div class='d-flex justify-content-center' style='flex-direction: column; align-items: center;'>
-          <button type="button"  class = "btn btn-turqueza" style = 'margin-bottom: 3px' data-bs-toggle="modal" data-bs-target="#Modal-<%= perros.id %>" >Postular</button>
+          <button type="button"  class = "btn btn-turqueza" style = 'margin-bottom: 3px' data-bs-toggle="modal" data-bs-target="#Modal_postular-<%= perros.id %>" >Postular</button>
 
-          <div class="modal fade" id="Modal-<%= perros.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal fade" id="Modal_postular-<%= perros.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="exampleModalLabel">Postular para la busqueda de pareja</h1>
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Postular a <%= perros.nombre %> para la busqueda de pareja</h1>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                   <p>Desea postular a <%= perros.nombre %> para buscarle pareja?</p>
-                  <%= form_with url: '#' , method: :post, id: 'formularioDatos' do |form| %>
-                  <%= form.submit 'Postular', id: "confirmarBtn", class: 'btn btn-turqueza', style:"margin: 2px" %>
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+                  <%= form_with model: @perros_del_usuario, url: postular_perros_que_buscan_pareja_path(perros.id) , method: :post, id: 'formularioDatos' do |form| %>
+
+                    <div class="mb-3">
+                      <%= form.label :descripcion, 'Descripcion:' %>
+                      <%= form.text_area :descripcion, class: 'form-control', required: true %>
+                    </div>
+
+                    <div class="mb-3">
+                      <%= form.label :foto, 'Foto:' %>
+                      <%= form.file_field :foto, class: 'form-control', required: true, accept: 'image/*' %>
+                    </div>
+
+                    <% if perros.sexo == "hembra" %>
+                      <div class="mb-3">
+                        <%= form.label :fecha_inicio_celo, 'Fecha del ultimo celo:' %>
+                        <%= form.date_field :fecha_celo_inicio, class: 'form-control', required: true %>
+                      </div>
+                    <% end %>
+
+
+                    <%= form.submit 'Postular', id: "confirmarBtn", class: 'btn btn-turqueza', style:"margin: 2px" %>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
                   <% end %>
                 </div>
               </div>
@@ -59,11 +77,45 @@
           </div>
 
         </div>
+      <% else %>
+        <div class='d-flex justify-content-center' style='flex-direction: column; align-items: center;'>
 
+          <button type="button"  class = "btn btn-turqueza" style = 'margin-bottom: 3px' data-bs-toggle="modal" data-bs-target="#Modal_retirar-<%= perros.id %>" >Retirar</button>
+
+          <div class="modal fade" id="Modal_retirar-<%= perros.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Retirar a <%= perros.nombre %> para la busqueda de pareja</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <p>Desea retirar a <%= perros.nombre %> para dejar de buscarle pareja?</p>
+                  <ul>
+                    <li>Esto borrará todos los Me gusta y No me gusta que hayas dado con <%= perros.nombre %></li>
+                    <li>Esto borrará todos los Me gusta y No me gusta que le hayan dado a <%= perros.nombre %></li>
+                  </ul>
+                  <%= form_with model: @perros_del_usuario, url: retirar_perros_que_buscan_pareja_path(perros.id) , method: :post, id: 'formularioDatos' do |form| %>
+                    <%= form.submit 'Retirar', id: "confirmarBtn", class: 'btn btn-turqueza', style:"margin: 2px" %>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- agregar botones (3) faltantes -->
+
+          <%= link_to 'Buscar pareja', buscar_pareja_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza', style: 'margin-bottom: 3px' %>
+          <%= link_to 'Ver mis No me gusta', ver_mis_no_me_gusta_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza', style: 'margin-bottom: 3px' %>
+          <%= link_to 'Ver quien me dio Me gusta', ver_perros_que_me_dieron_me_gusta_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza', style: 'margin-bottom: 3px' %>
+
+        </div>
       <% end %>
     </div>
 
 
   <% end %>
 
-</div>
+  </div>
+<% end %>

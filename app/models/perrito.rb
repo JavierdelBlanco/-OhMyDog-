@@ -1,6 +1,6 @@
 class Perrito < ApplicationRecord
 
-  after_create :copiar_a_perros_que_buscan_parejas
+  has_one_attached :foto
 
   validates :nombre, presence: true
   validates :caracteristicas, presence: true
@@ -10,11 +10,19 @@ class Perrito < ApplicationRecord
   validates :tamaño, presence: true
   validates :sexo, presence: true
 
+  validate :foto_content_type
+
   has_many :historia_clinicas, dependent: :destroy
   belongs_to :user
 
 
   validates :nombre, uniqueness: { scope: [:user_id], message: 'ya está en uso para este usuario', if: :no_esta_fallecido? }
+
+  def foto_content_type
+    if foto.attached? && !foto.content_type.in?(%w(image/jpeg image/jpg image/png image/gif image/webp))
+      errors.add(:foto, 'El formato de imagen no es válido.')
+    end
+end
 
   def no_esta_fallecido?
     !fallecido
@@ -109,28 +117,6 @@ class Perrito < ApplicationRecord
 
       end
     end
-  end
-
-  private
-
-  def copiar_a_perros_que_buscan_parejas
-    PerrosQueBuscanPareja.create!(
-      nombre: nombre,
-      dia: dia,
-      mes: mes,
-      año: año,
-      caracteristicas: caracteristicas,
-      condiciones: condiciones,
-      raza: raza,
-      sexo: sexo,
-      color: color,
-      tamaño: tamaño,
-      fallecido: fallecido,
-      user_id: user_id,
-      created_at: created_at,
-      updated_at: updated_at,
-      postulado: false # O el valor que desees para esta columna
-    )
   end
 
 
