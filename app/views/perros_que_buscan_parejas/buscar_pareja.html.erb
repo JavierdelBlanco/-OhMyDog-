@@ -1,5 +1,11 @@
 <h1> Busqueda de pareja para <%= @user_dog.nombre %> </h1>
 
+<% if @all_dogs.empty? %>
+  <div class="no_mis_perros">
+    <p>No hay perros buscando pareja actualmente.</p>
+  </div>
+<% end %>
+
 <div class= 'd-flex flex-wrap'>
 
   <% @all_dogs.each do |perros| %>
@@ -60,6 +66,15 @@
                   </div>
                   <div class="modal-body">
                     <p>Desea darle me gusta a <%= perros.nombre %> ?</p>
+                    <p>Esto hara que:</p>
+                    <ul>
+                      <li>Si <%= perros.nombre %> le da Me gusta a <%= @user_dog.nombre %> se producira un matcheo</li>
+                    </ul>
+                    <p>Si se produce un matcheo:</p>
+                    <ul>
+                      <li>Se te enviara un mail con la informacion de contacto del dueño/a de <%= perros.nombre %></li>
+                      <li>Se le enviara un mail con tu informacion de contacto al dueño/a de <%= perros.nombre %></li>
+                    </ul>
                     <%= form_with model: @perros_que_buscan_parejas, url: me_gusta_perros_que_buscan_pareja_path(user_dog_id: @user_dog.id, perro_id: perros.id) , method: :post, id: 'formularioDatos' do |form| %>
                       <%= form.submit 'Me gusta', id: "confirmarBtn", class: 'btn btn-turqueza', style:"margin: 2px" %>
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
@@ -75,13 +90,18 @@
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Darle Me gusta a un perro</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Darle No me gusta a un perro</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
                     <p>Desea darle no me gusta a <%= perros.nombre %> ?</p>
+                    <p>Esto hara que:</p>
+                    <ul>
+                      <li><%= perros.nombre %> no aparezca en tu lista de busqueda de pareja para <%= @user_dog.nombre %></li>
+                      <li><%= @user_dog.nombre %> no aparezca en la lista de busqueda de pareja para <%= perros.nombre %></li>
+                    </ul>
                     <%= form_with model: @perros_que_buscan_parejas, url: no_me_gusta_perros_que_buscan_pareja_path(user_dog_id: @user_dog.id, perro_id: perros.id) , method: :post, id: 'formularioDatos' do |form| %>
-                      <%= form.submit 'Me gusta', id: "confirmarBtn", class: 'btn btn-turqueza', style:"margin: 2px" %>
+                      <%= form.submit 'No me gusta', id: "confirmarBtn", class: 'btn btn-turqueza', style:"margin: 2px" %>
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
                     <% end %>
                   </div>

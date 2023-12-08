@@ -76,7 +76,7 @@ class PerrosQueBuscanParejasController < ApplicationController
     @perro.update(postulado: true)
 
     # Redirigir a la página de detalles del perro
-    redirect_to perros_que_buscan_parejas_path, notice: "Perro postulado correctamente."
+    redirect_to perros_que_buscan_parejas_path, notice: "Has postulado a #{@perro.nombre} para la busqueda de pareja."
   end
 
   def retirar
@@ -86,20 +86,20 @@ class PerrosQueBuscanParejasController < ApplicationController
     LikedDog.where("perro_id = ? OR liked_dog_id = ?", @perro.id, @perro.id).destroy_all
 
     # Eliminar registros de disliked_dogs
-    DislikedDog.where("perro_id = ? OR disliked_dog_id = ?", @perro.id, @perro.id).destroy_all
+    # DislikedDog.where("perro_id = ? OR disliked_dog_id = ?", @perro.id, @perro.id).destroy_all
 
     # Cambiar el estado de postulado a true
     @perro.update(postulado: false)
 
     # Redirigir a la página de detalles del perro
-    redirect_to perros_que_buscan_parejas_path, notice: "Perro retirado correctamente."
+    redirect_to perros_que_buscan_parejas_path, notice: "Has retirado a #{@perro.nombre} de la busqueda de pareja."
   end
 
   def buscar_pareja
     @user_dog = Perrito.find(params[:id])
     puts "Debug: #{@user_dog.inspect}"
     @perros_que_le_gustan = LikedDog.where(perro_id: @user_dog.id).pluck(:liked_dog_id)
-    @perros_que_no_le_gustan = DislikedDog.where(perro_id: @user_dog.id).pluck(:disliked_dog_id)
+    #@perros_que_no_le_gustan = DislikedDog.where(perro_id: @user_dog.id).pluck(:disliked_dog_id)
   
     opposite_sex = @user_dog.sexo == 'macho' ? 'hembra' : 'macho'
   
@@ -135,8 +135,10 @@ class PerrosQueBuscanParejasController < ApplicationController
     # Redirige o realiza cualquier acción adicional que necesites
     @user_dog = Perrito.find(params[:user_dog_id])
 
+    perro_gustado = Perrito.find(perro_id)
+
     puts "Redirecting to: #{buscar_pareja_perros_que_buscan_pareja_path(@user_dog)}"
-    redirect_to buscar_pareja_perros_que_buscan_pareja_path(@user_dog), notice: '¡Le diste Me gusta a !'
+    redirect_to buscar_pareja_perros_que_buscan_pareja_path(@user_dog), notice: "¡Le diste Me gusta a #{perro_gustado.nombre}!"
   end
   
   def ya_no_me_gusta
@@ -148,7 +150,8 @@ class PerrosQueBuscanParejasController < ApplicationController
     liked_dog.destroy if liked_dog.present?
     
     @user_dog = Perrito.find(params[:user_dog_id])
-    redirect_to buscar_pareja_perros_que_buscan_pareja_path(@user_dog), notice: "¡Ya no te gusta !"
+    perro_gustado = Perrito.find(perro_id)
+    redirect_to buscar_pareja_perros_que_buscan_pareja_path(@user_dog), notice: "Ya no te gusta #{perro_gustado.nombre}."
   end
   
   def no_me_gusta
@@ -160,9 +163,31 @@ class PerrosQueBuscanParejasController < ApplicationController
 
     # Redirige o realiza cualquier acción adicional que necesites
     @user_dog = Perrito.find(params[:user_dog_id])
+    perro_no_gustado = Perrito.find(perro_id)
 
     puts "Redirecting to: #{buscar_pareja_perros_que_buscan_pareja_path(@user_dog)}"
-    redirect_to buscar_pareja_perros_que_buscan_pareja_path(@user_dog), notice: '¡Le diste No me gusta a !'
+    redirect_to buscar_pareja_perros_que_buscan_pareja_path(@user_dog), notice: "Le diste No me gusta a #{perro_no_gustado.nombre}."
+  end
+
+  def ver_mis_no_me_gusta
+
+    @user_dog = Perrito.find(params[:id])
+
+    perros_disgustados_ids = DislikedDog.where(perro_id: @user_dog.id).pluck(:disliked_dog_id)
+    @perros_disgustados = Perrito.where(id: perros_disgustados_ids)
+  end
+
+  def retirar_no_me_gusta
+    # Obtén los parámetros del formulario
+    user_dog_id = params[:user_dog_id]
+    perro_id = params[:perro_id]
+
+    disliked_dog = DislikedDog.find_by(perro_id: user_dog_id, disliked_dog_id: perro_id)
+    disliked_dog.destroy if disliked_dog.present?
+    
+    @user_dog = Perrito.find(params[:user_dog_id])
+    perro_no_gustado = Perrito.find(perro_id)
+    redirect_to ver_mis_no_me_gusta_perros_que_buscan_pareja_path(@user_dog), notice: "Retiraste el No me gusta a #{perro_no_gustado.nombre}."
   end
   
   

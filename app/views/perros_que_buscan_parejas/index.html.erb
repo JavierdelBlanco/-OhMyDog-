@@ -44,7 +44,7 @@
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="exampleModalLabel">Postular para la busqueda de pareja</h1>
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Postular a <%= perros.nombre %> para la busqueda de pareja</h1>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -63,8 +63,8 @@
 
                     <% if perros.sexo == "hembra" %>
                       <div class="mb-3">
-                        <%= form.label :fecha_inicio_celo, 'Fecha de inicio del celo:' %>
-                        <%= form.date_field :fecha_celo_inicio, class: 'form-control', required: true, min: Date.current.to_s %>
+                        <%= form.label :fecha_inicio_celo, 'Fecha del ultimo celo:' %>
+                        <%= form.date_field :fecha_celo_inicio, class: 'form-control', required: true %>
                       </div>
                     <% end %>
 
@@ -87,11 +87,15 @@
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="exampleModalLabel">Postular para la busqueda de pareja</h1>
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Retirar a <%= perros.nombre %> para la busqueda de pareja</h1>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                   <p>Desea retirar a <%= perros.nombre %> para dejar de buscarle pareja?</p>
+                  <ul>
+                    <li>Esto borrará todos los Me gusta y No me gusta que hayas dado con <%= perros.nombre %></li>
+                    <li>Esto borrará todos los Me gusta y No me gusta que le hayan dado a <%= perros.nombre %></li>
+                  </ul>
                   <%= form_with model: @perros_del_usuario, url: retirar_perros_que_buscan_pareja_path(perros.id) , method: :post, id: 'formularioDatos' do |form| %>
                     <%= form.submit 'Retirar', id: "confirmarBtn", class: 'btn btn-turqueza', style:"margin: 2px" %>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
@@ -104,6 +108,7 @@
           <!-- agregar botones (3) faltantes -->
 
           <%= link_to 'Buscar pareja', buscar_pareja_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza', style: 'margin-bottom: 3px' %>
+          <%= link_to 'Ver mis No me gusta', ver_mis_no_me_gusta_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza', style: 'margin-bottom: 3px' %>
 
         </div>
       <% end %>

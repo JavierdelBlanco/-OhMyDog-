@@ -1,0 +1,60 @@
+<h1>Perros que no te gustaron para <%= @user_dog.nombre %></h1>
+
+<% if @perros_disgustados.empty? %>
+  <div class="no_mis_perros">
+    <p>No le has dado No me gusta a ningun perro con <%= @user_dog.nombre %>.</p>
+  </div>
+<% end %>
+
+<div class= 'd-flex flex-wrap'>
+    
+    <% @perros_disgustados.each do |perros| %>
+
+        <div class="card d-flex" style="max-width: 350px; max-height: 650px; min-width: 350px; min-height: 500px; margin: 10px">
+
+            <%= image_tag(perros.foto, class:'card-img-top', style:'max-height: 200px; min-height: 200px; max-width: 100%; object-fit: cover;  object-position: top; ') %>
+            <div class="card-body">
+                <p class="card-text", style=''> <strong> Nombre: </strong> <%= perros.nombre %> </p>
+                <p class="card-text", style=''> <strong> Edad: </strong> <%= calcular_edad(perros.dia, perros.mes, perros.año) %> </p>
+                <p class="card-text", style=''> <strong> Raza: </strong> <%= perros.raza %> </p>
+                <p class="card-text", style=''> <strong> Descripcion: </strong> <%= perros.descripcion %> </p>
+                <% if perros.sexo == 'hembra' %>
+                    <p class="card-text", style=''> <strong> Fecha de celo: </strong> <%= perros.fecha_celo_inicio.strftime("%d/%m/%Y") %> </p>
+                <% end %>
+                <!-- <p class="card-text", style=''> <strong> Sexo: </strong> <%= perros.sexo %> </p> -->
+                <p class="card-text", style=''> <strong> Caracteristicas: </strong> <%= perros.caracteristicas %> </p>
+                <p class="card-text", style=''> <strong> Condiciones: </strong> <%= perros.condiciones %> </p>
+                <p class="card-text", style=''> <strong> color: </strong> <%= perros.color %> </p>
+                <p class="card-text", style=''> <strong> Tamaño: </strong> <%= perros.tamaño %> </p>
+            </div>
+
+            <!-- botones -->
+            <div class='d-flex justify-content-center' style='flex-direction: column; align-items: center;'>
+                <div>
+                    <button type="button"  class = "btn btn-turqueza" style = 'margin-bottom: 3px' data-bs-toggle="modal" data-bs-target="#Modal_dislike_no_more-<%= perros.id %>" >Retirar No me gusta</button>
+
+                    <div class="modal fade" id="Modal_dislike_no_more-<%= perros.id %>" tabindex="-1" aria-labelledby="Modal_dislike_Label-<%= perros.id %>" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Postular para la busqueda de pareja</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Retirar Me gusta de <%= perros.nombre %> ?</p>
+                                    <%= form_with model: @perros_que_buscan_parejas, url: retirar_no_me_gusta_perros_que_buscan_pareja_path(user_dog_id: @user_dog.id, perro_id: perros.id) , method: :post, id: 'formularioDatos' do |form| %>
+                                        <%= form.submit 'Postular', id: "confirmarBtn", class: 'btn btn-turqueza', style:"margin: 2px" %>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>
+                                    <% end %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <% end %>
+
+</div>
