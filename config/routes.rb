@@ -159,6 +159,7 @@ get '/perros_encontrados/edit_no_registrado', to: 'perros_encontrados#edit_no_re
     get 'ver_mis_no_me_gusta', on: :member
     post 'retirar_no_me_gusta', on: :member
     get 'ver_perros_que_me_dieron_me_gusta', on: :member
+    get 'ver_los_matcheos_de_mi_perro', on: :member
   end
 
 

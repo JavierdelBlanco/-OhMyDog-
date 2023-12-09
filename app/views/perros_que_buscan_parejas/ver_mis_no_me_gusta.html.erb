@@ -42,6 +42,11 @@
                                 </div>
                                 <div class="modal-body">
                                     <p>Retirar No me gusta de <%= perros.nombre %> ?</p>
+                                    <p>Esto hara que:</p>
+                                    <ul>
+                                        <li><%= perros.nombre %> vuelva a aparecer en tu lista de perros para buscarle pareja a <%= @user_dog.nombre %>.</li>
+                                        <li>En la lista de perros para buscarle pareja de <%= perros.nombre %> vuelva a aparecer tu perro, <%= @user_dog.nombre %>.</li>
+                                    </ul>
                                     <%= form_with model: @perros_que_buscan_parejas, url: retirar_no_me_gusta_perros_que_buscan_pareja_path(user_dog_id: @user_dog.id, perro_id: perros.id) , method: :post, id: 'formularioDatos' do |form| %>
                                         <%= form.submit 'Retirar', id: "confirmarBtn", class: 'btn btn-turqueza', style:"margin: 2px" %>
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>

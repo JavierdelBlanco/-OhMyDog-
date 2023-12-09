@@ -92,8 +92,7 @@
                 <div class="modal-body">
                   <p>Desea retirar a <%= perros.nombre %> para dejar de buscarle pareja?</p>
                   <ul>
-                    <li>Esto borrará todos los Me gusta y No me gusta que hayas dado con <%= perros.nombre %></li>
-                    <li>Esto borrará todos los Me gusta y No me gusta que le hayan dado a <%= perros.nombre %></li>
+                    <li>Esto borrará todos los Me gusta que hayas dado con <%= perros.nombre %></li>
                   </ul>
                   <%= form_with model: @perros_del_usuario, url: retirar_perros_que_buscan_pareja_path(perros.id) , method: :post, id: 'formularioDatos' do |form| %>
                     <%= form.submit 'Retirar', id: "confirmarBtn", class: 'btn btn-turqueza', style:"margin: 2px" %>
@@ -109,6 +108,7 @@
           <%= link_to 'Buscar pareja', buscar_pareja_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza', style: 'margin-bottom: 3px' %>
           <%= link_to 'Ver mis No me gusta', ver_mis_no_me_gusta_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza', style: 'margin-bottom: 3px' %>
           <%= link_to 'Ver quien me dio Me gusta', ver_perros_que_me_dieron_me_gusta_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza', style: 'margin-bottom: 3px' %>
+          <%= link_to 'Ver los matcheos de mi perro', ver_los_matcheos_de_mi_perro_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza', style: 'margin-bottom: 3px' %>
 
         </div>
       <% end %>

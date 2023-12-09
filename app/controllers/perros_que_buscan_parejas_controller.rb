@@ -167,7 +167,6 @@ class PerrosQueBuscanParejasController < ApplicationController
     # Obtén los parámetros del formulario
     user_dog_id = params[:user_dog_id]
     perro_id = params[:perro_id]
-    called_from_buscar_pareja = params[:from_buscar_pareja]
 
     liked_dog = LikedDog.find_by(perro_id: user_dog_id, liked_dog_id: perro_id)
     liked_dog.destroy if liked_dog.present?
@@ -181,6 +180,7 @@ class PerrosQueBuscanParejasController < ApplicationController
     # Obtén los parámetros del formulario
     user_dog_id = params[:user_dog_id]
     perro_id = params[:perro_id]
+    called_from_buscar_pareja = params[:from_buscar_pareja]
 
     DislikedDog.create(perro_id: user_dog_id, disliked_dog_id: perro_id)
 
@@ -227,6 +227,15 @@ class PerrosQueBuscanParejasController < ApplicationController
     @perros_que_me_dieron_me_gusta = Perrito.where(id: perros_que_me_dieron_me_gusta_ids).where.not(id: perros_a_los_que_le_di_me_gusta_ids).where.not(id: perros_a_los_que_le_di__no_me_gusta_ids)
   end
   
+  def ver_los_matcheos_de_mi_perro
+
+    @user_dog = Perrito.find(params[:id])
+
+    perros_a_los_que_le_di_me_gusta_ids = LikedDog.where(perro_id: @user_dog.id).pluck(:liked_dog_id)
+    perros_a_los_que_le_di_me_gusta_que_me_dieron_me_gusta_ids = LikedDog.where(perro_id: perros_a_los_que_le_di_me_gusta_ids, liked_dog_id: @user_dog.id).pluck(:perro_id)
+
+    @matches = Perrito.where(id: perros_a_los_que_le_di_me_gusta_que_me_dieron_me_gusta_ids)
+  end
   
   
   

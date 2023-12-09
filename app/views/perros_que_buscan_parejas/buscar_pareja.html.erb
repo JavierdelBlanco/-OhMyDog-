@@ -97,6 +97,7 @@
                     <p>Esto hara que:</p>
                     <ul>
                       <li><%= perros.nombre %> no aparezca en tu lista de busqueda de pareja para <%= @user_dog.nombre %></li>
+                      <li><%= perros.nombre %> no aparezca en la lista de Ver quien me dio Me gusta de <%= @user_dog.nombre %></li>
                       <li><%= @user_dog.nombre %> no aparezca en la lista de busqueda de pareja para <%= perros.nombre %></li>
                     </ul>
                     <%= form_with model: @perros_que_buscan_parejas, url: no_me_gusta_perros_que_buscan_pareja_path(user_dog_id: @user_dog.id, perro_id: perros.id, from_buscar_pareja: true) , method: :post, id: 'formularioDatos' do |form| %>
