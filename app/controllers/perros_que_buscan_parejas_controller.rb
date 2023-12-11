@@ -138,26 +138,32 @@ class PerrosQueBuscanParejasController < ApplicationController
     puts "user_dog_id: #{user_dog_id}"
     puts "perro_id: #{perro_id}"
 
+    @user_dog = Perrito.find(params[:user_dog_id])
+    perro_gustado = Perrito.find(perro_id)
+
     # Verifica si el perro no está en la lista de DislikedDogs
     unless DislikedDog.exists?(perro_id: perro_id, disliked_dog_id: user_dog_id)
       # Si el perro no esta en la tabla de disliked dogs, lo agrega a la tabla liked dogs
       LikedDog.create(perro_id: user_dog_id, liked_dog_id: perro_id)
       puts "¡Perro añadido a la lista de liked dogs!"
       # Redirige o realiza cualquier acción adicional que necesites
-      @user_dog = Perrito.find(params[:user_dog_id])
 
-      perro_gustado = Perrito.find(perro_id)
+      if LikedDog.exists?(perro_id: perro_id, liked_dog_id: user_dog_id)
+        # Matcheo formado
+        match_notice = "¡Matcheo formado entre #{@user_dog.nombre} y #{perro_gustado.nombre}!"
+        MatchMailer.enviar_correo_match(@user_dog, perro_gustado).deliver_later
+        MatchMailer.enviar_correo_match(perro_gustado, @user_dog).deliver_later
+      else  
+        match_notice = "¡Le diste Me gusta a #{perro_gustado.nombre}!"
+      end
 
       if called_from_buscar_pareja == 'true'
-        redirect_to buscar_pareja_perros_que_buscan_pareja_path(@user_dog), notice: "¡Le diste Me gusta a #{perro_gustado.nombre}!"
+        redirect_to buscar_pareja_perros_que_buscan_pareja_path(@user_dog), notice: match_notice
       else
-        redirect_to ver_perros_que_me_dieron_me_gusta_perros_que_buscan_pareja_path(@user_dog), notice: "¡Le diste Me gusta a #{perro_gustado.nombre}!"
+        redirect_to ver_perros_que_me_dieron_me_gusta_perros_que_buscan_pareja_path(@user_dog), notice: match_notice
       end
     else
       puts "Este perro te ha dado no me gusta."
-      @user_dog = Perrito.find(params[:user_dog_id])
-
-      perro_gustado = Perrito.find(perro_id)
 
       if called_from_buscar_pareja == 'true'
         redirect_to buscar_pareja_perros_que_buscan_pareja_path(@user_dog), notice: "Lo sentimos, pero #{perro_gustado.nombre} te ha dado No me gusta."
