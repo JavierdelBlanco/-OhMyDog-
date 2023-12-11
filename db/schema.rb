@@ -132,13 +132,13 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_06_094529) do
     t.text "caracteristicas"
     t.text "condiciones"
     t.string "raza"
+    t.string "sexo"
     t.string "color"
     t.string "tamaño"
     t.boolean "fallecido"
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "sexo"
     t.boolean "postulado"
     t.binary "foto"
     t.string "descripcion"
@@ -171,10 +171,10 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_06_094529) do
     t.string "nombre_dueno"
     t.string "apellido_dueno"
     t.string "direccion_dueno"
+    t.integer "numero_dueno"
     t.string "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "numero_dueno"
     t.string "raza"
     t.integer "edad_aproximada"
     t.string "tamano"

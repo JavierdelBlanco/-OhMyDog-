@@ -1,14 +1,157 @@
-<p style="color: green"><%= notice %></p>
+<h2>Campañas de Donación</h2>
 
-<h1>Campania donacions</h1>
-
-<div id="campania_donacions">
-  <% @campania_donacions.each do |campania_donacion| %>
-    <%= render campania_donacion %>
-    <p>
-      <%= link_to "Show this campania donacion", campania_donacion %>
-    </p>
+<% if user_signed_in? %>
+  <% if current_user.tipo_usuario == 'veterinario' %>
+    <%= link_to "Cargar campaña", cargar_campania_path, class: "btn btn-sm btn-secondary" %>
   <% end %>
-</div>
+<% end %>  
 
-<%= link_to "New campania donacion", new_campania_donacion_path %>
+<% if @campania_donacions.empty? %>
+  <p>No hay Campañas activas actualmente</p>
+<% else %>
+  <div class="row mt-2">
+    <% @campania_donacions.each_slice(3) do |campanias_slice| %>
+      <% campanias_slice.each do |campania_donacion| %>
+        <div class="col-md-4">
+          <div class="card mb-4">
+            <!-- Contenido de la campaña -->
+            <div class="card-body m-2">
+              <h3 class="card-title"><%= campania_donacion.nombre %></h3>
+              <% if campania_donacion.imagen.present? %>
+                <%= image_tag campania_donacion.imagen, class: "img-fluid", alt: "Imagen de la campaña" %>
+              <% else %>
+                <p class="card-text"><em>No hay imagen disponible</em></p>
+              <% end %>
+              <p class="card-text"><strong>Beneficiario:</strong> <%= campania_donacion.beneficiario %></p>
+              <p class="card-text"><strong>Motivo:</strong> <%= campania_donacion.motivo %></p>
+              <p class="card-text"><strong>Fecha Límite:</strong> <%= campania_donacion.dia_limite %>/<%= campania_donacion.mes_limite %>/<%= campania_donacion.anio_limite %></p>
+              <p class="card-text"><strong>Monto a recaudar:</strong> $<%= campania_donacion.monto_total %></p>
+              <p class="card-text"><strong>Monto Actual:</strong> $<%= campania_donacion.monto_actual %></p>
+
+              <!-- Barra de progreso -->
+              <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: <%= (campania_donacion.monto_actual.to_f / campania_donacion.monto_total.to_f) * 100 %>%" aria-valuenow="<%= campania_donacion.monto_actual %>" aria-valuemin="0" aria-valuemax="<%= campania_donacion.monto_total %>"></div>
+              </div>
+              <% if user_signed_in? %>
+                <% if current_user.tipo_usuario == 'veterinario' %>
+                  <div class="text-center mt-3 mb-3">
+                    <%= link_to "Editar", editar_campania_path(campania_donacion), class: "btn btn-primary" %>
+                    <% if campania_donacion.monto_actual == 0 %>
+                      <button type="button" class="btn btn-danger" style='margin: 3px' data-bs-toggle="modal" data-bs-target="#ModalEliminar-<%= campania_donacion.id %>">
+                        Eliminar
+                      </button>
+
+                      <!-- Modal Eliminar-->
+                      <div class="modal fade" id="ModalEliminar-<%= campania_donacion.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Campaña</h1>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              Desea eliminar la campaña de forma permanente ?
+                            </div>
+                            <div class="modal-footer">
+                              <%= link_to "Confirmar", campania_donacion, data: { turbo_method: :delete } ,  class: "btn btn-success", style:'margin: 2px' %>
+                              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Atras</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    <% end %>
+                  </div>
+                <% else%>
+                  <div class="text-center mt-3 mb-3">
+                    <button type="button" class="btn btn-turqueza" style='margin: 3px' data-bs-toggle="modal" data-bs-target="#ModalDonar-<%= campania_donacion.id %>">
+                      Donar
+                    </button>
+
+                    <!-- Modal Donar -->
+                    <div class="modal fade" id="ModalDonar-<%= campania_donacion.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Elegir monto</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                        <div class="modal-body">
+                          <p>Ingrese el monto a donar(en pesos):</p>
+                          <%= form_with url: mercadopago_checkout_path(nombre_campania: campania_donacion.nombre), id: 'formularioDatos', method: :post do |form| %>
+                            <div class="mb-3">
+                              <%= form.number_field :monto, required: true, class: 'form-control' , min: 1, step: 'any' %>
+                            </div>
+                            <%= form.submit 'Confirmar', id: 'confirmarBtn', class: 'btn btn-success' %>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Atrás</button>
+                          <% end %>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <% end %>
+              <% else %>
+                <div class="text-center mt-3 mb-3">               
+                  <button type="button" class="btn btn-turqueza" style='margin: 3px' data-bs-toggle="modal" data-bs-target="#ModalDonar-<%= campania_donacion.id %>">
+                    Donar
+                  </button>
+                </div>   
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
+<script>
+  document.addEventListener("turbo:load", function() {
+  var initPoint = '<%= params[:init_point] %>';
+
+  if (initPoint) {
+    var newWindow = window.open(initPoint, '_blank');
+
+    setTimeout(function() {
+      removeInitPointParameter(); // Elimina el parámetro init_point de la URL
+      reloadMainPage(); // Recarga la página principal sin el parámetro
+    }, 1000); // Cambia el tiempo según lo necesario
+  }
+});
+
+function removeInitPointParameter() {
+  var currentUrl = window.location.href;
+  var updatedUrl = removeURLParameter(currentUrl, 'init_point');
+  if (updatedUrl !== currentUrl) {
+    window.history.replaceState({}, document.title, updatedUrl);
+  }
+}
+
+function removeURLParameter(url, parameter) {
+  var urlParts = url.split('?'); // Divide la URL en dos partes: antes y después del símbolo '?'
+  if (urlParts.length >= 2) {
+    var prefix = encodeURIComponent(parameter) + '=';
+    var parts = urlParts[1].split(/[&;]/g); // Divide los parámetros en una matriz
+
+    for (var i = parts.length; i-- > 0;) {
+      if (parts[i].lastIndexOf(prefix, 0) !== -1) {
+        parts.splice(i, 1); // Elimina el parámetro si se encuentra
+      }
+    }
+
+    // Vuelve a unir las partes de la URL, excluyendo el parámetro eliminado
+    return urlParts[0] + (parts.length > 0 ? '?' + parts.join('&') : '');
+  }
+  
+  return url; // Devuelve la URL sin cambios si no se encuentra el parámetro
+}
+
+
+function reloadMainPage() {
+  setTimeout(function() {
+    window.location.href = window.location.origin + window.location.pathname; // Recarga la página principal
+  }, 2000); // Cambia el tiempo según lo necesario para asegurar que se completen las acciones
+}
+
+
+</script>

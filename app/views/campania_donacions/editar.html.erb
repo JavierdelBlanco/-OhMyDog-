@@ -1,0 +1,96 @@
+<%= form_with(model: @campania_donacion, multipart: true, class: 'needs-validation') do |form| %>
+
+    <div class='row g-3 needs-validation' style='width: 500px; margin: 5px; border: 1px solid #000; border-radius: 5px;'>
+  
+      <div class="col-md-5 mb-2">
+      <%= form.label :titulo, style: "display: block;" %>
+      <div class="input-group has-validation">
+        <%= form.text_field :nombre, class: 'form-control' + ( @campania_donacion.errors[:nombre].any? ? ' is-invalid' : ''), required: true, id: 'validationName' %>
+        <div id="validationNameFeedback" class="invalid-feedback" style="<%= @campania_donacion.errors[:nombre].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
+          <%= @campania_donacion.errors.messages_for(:nombre).join(', ') %>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-md-5 mb-2">
+      <%= form.label :beneficiario, style: "display: block" %>
+      <%= form.text_field :beneficiario, class: 'form-control', required: true %>
+    </div>
+
+    <div class="col-md-10 mb-2">
+      <%= form.label :motivo, style: "display: block" %>
+      <%= form.text_area :motivo, class: 'form-control', required: true %>
+    </div>
+  
+    <div class="col-md-5 mb-2">
+      <%= form.label :monto_objetivo, style: "display: block" %>
+      <%= form.number_field :monto_total, class: 'form-control', required: true %>
+    </div>
+  
+    <div class="col-md-5 mb-2">
+      <%= form.label :fecha_limite, style: "display: block;" %>
+      <div class="input-group has-validation">
+        <%= form.date_field :fecha, value: @fecha.to_s, class: 'form-control', required: true, min: Date.today.to_s, style: 'appearance: none;' %>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <%= form.label :imagen, style: "display: block;" %>
+      <div class="input-group has-validation">
+        <%= form.file_field :imagen , class: 'form-control' + (@campania_donacion.errors[:imagen].any? ? ' is-invalid' : ''), id: 'validationFoto', accept: 'image/*' %>
+        <div id="validationFotoFeedback" class="invalid-feedback" style="<%= @campania_donacion.errors[:imagen].any? ? 'display: block; margin: 2px;' : 'display: none;' %>">
+          <%= @campania_donacion.errors.messages_for(:imagen).join(', ') %>
+        </div>
+      </div>
+      <img id="preview" src="#" style="display: none; margin:2px; max-width: 200px; max-height: 200px;" />
+    </div>
+    
+    <div class="mb-2">
+      <button type="button" class="btn btn-success" style='margin-block: 10px;' data-bs-toggle="modal" data-bs-target="#ModalEditar-<%= @campania_donacion.id %>">
+              Guardar cambios
+      </button>
+
+      <!-- Modal Editar-->
+        <div class="modal fade" id="ModalEditar-<%= @campania_donacion.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar edicion</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+                <div class="modal-body">
+                  Desea guardar los cambios efectuados a esta campaña?
+                </div>
+              <div class="modal-footer">
+                <%= form.submit 'Confirmar',  class: "btn btn-success", style:'margin: 2px' %>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Atras</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      <%= link_to "Atras", ver_campanias_path, class: "btn btn-primary" %>
+    </div>
+
+  </div>
+  
+  <% end %>
+
+  <script>
+  document.addEventListener('turbo:load', function() {
+    const fileInput = document.getElementById('validationFoto');
+    const previewImage = document.getElementById('preview');
+
+    fileInput.addEventListener('change', function() {
+      if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+          previewImage.src = e.target.result;
+          previewImage.style.display = 'block';
+        };
+
+        reader.readAsDataURL(fileInput.files[0]);
+      }
+    });
+  });
+</script>

@@ -28,14 +28,14 @@ every 1.days, at: '09:30' do
     runner "Turno.send_reminder_emails"
 end
 
-every 1.minutes do
+every 1.days, at: '09:30' do
     runner "Turno.delete_canceled_turns"
 end
 
-  every 1.days, at: '09.36' do
+  every 1.days, at: '09.30' do
     runner "Perrito.enviar_vacunar"
 end
 
-  every 1.days, at: '09.36' do
+  every 1.days, at: '09.30' do
     runner "Perrito.enviar_vacunae"
 end

@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  # Configurar  MercadoPago
+  post 'mercadopago_checkout', to: 'campania_donacions#realizar_pago'
+  post 'webhooks', to: 'campania_donacions#actualizar_donacion'
+
   resources :campania_donacions
   resources :campania
 
@@ -97,10 +101,13 @@ Rails.application.routes.draw do
   post '/random_password_email', to: 'user_mailer#random_password_email'
 
   #Campañas de donacion
-  get 'ver_campanias', to: 'campania_donacions#ver', as: 'ver_campanias'
+  get 'ver_campanias', to: 'campania_donacions#index', as: 'ver_campanias'
   get 'cargar_campania', to: 'campania_donacions#cargar', as: 'cargar_campania'
+  get 'eliminar_campania', to: 'campania_donacions#destroy', as: 'eliminar_campania'
+  get 'editar_campania/:id', to: 'campania_donacions#editar', as: 'editar_campania'
   resources :campanias do
     post 'crear_campania', on: :collection
+    resources :campania_donacions, only: [:destroy]
   end
 
 
