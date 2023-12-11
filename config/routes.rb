@@ -99,8 +99,11 @@ Rails.application.routes.draw do
   #Campañas de donacion
   get 'ver_campanias', to: 'campania_donacions#ver', as: 'ver_campanias'
   get 'cargar_campania', to: 'campania_donacions#cargar', as: 'cargar_campania'
+  get 'eliminar_campania', to: 'campania_donacions#destroy', as: 'eliminar_campania'
+  get 'editar_campania/:id', to: 'campania_donacions#editar', as: 'editar_campania'
   resources :campanias do
     post 'crear_campania', on: :collection
+    resources :campania_donacions, only: [:destroy]
   end
 
 
