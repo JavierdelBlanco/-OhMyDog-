@@ -10,7 +10,7 @@
   }
 
   .btn-same-width {
-    width: 70%;
+    width: 56%;
   }
 
 </style>
@@ -115,9 +115,9 @@
           </div>
 
           <!-- agregar botones (3) faltantes / agregar btn-same-width o no -->
-          <%= link_to 'Ver mis No me gusta', ver_mis_no_me_gusta_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza ', style: 'margin-bottom: 3px' %>
-          <%= link_to 'Ver quien me dio Me gusta', ver_perros_que_me_dieron_me_gusta_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza ', style: 'margin-bottom: 3px' %>
-          <%= link_to 'Ver los matcheos de mi perro', ver_los_matcheos_de_mi_perro_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza ', style: 'margin-bottom: 3px' %>
+          <%= link_to 'Quien me dio Me gusta', ver_perros_que_me_dieron_me_gusta_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza btn-same-width', style: 'margin-bottom: 3px' %>
+          <%= link_to 'Mis No me gusta', ver_mis_no_me_gusta_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza btn-same-width', style: 'margin-bottom: 3px' %>
+          <%= link_to 'Mis matcheos', ver_los_matcheos_de_mi_perro_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza btn-same-width', style: 'margin-bottom: 3px' %>
 
         </div>
       <% end %>
