@@ -1,16 +1,25 @@
+<style>
+    .activo-rojo {
+        background-color: #FFE6E6; /* Ajuste de tonalidad para un rojo similar */
+    }
+</style>
+
 <h1>Perros que no te gustaron para <%= @user_dog.nombre %></h1>
 
 <% if @perros_disgustados.empty? %>
   <div class="no_mis_perros">
     <p>No le has dado No me gusta a ningun perro con <%= @user_dog.nombre %>.</p>
+    <%= link_to 'Atras', perros_que_buscan_parejas_path, class: 'btn btn-turqueza ', style: 'margin-bottom: 3px' %>
   </div>
-<% end %>
+<% else %>
+
+<%= link_to 'Atras', perros_que_buscan_parejas_path, class: 'btn btn-turqueza ', style: 'margin-bottom: 3px' %>
 
 <div class= 'd-flex flex-wrap'>
     
     <% @perros_disgustados.each do |perros| %>
 
-        <div class="card d-flex" style="max-width: 350px; max-height: 650px; min-width: 350px; min-height: 500px; margin: 10px">
+        <div class="card d-flex activo-rojo" style="max-width: 350px; max-height: 650px; min-width: 350px; min-height: 500px; margin: 10px">
 
             <%= image_tag(perros.foto, class:'card-img-top', style:'max-height: 200px; min-height: 200px; max-width: 100%; object-fit: cover;  object-position: top; ') %>
             <div class="card-body">
@@ -63,3 +72,4 @@
     <% end %>
 
 </div>
+<% end %>

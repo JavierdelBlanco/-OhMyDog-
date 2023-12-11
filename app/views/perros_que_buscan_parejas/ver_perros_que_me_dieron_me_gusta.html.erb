@@ -3,8 +3,10 @@
 <% if @perros_que_me_dieron_me_gusta.empty? %>
   <div class="no_mis_perros">
     <p>Ningun perro le ha dado me gusta a <%= @user_dog.nombre %> por el momento.</p>
+    <%= link_to 'Atras', perros_que_buscan_parejas_path, class: 'btn btn-turqueza ', style: 'margin-bottom: 3px' %>
   </div>
 <% else %>
+    <%= link_to 'Atras', perros_que_buscan_parejas_path, class: 'btn btn-turqueza ', style: 'margin-bottom: 3px' %>
     <div class= 'd-flex flex-wrap'>
         <% @perros_que_me_dieron_me_gusta.each do |perros| %>
             <div class="card d-flex" style="max-width: 350px; max-height: 650px; min-width: 350px; min-height: 500px; margin: 10px">
@@ -27,7 +29,7 @@
                 <div class='d-flex justify-content-center' style='flex-direction: column; align-items: center;'>
 
                     <div>
-                        <button type="button"  class = "btn btn-turqueza" style = 'margin-bottom: 3px' data-bs-toggle="modal" data-bs-target="#Modal_like-<%= perros.id %>" >Me gusta</button>
+                        <button type="button"  class = "btn btn-success" style = 'margin-bottom: 3px' data-bs-toggle="modal" data-bs-target="#Modal_like-<%= perros.id %>" >Me gusta</button>
 
                         <div class="modal fade" id="Modal_like-<%= perros.id %>" tabindex="-1" aria-labelledby="Modal_like_Label-<%= perros.id %>" aria-hidden="true">
                             <div class="modal-dialog">
@@ -56,7 +58,7 @@
                         </div>
                     </div>
 
-                    <button type="button"  class = "btn btn-turqueza" style = 'margin-bottom: 3px' data-bs-toggle="modal" data-bs-target="#Modal_dislike-<%= perros.id %>" >No me gusta</button>
+                    <button type="button"  class = "btn btn-danger" style = 'margin-bottom: 3px' data-bs-toggle="modal" data-bs-target="#Modal_dislike-<%= perros.id %>" >No me gusta</button>
 
                     <div class="modal fade" id="Modal_dislike-<%= perros.id %>" tabindex="-1" aria-labelledby="Modal_like_Label-<%= perros.id %>" aria-hidden="true">
                         <div class="modal-dialog">
