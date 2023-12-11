@@ -37,7 +37,7 @@
   </li>
   <% if user_signed_in? %>
   <li class="nav-item">
-    <%= link_to('Busqueda de pareja', perros_que_buscan_parejas_path, class:"nav-link #{'active' if current_page?(perros_que_buscan_parejas_path)}") %>
+    <%= link_to('Busqueda de pareja', perros_que_buscan_parejas_path, class: "nav-link #{'active' if request.fullpath.include?('perros_que_buscan_parejas')}") %>
   </li>
   <% end %>
 

@@ -109,6 +109,9 @@ class PerrosQueBuscanParejasController < ApplicationController
     perros_disgustados_ids = DislikedDog.where(perro_id: @user_dog.id).pluck(:disliked_dog_id)
     perros_que_me_dieron_no_me_gusta = DislikedDog.where(disliked_dog_id: @user_dog.id).pluck(:perro_id)
 
+    perros_a_los_que_le_di_me_gusta_ids = LikedDog.where(perro_id: @user_dog.id).pluck(:liked_dog_id)
+    perros_a_los_que_le_di_me_gusta_que_me_dieron_me_gusta_ids = LikedDog.where(perro_id: perros_a_los_que_le_di_me_gusta_ids, liked_dog_id: @user_dog.id).pluck(:perro_id)
+
   
     user_dog_raza = @user_dog.raza
     user_dog_tamano = @user_dog.tamaño
@@ -119,6 +122,7 @@ class PerrosQueBuscanParejasController < ApplicationController
       .where(sexo: opposite_sex, fallecido: false, postulado: true)
       .where.not(id: perros_disgustados_ids)
       .where.not(id: perros_que_me_dieron_no_me_gusta)
+      .where.not(id: perros_a_los_que_le_di_me_gusta_que_me_dieron_me_gusta_ids)
       .order(
         Arel.sql("CASE WHEN raza = '#{user_dog_raza}' THEN 0 ELSE 1 END"),
         Arel.sql("CASE WHEN tamaño = '#{user_dog_tamano}' THEN 0 ELSE 1 END"))
@@ -174,13 +178,19 @@ class PerrosQueBuscanParejasController < ApplicationController
     
     @user_dog = Perrito.find(params[:user_dog_id])
     perro_gustado = Perrito.find(perro_id)
-    redirect_to buscar_pareja_perros_que_buscan_pareja_path(@user_dog), notice: "Ya no te gusta #{perro_gustado.nombre}."
+
+    if called_from_buscar_pareja == 'true'
+      redirect_to buscar_pareja_perros_que_buscan_pareja_path(@user_dog), notice: "Ya no te gusta #{perro_gustado.nombre}."
+    else
+      redirect_to ver_los_matcheos_de_mi_perro_perros_que_buscan_pareja_path(@user_dog), notice: "Ya no te gusta #{perro_gustado.nombre}."
+    end
   end
 
   def no_me_gusta
     # Obtén los parámetros del formulario
     user_dog_id = params[:user_dog_id]
     perro_id = params[:perro_id]
+    called_from_buscar_pareja = params[:from_buscar_pareja]
 
     DislikedDog.create(perro_id: user_dog_id, disliked_dog_id: perro_id)
 
@@ -227,6 +237,15 @@ class PerrosQueBuscanParejasController < ApplicationController
     @perros_que_me_dieron_me_gusta = Perrito.where(id: perros_que_me_dieron_me_gusta_ids).where.not(id: perros_a_los_que_le_di_me_gusta_ids).where.not(id: perros_a_los_que_le_di__no_me_gusta_ids)
   end
   
+  def ver_los_matcheos_de_mi_perro
+
+    @user_dog = Perrito.find(params[:id])
+
+    perros_a_los_que_le_di_me_gusta_ids = LikedDog.where(perro_id: @user_dog.id).pluck(:liked_dog_id)
+    perros_a_los_que_le_di_me_gusta_que_me_dieron_me_gusta_ids = LikedDog.where(perro_id: perros_a_los_que_le_di_me_gusta_ids, liked_dog_id: @user_dog.id).pluck(:perro_id)
+
+    @matches = Perrito.where(id: perros_a_los_que_le_di_me_gusta_que_me_dieron_me_gusta_ids)
+  end
   
   
   
@@ -236,7 +255,7 @@ class PerrosQueBuscanParejasController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_perros_que_buscan_pareja
-      @perros_que_buscan_pareja = PerrosQueBuscanPareja.find(params[:id])
+      @perros_que_buscan_pareja = Perrito.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

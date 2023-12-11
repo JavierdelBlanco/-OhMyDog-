@@ -8,6 +8,11 @@
   .no-activo {
     background-color: #e5f7fa;
   }
+
+  .btn-same-width {
+    width: 70%;
+  }
+
 </style>
 
 <h1>Busqueda de pareja canina</h1>
@@ -25,7 +30,7 @@
     
       <div class="card-body">
         <p class="card-text", style=''> <strong> Nombre: </strong> <%= perros.nombre %> </p>
-        <p class="card-text", style=''> <strong> Edad: </strong> <%= calcular_edad(perros.dia, perros.mes, perros.año) %> años </p>
+        <p class="card-text", style=''> <strong> Edad: </strong> <%= calcular_edad(perros.dia, perros.mes, perros.año) %></p>
         <p class="card-text", style=''> <strong> Raza: </strong> <%= perros.raza %> </p>
         <p class="card-text", style=''> <strong> Sexo: </strong> <%= perros.sexo %> </p>
         <p class="card-text", style=''> <strong> Caracteristicas: </strong> <%= perros.caracteristicas %> </p>
@@ -63,7 +68,7 @@
                     <% if perros.sexo == "hembra" %>
                       <div class="mb-3">
                         <%= form.label :fecha_inicio_celo, 'Fecha del ultimo celo:' %>
-                        <%= form.date_field :fecha_celo_inicio, class: 'form-control', required: true %>
+                        <%= form.date_field :fecha_celo_inicio, class: 'form-control', required: true, max: Date.current.to_s  %>
                       </div>
                     <% end %>
 
@@ -80,7 +85,13 @@
       <% else %>
         <div class='d-flex justify-content-center' style='flex-direction: column; align-items: center;'>
 
-          <button type="button"  class = "btn btn-turqueza" style = 'margin-bottom: 3px' data-bs-toggle="modal" data-bs-target="#Modal_retirar-<%= perros.id %>" >Retirar</button>
+          <div>
+
+            <%= link_to 'Buscar pareja', buscar_pareja_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-success', style: 'margin-bottom: 3px' %>
+
+            <button type="button"  class = "btn btn-danger" style = 'margin-bottom: 3px' data-bs-toggle="modal" data-bs-target="#Modal_retirar-<%= perros.id %>" >Retirar</button>
+
+          </div>
 
           <div class="modal fade" id="Modal_retirar-<%= perros.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -92,8 +103,7 @@
                 <div class="modal-body">
                   <p>Desea retirar a <%= perros.nombre %> para dejar de buscarle pareja?</p>
                   <ul>
-                    <li>Esto borrará todos los Me gusta y No me gusta que hayas dado con <%= perros.nombre %></li>
-                    <li>Esto borrará todos los Me gusta y No me gusta que le hayan dado a <%= perros.nombre %></li>
+                    <li>Esto borrará todos los Me gusta que hayas dado con <%= perros.nombre %></li>
                   </ul>
                   <%= form_with model: @perros_del_usuario, url: retirar_perros_que_buscan_pareja_path(perros.id) , method: :post, id: 'formularioDatos' do |form| %>
                     <%= form.submit 'Retirar', id: "confirmarBtn", class: 'btn btn-turqueza', style:"margin: 2px" %>
@@ -104,11 +114,10 @@
             </div>
           </div>
 
-          <!-- agregar botones (3) faltantes -->
-
-          <%= link_to 'Buscar pareja', buscar_pareja_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza', style: 'margin-bottom: 3px' %>
-          <%= link_to 'Ver mis No me gusta', ver_mis_no_me_gusta_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza', style: 'margin-bottom: 3px' %>
-          <%= link_to 'Ver quien me dio Me gusta', ver_perros_que_me_dieron_me_gusta_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza', style: 'margin-bottom: 3px' %>
+          <!-- agregar botones (3) faltantes / agregar btn-same-width o no -->
+          <%= link_to 'Ver mis No me gusta', ver_mis_no_me_gusta_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza ', style: 'margin-bottom: 3px' %>
+          <%= link_to 'Ver quien me dio Me gusta', ver_perros_que_me_dieron_me_gusta_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza ', style: 'margin-bottom: 3px' %>
+          <%= link_to 'Ver los matcheos de mi perro', ver_los_matcheos_de_mi_perro_perros_que_buscan_pareja_path(perros.id), class: 'btn btn-turqueza ', style: 'margin-bottom: 3px' %>
 
         </div>
       <% end %>
