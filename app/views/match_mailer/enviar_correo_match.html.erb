@@ -1,5 +1,29 @@
-<h1>Hola <%= @user_1.nombre %>,</h1>
-  
-<p>Se ha formado un matcheo entre <%= @perro_1.nombre %> y <%= @perro_del_receptor.nombre %>.</p>
-  
-<p>El nombre del dueño es <%= @user_receptor.nombre %>.</p>
+<div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+
+  <div style="background-color: #ffffff; max-width: 600px; margin: 0 auto; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-radius: 8px;">
+
+    <h1 style="color: #333;">¡Se ha generado un matcheo!</h1>
+    <p>Hola <%= @user_1.nombre %> <%= @user_1.apellido %>,</p>
+    <p>Nos complace informarte que se ha generado un matcheo entre tu perro, <%= @perro_1.nombre %>, y <%= @perro_2.nombre%>.</p>
+    <p>Los detalles del dueño de <%= @perro_2.nombre%> son los siguientes:</p>
+
+    <ul>
+      <li><strong>Nombre: </strong><%= @user_2.nombre %></li>
+      <li><strong>Apellido: </strong><%= @user_2.apellido %></li>
+      <li><strong>Dirección: </strong><%= @user_2.direccion %></li>
+      <li><strong>Numero: </strong><%= @user_2.nro %></li>
+      <li><strong>Correo Electrónico: </strong><%= @user_2.email %></li>
+      <li><strong>Telefono: </strong><%= @user_2.telefono %></li>
+    </ul>
+
+    <p>Esperamos que puedan reunir a sus mascotas y que compartan experiencias inolvidables.</p>
+    <br>
+    <p>En la seccion de 'Busqueda de pareja' podras ver el boton 'Mis matcheos' en la tarjeta de tu perro <%= @perro_1.nombre %>, donde podras deshacer el matcheo si asi lo quisieras.</p>
+    <br>
+    <p>Agradecemos tu cooperación y confianza en OhMyDog.</p>
+
+    <p>Saludos,</p>
+    <p>El equipo de OhMyDog.</p>
+
+  </div>
+</div>
