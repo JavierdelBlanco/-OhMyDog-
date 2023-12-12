@@ -5,17 +5,10 @@ class PerrosQueBuscanParejasController < ApplicationController
   # GET /perros_que_buscan_parejas or /perros_que_buscan_parejas.json
   def index
 
-    if params[:filter].present?
-      @perros_del_usuario = Perrito.where(user_id: current_user.id, fallecido: false).order(postulado: :desc)
+    @perros_del_usuario = Perrito.where(user_id: current_user.id, fallecido: false).order(postulado: :desc)
 
-      # Aplicar paginación a la lista
-      @perros_del_usuario = Kaminari.paginate_array(@perros_del_usuario).page(params[:page]).per(3)
-    else
-      @perros_del_usuario = Perrito.where(user_id: current_user.id, fallecido: false).order(postulado: :desc)
-
-      # Aplicar paginación a la lista
-      @perros_del_usuario = Kaminari.paginate_array(@perros_del_usuario).page(params[:page]).per(3)
-    end
+    # Aplicar paginación a la lista
+    @perros_del_usuario = Kaminari.paginate_array(@perros_del_usuario).page(params[:page]).per(3)
 
   end
 
@@ -129,8 +122,7 @@ class PerrosQueBuscanParejasController < ApplicationController
     user_dog_tamano = @user_dog.tamaño
   
     # Priorizar PRIMERO RAZA, SEGUNDO MENOR DIFERENCIA DE EDAD (falta este), TERCERO MISMO TAMAÑO
-    if params[:filter].present?
-      @all_dogs = Perrito
+    @all_dogs = Perrito
       .where.not(user_id: @user_dog.user_id)
       .where(sexo: opposite_sex, fallecido: false, postulado: true)
       .where.not(id: perros_disgustados_ids)
@@ -141,23 +133,8 @@ class PerrosQueBuscanParejasController < ApplicationController
         Arel.sql("CASE WHEN tamaño = '#{user_dog_tamano}' THEN 0 ELSE 1 END")
       )
   
-      # Aplicar paginación a la lista
-      @all_dogs = Kaminari.paginate_array(@all_dogs).page(params[:page]).per(3)
-    else
-      @all_dogs = Perrito
-      .where.not(user_id: @user_dog.user_id)
-      .where(sexo: opposite_sex, fallecido: false, postulado: true)
-      .where.not(id: perros_disgustados_ids)
-      .where.not(id: perros_que_me_dieron_no_me_gusta)
-      .where.not(id: perros_a_los_que_le_di_me_gusta_que_me_dieron_me_gusta_ids)
-      .order(
-        Arel.sql("CASE WHEN raza = '#{user_dog_raza}' THEN 0 ELSE 1 END"),
-        Arel.sql("CASE WHEN tamaño = '#{user_dog_tamano}' THEN 0 ELSE 1 END")
-      )
-
-      # Aplicar paginación a la lista
-      @all_dogs = Kaminari.paginate_array(@all_dogs).page(params[:page]).per(3)
-    end
+    # Aplicar paginación a la lista
+    @all_dogs = Kaminari.paginate_array(@all_dogs).page(params[:page]).per(3)
 
   end
 
@@ -249,17 +226,10 @@ class PerrosQueBuscanParejasController < ApplicationController
 
     perros_disgustados_ids = DislikedDog.where(perro_id: @user_dog.id).pluck(:disliked_dog_id)
 
-    if params[:filter].present?
-      @perros_disgustados = Perrito.where(id: perros_disgustados_ids)
+    @perros_disgustados = Perrito.where(id: perros_disgustados_ids)
   
-      # Aplicar paginación a la lista
-      @perros_disgustados = Kaminari.paginate_array(@perros_disgustados).page(params[:page]).per(3)
-    else
-      @perros_disgustados = Perrito.where(id: perros_disgustados_ids)
-
-      # Aplicar paginación a la lista
-      @perros_disgustados = Kaminari.paginate_array(@perros_disgustados).page(params[:page]).per(3)
-    end
+    # Aplicar paginación a la lista
+    @perros_disgustados = Kaminari.paginate_array(@perros_disgustados).page(params[:page]).per(3)
 
   end
 
@@ -284,17 +254,10 @@ class PerrosQueBuscanParejasController < ApplicationController
     perros_a_los_que_le_di_me_gusta_ids = LikedDog.where(perro_id: @user_dog.id).pluck(:liked_dog_id)
     perros_a_los_que_le_di__no_me_gusta_ids = DislikedDog.where(perro_id: @user_dog.id).pluck(:disliked_dog_id)
 
-    if params[:filter].present?
-      @perros_que_me_dieron_me_gusta = Perrito.where(id: perros_que_me_dieron_me_gusta_ids).where.not(id: perros_a_los_que_le_di_me_gusta_ids).where.not(id: perros_a_los_que_le_di__no_me_gusta_ids)
+    @perros_que_me_dieron_me_gusta = Perrito.where(id: perros_que_me_dieron_me_gusta_ids).where.not(id: perros_a_los_que_le_di_me_gusta_ids).where.not(id: perros_a_los_que_le_di__no_me_gusta_ids)
   
-      # Aplicar paginación a la lista
-      @perros_que_me_dieron_me_gusta = Kaminari.paginate_array(@perros_que_me_dieron_me_gusta).page(params[:page]).per(3)
-    else
-      @perros_que_me_dieron_me_gusta = Perrito.where(id: perros_que_me_dieron_me_gusta_ids).where.not(id: perros_a_los_que_le_di_me_gusta_ids).where.not(id: perros_a_los_que_le_di__no_me_gusta_ids)
-
-      # Aplicar paginación a la lista
-      @perros_que_me_dieron_me_gusta = Kaminari.paginate_array(@perros_que_me_dieron_me_gusta).page(params[:page]).per(3)
-    end
+    # Aplicar paginación a la lista
+    @perros_que_me_dieron_me_gusta = Kaminari.paginate_array(@perros_que_me_dieron_me_gusta).page(params[:page]).per(3)
   end
   
   def ver_los_matcheos_de_mi_perro
@@ -304,17 +267,10 @@ class PerrosQueBuscanParejasController < ApplicationController
     perros_a_los_que_le_di_me_gusta_ids = LikedDog.where(perro_id: @user_dog.id).pluck(:liked_dog_id)
     perros_a_los_que_le_di_me_gusta_que_me_dieron_me_gusta_ids = LikedDog.where(perro_id: perros_a_los_que_le_di_me_gusta_ids, liked_dog_id: @user_dog.id).pluck(:perro_id)
 
-    if params[:filter].present?
-      @matches = Perrito.where(id: perros_a_los_que_le_di_me_gusta_que_me_dieron_me_gusta_ids)
+    @matches = Perrito.where(id: perros_a_los_que_le_di_me_gusta_que_me_dieron_me_gusta_ids)
   
-      # Aplicar paginación a la lista
-      @matches = Kaminari.paginate_array(@matches).page(params[:page]).per(3)
-    else
-      @matches = Perrito.where(id: perros_a_los_que_le_di_me_gusta_que_me_dieron_me_gusta_ids)
-
-      # Aplicar paginación a la lista
-      @matches = Kaminari.paginate_array(@matches).page(params[:page]).per(3)
-    end
+    # Aplicar paginación a la lista
+    @matches = Kaminari.paginate_array(@matches).page(params[:page]).per(3)
   end
   
   
