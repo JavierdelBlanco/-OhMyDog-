@@ -95,7 +95,7 @@ class CampaniaDonacionsController < ApplicationController
           quantity: 1
         }
       ],
-      notification_url: 'https://7209-181-170-91-200.ngrok.io/webhooks',
+      notification_url: 'https://2776-190-188-250-14.ngrok.io/webhooks',
       transaction_amount: monto,
       description: nombre_campania,
     }
