@@ -150,6 +150,9 @@
       <%= p.label :tamaño, style: "display: block" %>
       <%= p.select :tamaño, options_for_select(['Pequeño', 'Mediano', 'Grande']), { prompt: 'Seleccione...' }, required: true %>
     </div>
+
+    <%= p.hidden_field :fallecido, value:false %>
+
   <% end %>
 
 
