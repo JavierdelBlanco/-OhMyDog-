@@ -39,7 +39,6 @@
 
             <!-- botones -->
             <div class='d-flex justify-content-center' style='flex-direction: column; align-items: center;'>
-                <div>
                     <button type="button"  class = "btn btn-turqueza" style = 'margin-bottom: 3px' data-bs-toggle="modal" data-bs-target="#Modal_dislike_no_more-<%= perros.id %>" >Retirar No me gusta</button>
 
                     <div class="modal fade" id="Modal_dislike_no_more-<%= perros.id %>" tabindex="-1" aria-labelledby="Modal_dislike_Label-<%= perros.id %>" aria-hidden="true">
@@ -63,8 +62,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -73,3 +70,5 @@
 
 </div>
 <% end %>
+
+<%= render "perros_que_buscan_parejas/pagination_ver_mis_no_me_gusta" %>
