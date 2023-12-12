@@ -1,0 +1,50 @@
+<style>
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .pagination li {
+    display: inline-block;
+    margin-right: 5px;
+  }
+
+  .pagination a, .pagination span {
+    display: inline-block;
+    padding: 8px 12px;
+    color: #0D9BB5; /* Cambiado a color azul */
+    border: 1px solid #0D9BB5; /* Cambiado a color azul */
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.6s;
+    outline: none; /* Quitar el resaltado al hacer clic */
+  }
+
+  .pagination a:hover {
+    background-color: #0D9BB5;
+    color: #fff;
+    border: 1px solid #0D9BB5; /* Cambiado a color azul */
+  }
+
+  .pagination .active a {
+    background-color: #0D9BB5;
+    color: #fff;
+    border: 1px solid #0D9BB5; /* Cambiado a color azul */
+  }
+
+  .pagination .disabled a {
+    color: #868e96;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+</style>
+
+
+<div class="d-flex justify-content-center" style="margin: 50px;">
+  <nav aria-label="Page navigation example">
+    <ul class="pagination" id="custom-pagination">
+      <%= paginate @all_dogs, theme: 'bootstrap-5' %>
+    </ul>
+  </nav>
+</div>
