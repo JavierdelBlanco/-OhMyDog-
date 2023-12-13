@@ -7,6 +7,7 @@ class PerrosPerdido < ApplicationRecord
 
     validate :foto_content_type
     validate :nombre_unico_para_usuario_actual
+    validate :nombre_sin_caracteres_especiales
 
     def foto_content_type
       if foto.attached? && !foto.content_type.in?(%w(image/jpeg image/jpg image/png image/gif image/webp))
@@ -26,4 +27,12 @@ class PerrosPerdido < ApplicationRecord
         end
       end
     end
+
+    def nombre_sin_caracteres_especiales
+      if nombre.present? && nombre.match(/[^A-Za-z]/)
+        errors.add(:nombre, 'El nombre solo puede contener letras y sin espacios.')
+      end
+    end
+    
+
 end

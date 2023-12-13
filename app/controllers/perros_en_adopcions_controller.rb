@@ -1,5 +1,6 @@
 class PerrosEnAdopcionsController < ApplicationController
   before_action :set_perros_en_adopcion, only: %i[ show edit update destroy ]
+  before_action :verificar_solicitud_existente, only: [:enviar_correo_contactar_registrado, :enviar_correo_contactar_no_registrado]
 
   # GET /perros_en_adopcions or /perros_en_adopcions.json
   def index
@@ -96,6 +97,7 @@ class PerrosEnAdopcionsController < ApplicationController
 
     @perros_en_adopcion = PerrosEnAdopcion.find(params[:id])
     if @perros_en_adopcion.update(status: false)
+      cookies.delete(:solicitud_enviada)
       redirect_to perros_en_adopcions_path, notice: 'El perro ha sido marcado como adoptado.'
     else
       redirect_to perros_en_adopcions_path, alert: 'No se pudo marcar el perro como adoptado.'
@@ -115,6 +117,7 @@ class PerrosEnAdopcionsController < ApplicationController
     @detalle = params[:detalle]
 
     PerrosEnAdopcionsMailer.enviar_correo_contactar_registrado(@perro, @owner, @current_user, @detalle).deliver_later
+    cookies[:solicitud_enviada] = { value: 'true', expires: 1.year.from_now }
 
     respond_to do |format|
       format.html { redirect_to perros_en_adopcions_path, flash: { notice: "El correo fue enviado con exito." } }
@@ -145,6 +148,7 @@ class PerrosEnAdopcionsController < ApplicationController
       redirect_back(fallback_location: perros_en_adopcions_path) # Puedes redirigir a donde desees
     else
       PerrosEnAdopcionsMailer.enviar_correo_contactar_no_registrado(@perro, @owner, nombre, apellido, direccion, numero, email, detalle).deliver_later
+      cookies[:solicitud_enviada] = { value: 'true', expires: 1.year.from_now }
 
       respond_to do |format|
         format.html { redirect_to perros_en_adopcions_path, flash: { notice: "El correo fue enviado con exito." } }
@@ -163,4 +167,13 @@ class PerrosEnAdopcionsController < ApplicationController
     def perros_en_adopcion_params
       params.require(:perros_en_adopcion).permit(:nombre, :foto, :fecha_de_publicacion, :status, :raza, :sexo, :edad, :tamano, :mail, :descripcion)
     end
+
+    def verificar_solicitud_existente
+      # Verifica si la cookie está presente, si es así, significa que el usuario ya ha enviado una solicitud.
+      if cookies[:solicitud_enviada] == 'true'
+        # Puedes manejar la lógica aquí, por ejemplo, mostrando un mensaje de error o redirigiendo a otra página.
+        redirect_to perros_en_adopcions_path, alert: 'Ya has enviado una solicitud.'
+      end
+    end
+
 end
