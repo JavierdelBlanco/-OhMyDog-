@@ -74,6 +74,7 @@ class PerrosEnAdopcionsController < ApplicationController
     @perros_en_adopcion.action_type = 'update'
     respond_to do |format|
       if @perros_en_adopcion.update(perros_en_adopcion_params)
+        cookies.delete(:solicitud_enviada)
         format.html { redirect_to perros_en_adopcions_path, notice: "La publicación ha sido editada correctamente!" }
         format.json { render :show, status: :ok, location: @perros_en_adopcion }
       else
@@ -97,7 +98,6 @@ class PerrosEnAdopcionsController < ApplicationController
 
     @perros_en_adopcion = PerrosEnAdopcion.find(params[:id])
     if @perros_en_adopcion.update(status: false)
-      cookies.delete(:solicitud_enviada)
       redirect_to perros_en_adopcions_path, notice: 'El perro ha sido marcado como adoptado.'
     else
       redirect_to perros_en_adopcions_path, alert: 'No se pudo marcar el perro como adoptado.'
@@ -110,6 +110,12 @@ class PerrosEnAdopcionsController < ApplicationController
     id = params[:id]
     @perro = PerrosEnAdopcion.find(id)
 
+    # Verifica si el campo de solicitudes_enviadas está presente y contiene el ID del usuario
+  if @perro.solicitudes_enviadas&.include?(current_user.id)
+    redirect_to perros_en_adopcions_path, alert: 'Ya has enviado una solicitud para contactarte con este perro.'
+    return
+  end
+
     @owner = User.find_by(email: @perro.mail)
 
     @current_user = current_user
@@ -117,7 +123,13 @@ class PerrosEnAdopcionsController < ApplicationController
     @detalle = params[:detalle]
 
     PerrosEnAdopcionsMailer.enviar_correo_contactar_registrado(@perro, @owner, @current_user, @detalle).deliver_later
-    cookies[:solicitud_enviada] = { value: 'true', expires: 1.year.from_now }
+
+     # Asegúrate de que el campo de solicitudes_enviadas esté inicializado antes de actualizarlo
+  @perro.update(solicitudes_enviadas: []) unless @perro.solicitudes_enviadas
+
+  # Actualiza el campo de solicitudes_enviadas en el perro
+  @perro.update(solicitudes_enviadas: @perro.solicitudes_enviadas << current_user.id)
+
 
     respond_to do |format|
       format.html { redirect_to perros_en_adopcions_path, flash: { notice: "El correo fue enviado con exito." } }
@@ -148,7 +160,7 @@ class PerrosEnAdopcionsController < ApplicationController
       redirect_back(fallback_location: perros_en_adopcions_path) # Puedes redirigir a donde desees
     else
       PerrosEnAdopcionsMailer.enviar_correo_contactar_no_registrado(@perro, @owner, nombre, apellido, direccion, numero, email, detalle).deliver_later
-      cookies[:solicitud_enviada] = { value: 'true', expires: 1.year.from_now }
+      cookies[:solicitud_enviada] = { value: 'true', expires: 1.minute.from_now }
 
       respond_to do |format|
         format.html { redirect_to perros_en_adopcions_path, flash: { notice: "El correo fue enviado con exito." } }
