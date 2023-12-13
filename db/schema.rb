@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_06_094529) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_13_143958) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -132,13 +132,13 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_06_094529) do
     t.text "caracteristicas"
     t.text "condiciones"
     t.string "raza"
-    t.string "sexo"
     t.string "color"
     t.string "tamaño"
     t.boolean "fallecido"
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "sexo"
     t.boolean "postulado"
     t.binary "foto"
     t.string "descripcion"
@@ -159,6 +159,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_06_094529) do
     t.datetime "updated_at", null: false
     t.string "descripcion"
     t.string "mail"
+    t.json "solicitudes_enviadas"
   end
 
   create_table "perros_encontrados", force: :cascade do |t|
@@ -171,10 +172,10 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_06_094529) do
     t.string "nombre_dueno"
     t.string "apellido_dueno"
     t.string "direccion_dueno"
-    t.integer "numero_dueno"
     t.string "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "numero_dueno"
     t.string "raza"
     t.integer "edad_aproximada"
     t.string "tamano"
