@@ -1,7 +1,7 @@
 <h1> Matcheos de <%= @user_dog.nombre %> </h1>
 
 <% if @matches.empty? %>
-    <p>No se ha generado ningun matcheo con <%= @user_dog.nombre %> </p>
+    <p>No se ha generado ningun matcheo con <%= @user_dog.nombre %>.</p>
     <%= link_to 'Atras', perros_que_buscan_parejas_path, class: 'btn btn-turqueza ', style: 'margin-bottom: 3px' %>
 <% else %>
     <%= link_to 'Atras', perros_que_buscan_parejas_path, class: 'btn btn-turqueza ', style: 'margin-bottom: 3px' %>

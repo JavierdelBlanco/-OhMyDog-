@@ -141,7 +141,7 @@
             <strong>Tel:</strong> ${evento.telefono}
           `).join('<br>');
 
-          const buttons = <%= user_signed_in? && current_user.tipo_usuario == 'veterinario' ? true : false %>;
+          const buttons = <%= user_signed_in? && current_user.tipo_usuario == 'veterinario' %>;
           if (buttons) {
             const editPath = '<%= edit_vet_de_guardium_path('vet_id') %>';
             dayElement.innerHTML = `
@@ -193,13 +193,13 @@
     }
 
     // Llama a la función inicial para renderizar el calendario del mes actual
-    renderCalendar(<%= raw @events.to_json %>, <%= show_next_month %>);
+    renderCalendar(<%= @events.to_json.html_safe %>, <%= show_next_month.to_json.html_safe %>);
 
     // Agrega un evento de clic al botón para alternar entre el mes actual y el siguiente
     const nextMonthButton = document.getElementById('nextMonthButton');
     nextMonthButton.addEventListener('click', function () {
       showNextMonth = !showNextMonth;
-      const events = showNextMonth ? <%= raw @events_next_month.to_json %> : <%= raw @events.to_json %>;
+      const events = showNextMonth ? <%= @events_next_month.to_json.html_safe %> : <%= @events.to_json.html_safe %>;
       renderCalendar(events, showNextMonth); // Vuelve a renderizar el calendario al cambiar el estado
       nextMonthButton.innerText = showNextMonth ? 'Ver Calendario del Mes Actual' : 'Ver Calendario del Mes Siguiente';
     });

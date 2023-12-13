@@ -77,7 +77,6 @@ Rails.application.configure do
     :port => '2525',
     :authentication => :cram_md5
   }
-  
 config.hosts << "2776-190-188-250-14.ngrok.io"
 
 
