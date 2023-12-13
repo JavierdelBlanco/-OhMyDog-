@@ -15,4 +15,18 @@ class CampaniaDonacion < ApplicationRecord
         errors.add(:nombre, 'Ya existe una campaña con ese nombre')
       end
     end
+
+    def self.revisar
+      campanias = all
+      fecha_actual = Time.zone.now
+      dia = fecha_actual.day
+      mes = fecha_actual.month
+      año = fecha_actual.year
+      hoy = Date.new(año, mes, dia)
+      campanias.each do |campania|
+        fecha_campania = Date.new(campania.año_limite, campania.mes_limite, campania.dia_limite)
+        if (((hoy - fecha_campania).to_i) == 0)
+          campania.destroy
+      end
+    end
 end
