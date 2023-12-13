@@ -67,7 +67,7 @@
                     <button type="button" class="btn btn-turqueza" style='margin: 3px' data-bs-toggle="modal" data-bs-target="#ModalDonar-<%= campania_donacion.id %>">
                       Donar
                     </button>
-
+                  </div>
                     <!-- Modal Donar -->
                     <div class="modal fade" id="ModalDonar-<%= campania_donacion.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                       <div class="modal-dialog">
@@ -88,14 +88,35 @@
                         </div>
                       </div>
                     </div>
-                </div>
+                  </div>  
                 <% end %>
               <% else %>
                 <div class="text-center mt-3 mb-3">               
                   <button type="button" class="btn btn-turqueza" style='margin: 3px' data-bs-toggle="modal" data-bs-target="#ModalDonar-<%= campania_donacion.id %>">
                     Donar
                   </button>
-                </div>   
+                </div>
+                <!-- Modal Donar -->
+                    <div class="modal fade" id="ModalDonar-<%= campania_donacion.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Elegir monto</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                        <div class="modal-body">
+                          <p>Ingrese el monto a donar(en pesos):</p>
+                          <%= form_with url: mercadopago_checkout_path(nombre_campania: campania_donacion.nombre), id: 'formularioDatos', method: :post do |form| %>
+                            <div class="mb-3">
+                              <%= form.number_field :monto, required: true, class: 'form-control' , min: 1, step: 'any' %>
+                            </div>
+                            <%= form.submit 'Confirmar', id: 'confirmarBtn', class: 'btn btn-success' %>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Atrás</button>
+                          <% end %>
+                        </div>
+                      </div>
+                    </div>
+                  </div>     
               <% end %>
             </div>
           </div>
