@@ -172,7 +172,7 @@ class PerrosEnAdopcionsController < ApplicationController
       # Verifica si la cookie está presente, si es así, significa que el usuario ya ha enviado una solicitud.
       if cookies[:solicitud_enviada] == 'true'
         # Puedes manejar la lógica aquí, por ejemplo, mostrando un mensaje de error o redirigiendo a otra página.
-        redirect_to perros_en_adopcions_path, alert: 'Ya has enviado una solicitud.'
+        redirect_to perros_en_adopcions_path, alert: 'Ya has enviado una solicitud para contactarte.'
       end
     end
 
