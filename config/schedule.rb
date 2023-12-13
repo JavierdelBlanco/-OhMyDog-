@@ -39,3 +39,7 @@ end
   every 1.days, at: '09.30' do
     runner "Perrito.enviar_vacunae"
 end
+
+every 1.days, at: '08.00' do
+  runner "CampaniaDonacion.revisar"
+end
